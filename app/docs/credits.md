@@ -63,4 +63,4 @@ AnnMarieW - Overview. (n.d.). GitHub. Retrieved December 23, 2022, from https://
 [Dash bootstrap cheatsheet](https://dashcheatsheet.pythonanywhere.com/)
 [Kaggle Pydeck and Folim](https://www.kaggle.com/code/nadiate/eda-folium-pydeck-housing-prediction)
 [Dashboard Free Picture Credits Ahok Sharma Ghandruk, Western Development Region, Nepal](https://www.pexels.com/photo/snow-covered-rocky-mountains-during-nighttime-11595461/)
-
+Structuring your Dash app(https://towardsdatascience.com/structuring-your-dash-app-e33d8e70133e)
