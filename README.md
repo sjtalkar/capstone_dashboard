@@ -4,16 +4,50 @@ This repository is the visual dashboard element of the full Himalaya Dataset pro
 
 ## Restructure the Dash application folder structure
 
+We start out by creating a isolated folder structure for the Dash app. 
+
+Folder PATH listing for volume Google Drive
+
+```
++---app
+    +---passwords
+    +---data
+    ¦   +---HIMDATA-2.5-Spring2022
+    ¦   +---raw_data
+    ¦   +---nhpp
+    ¦   +---social_media_data
+    ¦       +---tweet_search_data
+    ¦       +---cleaned_tweets
+    ¦       +---models
+    ¦       ¦   +---lda_models
+    ¦       ¦   +---gsdmm_models
+    ¦       +---visual_creation_data
+    +---lib
+    ¦   +---__pycache__
+    ¦   +---data_preparation
+    ¦   ¦   +---__pycache__
+    ¦   +---data_collection
+    +---docs
+    +---pages
+    ¦   +---__pycache__ 
+    +---color_theme
+    ¦   +---__pycache__
+    +---assets
+
+```
+
+Whereas in the Dagshub, app.py is under the root, here an app folder is created 
+
 
 
 ## Create the Dockerfile
-FROM python:3.9-slim
+```FROM python:3.9-slim
 COPY requirements.txt ./requirements.txt
 RUN pip install -r requirements.txt
 # COPY . ./ Since we moved everthing to app folder, the image only needs everything from the app folder
 COPY app app
 CMD python app/app.py
-
+```
 
 ## Create Docker Image to Deploy Dash Application
 

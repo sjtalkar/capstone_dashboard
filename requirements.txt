@@ -1,0 +1,14 @@
+dash==2.7.0
+dash_bootstrap_components==1.2.1
+dash_daq==0.5.0
+dash_loading_spinners==1.0.0
+dms2dec==0.1
+emoji==2.2.0
+matplotlib==3.6.2
+numpy==1.22.3
+pandas==1.5.1
+plotly==5.11.0
+pydeck==0.8.0
+regex==2022.10.31
+scattertext==0.1.10
+tqdm==4.64.1
