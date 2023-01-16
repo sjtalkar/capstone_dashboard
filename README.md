@@ -1,9 +1,21 @@
-# capstone_dashboard
+# capstone_dashboard Capstone Dashboard
 This repository is the visual dashboard element of the full Himalaya Dataset project developed in Dagshub
 
 
+## Restructure the Dash application folder structure
 
-Docker Image to Deploy Dash Application
+
+
+## Create the Dockerfile
+FROM python:3.9-slim
+COPY requirements.txt ./requirements.txt
+RUN pip install -r requirements.txt
+# COPY . ./ Since we moved everthing to app folder, the image only needs everything from the app folder
+COPY app app
+CMD python app/app.py
+
+
+## Create Docker Image to Deploy Dash Application
 
 If you want to build the all the elements including setting the packages, use no-cache:
 
