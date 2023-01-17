@@ -20,9 +20,6 @@ Drive:.
 +---app
     ¦   app.py
     ¦   
-    +---passwords
-    ¦       mapbox_api_key.pickle
-    ¦       
     +---data
     ¦   +---raw_data
     ¦   ¦       members.csv
@@ -84,6 +81,24 @@ The pipreqs package was used instead of pip freeze of the environment to make su
 The unsupervised learning visual output in the form of an html is carted over from [the main capstone Dagshub repository](https://dagshub.com/sjtalkar/capstone_himalayas) and served up as a page.
 This is the file that can be found in the app/assets folder called Everest_Visualization_Two_topics.html.
 
+### Environment variables to pass in the required mapbox access token
+
+In order to access Mapbox mapstyle as in  `pdk.map_styles.SATELLITE`, the user needs to procure a Mapbox access token. A free plan will be sufficient for the purposes of this dashboard.
+1. You can sign up for a free account on the Mapbox website (https://www.mapbox.com/).
+2. Create an account.
+3. Generate a new token by going to the "Account" page and click on the "Tokens" tab.
+
+This  MAPBOX_ACCESS_TOKEN has to be updated in the Dash app running in a Docker container. There are several ways to do this such as:
+
+1. Pass the token as an environment variable when running the container. This can be done using the -e flag when running
+the docker run command, like so: docker run -e MAPBOX_ACCESS_TOKEN=<your_access_token> <image_name>
+
+2. Use a .env file to store the token and mount it to the container at runtime. This can be done using the --env-file flag
+when running the docker run command, like so: docker run --env-file path/to/.env <image_name>
+
+We will use the .env file method and this requires us to take care as to not committing this file to Github and not including it in the build of the image.
+
+
 ### Setup Docker on local machine
 
 Docker was installed from [this official site](https://docs.docker.com/desktop/install/windows-install/).
@@ -107,6 +122,12 @@ COPY app app
 CMD python app/app.py
 ```
 
+### Create the .dockerignore file
+
+Since we have a .env file with the MAPBOX_ACCESS_TOKEN, this .env file should not be included in the build
+and we have to place it in the .dockerignore file. To check if the .dockerignore file is being used, run the build with --no-cache and this
+will show [internal] load .dockerignore as part of the build output feedback.
+
 ### Create Docker Image to Deploy Dash Application
 
 If you want to build the all the elements including setting the packages, use no-cache:
@@ -126,8 +147,8 @@ Check all available images built
 `docker image ls`
 
 Run an image
-
-`docker run -p 8050:8050 caps_dashboard`
+ 
+`docker run --env-file path/to/.env -p 8050:8050 caps_dashboard`
 
 Stop a running container in another command line window:
 
@@ -148,3 +169,8 @@ Prune non-running redundant images
 Note that the host is set to 0.0.0.0 in the app.py Dash file
 
 The application can be run as https://localhost:8050
+
+
+1. Create a .env file with
+   MAPBOX_ACCESS_TOKEN = <Your access token>
+2. To run the docker image with the u

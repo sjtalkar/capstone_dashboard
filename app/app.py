@@ -58,7 +58,7 @@ navbar = dbc.NavbarSimple(
 )
 
 
-#This layou must be in the main app.py file. Each page has either a function or a variable called layout as well
+#This layout must be in the main app.py file. Each page has either a function or a variable called layout as well
 app.layout = dbc.Container(
     [make_empty_row("gx-2")
       ,navbar

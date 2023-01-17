@@ -6,7 +6,11 @@ import dash
 import pickle
 import pydeck as pdk
 
+
+mapbox_token = os.environ.get("MAPBOX_ACCESS_TOKEN")
+
 import matplotlib.cm as cmx
+from dotenv import load_dotenv
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import dash_bootstrap_components as dbc
@@ -14,6 +18,7 @@ from dash import dcc, html, Input, callback
 from lib.data_preparation.peaks_data import PeakExpedition
 
 dash.register_page(__name__, title='Spatial Peak Analysis', name='Spatial Peak Analysis')
+
 
 peak_expedition = PeakExpedition(os.path.join('app','data','raw_data'))
 _ = peak_expedition.set_latitude_longitude_with_peak_mapppings(os.path.join('app','data','nhpp'))
@@ -28,11 +33,14 @@ max_year = peak_expedition_by_year_season_df['YEAR'].max()
 all_peaks_list = list(peak_expedition_by_year_season_df['PEAKID'].unique())
 #print(f"Mean Latitude: {lat_avg} and mean longitude : {lon_avg}")
 
+
+
+load_dotenv()
+mapbox_token = os.environ.get("MAPBOX_ACCESS_TOKEN")
+my_mapbox_api_key =  {'mapbox': mapbox_token}
+
 # https://deckgl.readthedocs.io/en/latest/gallery/column_layer.html
 # https://github.com/groundhogday321/python-pydeck-examples/blob/main/python%20pydeck.ipynb
-with open(os.path.join("app", "passwords", "mapbox_api_key.pickle"), 'rb') as handle:
-    my_mapbox_api_key = pickle.load(handle)
-
 mountain_peaks = peak_expedition_by_year_season_df.copy()
 mountain_peaks['scaled_elevation'] = mountain_peaks['HEIGHTM'] / 1_0
 min_val = mountain_peaks['scaled_elevation'].min()
