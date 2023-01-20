@@ -81,6 +81,7 @@ def get_selected_peaks(min_num_expeditions, date_range, peakid_list):
     return selected_peaks_df, final_colors_dict, highlight_countries_list
 
 
+year_dict = {year: str(year) for year in range(1920, 2031, 10)}
 layout = html.Div(
     [
         dbc.Row([
@@ -125,21 +126,7 @@ layout = html.Div(
                 html.P("Select time range for expedition:"),
                 dcc.RangeSlider(1920, 2030, 10,
                                 value=[1920, 2030],
-                                marks={
-                                    1920: '1920',
-                                    1930: '1930',
-                                    1940: '1940',
-                                    1950: '1950',
-                                    1960: '1960',
-                                    1970: '1970',
-                                    1980: '1980',
-                                    1990: '1990',
-                                    2000: '2000',
-                                    2010: '2010',
-                                    2020: '2020',
-                                    2030: '2030'
-
-                                },
+                                marks=year_dict,
                                 id='year_slider',
                                 className="rounded shadow mb-5"
 

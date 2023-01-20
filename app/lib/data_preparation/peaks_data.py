@@ -83,7 +83,7 @@ TERM_REASON_DICT = {
 
 
 class PeakExpedition():
-    def __init__(self, data_dir: str = '../data/raw_data/', nhpp_data_dir:str = '../data/nhpp/'):
+    def __init__(self, data_dir: str = '../data/raw_data/', nhpp_data_dir: str = '../data/nhpp/'):
         peak_df = pd.read_csv(os.path.join(data_dir, 'peaks.csv'),
                               usecols=['PEAKID', 'PKNAME', 'PKNAME2', 'LOCATION', 'HEIGHTM', 'REGION', 'OPEN',
                                        'PSTATUS', ])
@@ -92,7 +92,7 @@ class PeakExpedition():
                                usecols=['EXPID', 'PEAKID', 'YEAR', 'SEASON', 'HOST', 'SMTDAYS', 'TOTDAYS',
                                         'TERMDATE', 'TERMREASON', 'CAMPSITES', 'TOTMEMBERS', 'SMTMEMBERS', 'TOTHIRED',
                                         'SMTHIRED', 'O2USED', 'NATION', 'MDEATHS', 'HDEATHS', 'COMRTE'],
-                               dtype={'O2USED': int, 'COMRTE':object}
+                               dtype={'O2USED': int, 'COMRTE': object}
                                )
 
         self.camp_height_pattern = re.compile(r"\d{2}/\d{2},(\d{4})m")
@@ -110,12 +110,13 @@ class PeakExpedition():
 
         exped_df.drop(columns=['CAMPSITES'], inplace=True)
         self.peak_exped_df = pd.merge(exped_df, peak_df, how='inner', left_on='PEAKID', right_on='PEAKID')
-        #Set latitude and longitude in self.peak_exped_df
+        # Set latitude and longitude in self.peak_exped_df
         self.set_latitude_longitude_with_peak_mapppings(nhpp_data_dir)
 
         # Commercial peaks are far fewer, isolate all peaks with an indication of commercial versus non commercial
         self.exped_commercial_type_df = self.peak_exped_df[~self.peak_exped_df['COMRTE'].isna()].copy()
         self.exped_commercial_type_df.replace({'True': True, "False": False}, regex=False, inplace=True)
+        self.exped_commercial_type_df['COMRTE'] = self.exped_commercial_type_df['COMRTE'].astype('int')
 
     def extract_camps(self, text):
         """
@@ -195,7 +196,6 @@ class PeakExpedition():
                                           'ELEVATION_M']).rename(
             columns={'ID': 'NHPP_PEAKID', 'PEAKID': 'HIMDATA_PEAKID'})
 
-
         # now merge based on PEAKID_nhpp
         peak_expedition_nhpp = self.peak_exped_df.merge(nhpp_peaks, how='left', left_on='PEAKID',
                                                         right_on='HIMDATA_PEAKID',
@@ -260,6 +260,38 @@ class PeakExpedition():
                                                         np.where(primary_df['YEAR_SEASON_DATE'].dt.month == 6, 'Summer',
                                                                  'Winter')))
 
+        primary_df.drop(columns=['PKNAME_y'], inplace=True)
+        primary_df.rename(columns={'PKNAME_x': 'PKNAME'}, inplace=True)
+        return primary_df
+
+    def expand_timeframe_year(self, df):
+        """
+        This function expands the provided dataset with all years for every peak, between the maximum and minimum year range.
+        :param df: The dataframe with expeditions, years and peaks for which the time series is to be created.
+        :return: Dataframe with all  years filled in between minimum  and maximum
+        """
+        # Create dataset based quarters for all years from start to current year
+        y_df = pd.DataFrame({"YEAR": list(range(df['YEAR'].min(), df['YEAR'].max()))})
+        y_df['key'] = 0
+
+        # Create a row for every peak for every year and every year
+        primary_df = df[['PEAKID', 'PKNAME', 'LAT', 'LON', 'HEIGHTM']].drop_duplicates().copy()
+        primary_df['key'] = 0
+        primary_df = primary_df[['PEAKID', 'PKNAME', 'LAT', 'LON', 'HEIGHTM', 'key']].merge(y_df, how='inner',
+                                                                                            left_on=['key'],
+                                                                                            right_on=['key'],
+                                                                                            suffixes=(
+                                                                                                '_left',
+                                                                                                '_right')
+                                                                                            ).sort_values(
+            ['PEAKID', 'YEAR'])
+        primary_df.drop(columns=['key'], inplace=True)
+
+        # Join to aggregate data
+        primary_df = primary_df.merge(df,
+                                      left_on=['YEAR', 'PEAKID', 'LAT', 'LON', 'HEIGHTM'],
+                                      right_on=['YEAR', 'PEAKID', 'LAT', 'LON', 'HEIGHTM'],
+                                      how='left')
 
         primary_df.drop(columns=['PKNAME_y'], inplace=True)
         primary_df.rename(columns={'PKNAME_x': 'PKNAME'}, inplace=True)
@@ -274,6 +306,7 @@ class PeakExpedition():
 
         df = self.peak_exped_df
         # Aggregate expedition counts for peaks per year and season, limited to expeditions that are successful
+        #This should be performed before expand the dataframe to create rows for every season and year
         exped_count_df = df[df['TERMREASON_STRING'] == 'Success (main peak)'].groupby(
             ['YEAR', 'YEAR_SEASON_DATE', 'PEAKID', 'PKNAME', 'LAT', 'LON', 'HEIGHTM']
         ).agg(
@@ -304,38 +337,48 @@ class PeakExpedition():
         self.peak_expedition_by_year_season_df = primary_df
         return primary_df
 
-    def create_commerce_noncommerce_peak_aggregation(self, by_season: bool = True, commercial:bool=True):
+    def create_commerce_noncommerce_peak_aggregation(self, by_season: bool = True, commercial:bool = True):
         """
         To visualize the peak expedition count by year and season in a continuous fashion, we need to create a timeseries
         for each peak for every year and every season. This function is restricted to dataframe containing expeditions that have
         clear indication of whether they are commercial or non-commercial
         :param by_season: Flag for choice of aggregation by season (True) or year (False)
-        :return: It returns and stores(self.peak_expedition_by_year_season_df) the expeditions dataframe by year and season
+        :return: It returns the expeditions dataframe by year or season and a list of peaks with commercial expeditions
+                 For the grouping of peak and year, get the total across all expeditions as _COUNT and the mean across
+                 expeditions as _MEAN
         """
 
         df = self.exped_commercial_type_df
         # Expand timeseries to all years and seasons for all peaks
-        df = self.expand_timeframe_year_season(df)
         # Aggregate expedition counts for peaks per year and season, limited to expeditions that are successful
+
+        #Aggregate by year and season first
         if by_season:
-            group_cols = ['YEAR','YEAR_SEASON_DATE', 'PEAKID', 'PKNAME', 'LAT', 'LON', 'HEIGHTM']
+            group_cols = ['YEAR', 'YEAR_SEASON_DATE', 'PEAKID', 'PKNAME', 'LAT', 'LON', 'HEIGHTM']
         else:
             group_cols = ['YEAR', 'PEAKID', 'PKNAME', 'LAT', 'LON', 'HEIGHTM']
 
-        exped_count_df = df[df['TERMREASON_STRING'] == 'Success (main peak)'].groupby(group_cols
-                                                                                      ).agg(
+        #For the grouping of peak and year, get the total across all expeditions as _COUNT and the mean across
+        #all expeditions as _MEAN
+        # This should be performed before expand the dataframe to create rows for every season and year
+        exped_count_df = df.groupby(group_cols
+                                    ).agg(
             EXPEDITIONS_COUNT=('PEAKID', 'count'), OXYGEN_USED_COUNT=('O2USED', 'sum'),
-            COMMERCIAL_ROUTES_COUNT = ('COMRTE','sum'), COMMERCIAL_ROUTES_MEAN=('COMRTE', 'mean'),
+            COMMERCIAL_ROUTES_COUNT=('COMRTE', 'sum'), COMMERCIAL_ROUTES_MEAN=('COMRTE', 'mean'),
             MEMBER_DEATHS_COUNT=('MDEATHS', 'sum'), HIRED_DEATHS_COUNT=('HDEATHS', 'sum'),
-            HIRED_DEATHS_MEAN=('HDEATHS', 'mean'), MEMBER_DEATHS_MEAN=('MDEATHS', 'mean'),
             TOTMEMBERS_COUNT=('TOTMEMBERS', 'sum'), TOTHIRED_COUNT=('TOTHIRED', 'sum'),
             TOTMEMBERS_MEAN=('TOTMEMBERS', 'mean'), TOTHIRED_MEAN=('TOTHIRED', 'mean'),
             SMTMEMBERS_COUNT=('SMTMEMBERS', 'sum'), SMTHIRED_COUNT=('SMTHIRED', 'sum'),
-            SMTMEMBERS_MEAN=('SMTMEMBERS', 'mean'), SMTHIRED_MEAN=('SMTHIRED', 'mean'),
             SUMMIT_DAYS_COUNT=('SMTDAYS', 'sum'), TOTAL_DAYS_COUNT=('TOTDAYS', 'sum'),
-            SUMMIT_DAYS_MEAN=('SMTDAYS', 'mean'), TOTAL_DAYS_MEAN=('TOTDAYS', 'sum'),
-            BASE_CAMP_MEAN=('NUM_CAMPS', 'mean'),
+            SUMMIT_DAYS_MEAN=('SMTDAYS', 'mean'), TOTAL_DAYS_MEAN=('TOTDAYS', 'mean'),
+            NUM_CAMPS_COUNT=('NUM_CAMPS', 'sum'), NUM_CAMPS_MEAN=('NUM_CAMPS', 'mean'),
         ).reset_index()
+
+        if by_season:
+            exped_count_df = self.expand_timeframe_year_season(exped_count_df)
+        else:
+            exped_count_df = self.expand_timeframe_year(exped_count_df)
+
 
         for col_name in ['EXPEDITIONS_COUNT', 'MEMBER_DEATHS_COUNT', 'OXYGEN_USED_COUNT', 'TOTMEMBERS_COUNT',
                          'TOTHIRED_COUNT', 'HIRED_DEATHS_COUNT', 'COMMERCIAL_ROUTES_COUNT']:
@@ -353,8 +396,9 @@ class PeakExpedition():
         exped_count_df['OXYGEN_USED_PERC'].fillna(0, inplace=True)
 
         # If saving in class we need two : one for season and one for year
-        #Find distinct peaks with any commercial expedition
-        peak_commerce_df = exped_count_df.groupby(['PEAKID', 'PKNAME']).agg(COMMERCIAL_EXPED_COUNT=('COMMERCIAL_ROUTES_COUNT', 'sum')).reset_index()
+        # Find distinct peaks with any commercial expedition
+        peak_commerce_df = exped_count_df.groupby(['PEAKID', 'PKNAME']).agg(
+            COMMERCIAL_EXPED_COUNT=('COMMERCIAL_ROUTES_COUNT', 'sum')).reset_index()
         peak_commerce_df = peak_commerce_df[peak_commerce_df['COMMERCIAL_EXPED_COUNT'] > 0].copy()
 
         return exped_count_df, list(peak_commerce_df['PKNAME'].unique())
