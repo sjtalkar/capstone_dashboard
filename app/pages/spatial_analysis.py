@@ -20,8 +20,7 @@ from lib.data_preparation.peaks_data import PeakExpedition
 dash.register_page(__name__, title='Spatial Peak Analysis', name='Spatial Peak Analysis')
 
 
-peak_expedition = PeakExpedition(os.path.join('app','data','raw_data'))
-_ = peak_expedition.set_latitude_longitude_with_peak_mapppings(os.path.join('app','data','nhpp'))
+peak_expedition = PeakExpedition(os.path.join('app','data','raw_data'), os.path.join('app', 'data', 'nhpp'))
 peak_expedition_by_year_season_df = peak_expedition.create_peak_aggregation()
 primary_df = peak_expedition_by_year_season_df[['YEAR', 'LAT', 'LON', 'HEIGHTM', 'PEAKID', 'PKNAME', 'EXPEDITIONS_COUNT']].drop_duplicates()
 

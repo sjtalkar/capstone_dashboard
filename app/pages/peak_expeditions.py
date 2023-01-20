@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append("..")
 
 import os
@@ -12,22 +13,25 @@ from color_theme.color_dicts import COLOR_CHOICE_DICT, TIME_SERIES_COLOR_DICT
 import dash_bootstrap_components as dbc
 from dash import dcc, html, Input, Output, callback
 from lib.data_preparation.peaks_data import PeakExpedition
-#Place this in the home page
+# Place this in the home page
 import plotly.graph_objects as go
+
 fig = go.Figure(layout=dict(template='plotly'))
 
 dash.register_page(__name__, title='Peak Popularity Analysis', name='Peak Popularity Analysis')
 
-
-#print(f"This is the current directory : {os.path.abspath(os.getcwd())}")
-peak_expedition = PeakExpedition(os.path.join('app','data','raw_data'))
-_ = peak_expedition.set_latitude_longitude_with_peak_mapppings(os.path.join('app','data','nhpp'))
+# print(f"This is the current directory : {os.path.abspath(os.getcwd())}")
+peak_expedition = PeakExpedition(os.path.join('app', 'data', 'raw_data'), os.path.join('app', 'data', 'nhpp'))
 peak_expedition_by_year_season_df = peak_expedition.create_peak_aggregation()
+commerce_noncommerce_by_season_df, commerce_peaks_list = peak_expedition.create_commerce_noncommerce_peak_aggregation(by_season=True)
+commerce_noncommerce_by_year_df, commerce_peaks_list = peak_expedition.create_commerce_noncommerce_peak_aggregation(by_season=False)
 
+#print(f"commerce_peaks_list = {commerce_peaks_list}")
 
 min_year = peak_expedition_by_year_season_df['YEAR'].min()
 max_year = peak_expedition_by_year_season_df['YEAR'].max()
 all_peaks_list = list(peak_expedition_by_year_season_df['PEAKID'].unique())
+
 
 def get_selected_peaks(min_num_expeditions, date_range, peakid_list):
     popular_peaks_list = list(
@@ -75,6 +79,7 @@ def get_selected_peaks(min_num_expeditions, date_range, peakid_list):
         len(highlight_countries_list) + 1)
     selected_peaks_df.sort_values(['PEAK_ORDER', 'PEAKID', 'YEAR_SEASON_DATE'], ascending=False, inplace=True)
     return selected_peaks_df, final_colors_dict, highlight_countries_list
+
 
 layout = html.Div(
     [
@@ -161,9 +166,14 @@ layout = html.Div(
                      dcc.Graph(id="peak_oxygen_chart", className="rounded shadow")], width=12,
                     className="rounded shadow  rounded-top  rounded-end rounded-bottom rounded-start  pb-1"),
         ]),
+        dbc.Row([html.Div(className='m-2')]),
+        dbc.Row([html.P([
+            "* This peak expedition data shows values filtered for expeditions that were successful.",
+            html.Br()],
+            className="rounded shadow g-5 small fst-italic")
+        ])
+    ])
 
-    ]
-)
 
 @callback(Output("peak_expeds_chart", "figure"),
           [
@@ -323,5 +333,3 @@ def update_oxygen_line_chart(min_num_expeditions, peakid_list, date_range, log_s
     fig.update_traces(opacity=0.6)
 
     return fig
-
-
