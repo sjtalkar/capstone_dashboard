@@ -42,32 +42,32 @@ layout = html.Div(
             ], width=4
             )
         ]),
-        dbc.Row([dbc.Col([html.Label("Average Number Of Base Camps By Year"),
-                          dcc.Graph(id="base_camps_chart", className="rounded shadow")
+        dbc.Row([dbc.Col([html.Label("Average Base Camps By Year"),
+                          dcc.Graph(id="base_camps_chart", className="rounded shadow"),
                           ],
-                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start"),
-                 dbc.Col([html.Label("Average Number of Commercial Expeditions By Year"),
+                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start pb-2"),
+                 dbc.Col([html.Label("Percentage Commercial Expeditions By Year"),
                           dcc.Graph(id="commerce_expeds_chart", className="rounded shadow")
                           ],
-                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start"),
-                 dbc.Col([html.Label("Average Number of Days To Summit By Year"),
+                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
+                 dbc.Col([html.Label("Average Days To Summit By Year"),
                           dcc.Graph(id="summit_days_chart", className="rounded shadow")
                           ],
-                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start"),
+                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
                  ]),
         dbc.Row([html.Div(className='m-4')]),
-        dbc.Row([dbc.Col([html.Label("Total Number Of Base Camps By Year"),
+        dbc.Row([dbc.Col([html.Label("Total Base Camps By Year"),
                           dcc.Graph(id="total_base_camps_chart", className="rounded shadow")
                           ],
-                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start"),
-                 dbc.Col([html.Label("Total Number of Commercial Expeditions By Year"),
+                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
+                 dbc.Col([html.Label("Total Commercial Expeditions By Year"),
                           dcc.Graph(id="total_commerce_expeds_chart", className="rounded shadow")
                           ],
-                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start"),
-                 dbc.Col([html.Label("Total Number Of Days Taken By All Expeditions To Summit By Year"),
+                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
+                 dbc.Col([html.Label("Total Days Taken By All Expeditions To Summit By Year"),
                           dcc.Graph(id="total_summit_days_chart", className="rounded shadow")
                           ],
-                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start"),
+                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
                  ]),
         dbc.Row([html.Div(className='m-4')]),
     ])
@@ -82,9 +82,7 @@ def common_df_setup(date_range):
         & (commerce_noncommerce_by_year_df['PKNAME'].isin(
             commerce_peaks_list))].copy()
     selected_years_df['YEAR'] = selected_years_df['YEAR'].astype('str')
-    # melt_selected_years_df = selected_years_df.melt(
-    #     id_vars=['YEAR', 'PEAKID', 'PKNAME', 'HEIGHTM', 'EXPEDITIONS_COUNT'],
-    #     value_vars=['COMMERCIAL_ROUTES_MEAN', 'SUMMIT_DAYS_MEAN', 'NUM_CAMPS_MEAN'])
+
     final_colors_dict = {key: COLOR_CHOICE_DICT[value] for key, value in zip(list(selected_years_df['PKNAME'].unique()),
                                                                              ["mountain_cloud_blue",
                                                                               "parallel_theme_blue",
@@ -101,6 +99,7 @@ def create_average_figure(selected_years_df, final_colors_dict,y_col:str, y_col_
                  y=y_col,
                  color='PKNAME',
                  color_discrete_map=final_colors_dict,
+                 text_auto=True,
                  labels={
                      "PKNAME": "Peak Name",
                      y_col:y_col_title,
@@ -122,8 +121,14 @@ def common_layout_elements(fig):
                        "font": dict(color=COLOR_CHOICE_DICT["mountain_cloud_light_blue"])})
 
     fig.update_layout(xaxis=dict(title=''), yaxis=dict(title=''))
+    fig.update_layout(showlegend=True, legend=dict(
+        title_font_family='Courier New',
+        font=dict(
+            size=8
+        )
+    ))
 
-    fig.update_yaxes(showgrid=False)
+    fig.update_yaxes(showgrid=False, visible=False, showticklabels=False)
     fig.update_xaxes(showgrid=False)
     fig.update_traces(opacity=0.8)
     return fig
@@ -135,8 +140,8 @@ def common_layout_elements(fig):
           )
 def update_line_chart(date_range):
     selected_years_df, final_colors_dict = common_df_setup(date_range)
-    fig = create_average_figure(selected_years_df, final_colors_dict, y_col="COMMERCIAL_ROUTES_MEAN",
-                                y_col_title="Average number of commercial routes")
+    fig = create_average_figure(selected_years_df, final_colors_dict, y_col="COMMERCIAL_ROUTES_PERC",
+                                y_col_title="Percentage of Commercial Expeditions")
     fig = common_layout_elements(fig)
 
     return fig

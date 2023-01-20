@@ -364,11 +364,12 @@ class PeakExpedition():
         exped_count_df = df.groupby(group_cols
                                     ).agg(
             EXPEDITIONS_COUNT=('PEAKID', 'count'), OXYGEN_USED_COUNT=('O2USED', 'sum'),
-            COMMERCIAL_ROUTES_COUNT=('COMRTE', 'sum'), COMMERCIAL_ROUTES_MEAN=('COMRTE', 'mean'),
+            COMMERCIAL_ROUTES_COUNT=('COMRTE', 'sum'),
             MEMBER_DEATHS_COUNT=('MDEATHS', 'sum'), HIRED_DEATHS_COUNT=('HDEATHS', 'sum'),
             TOTMEMBERS_COUNT=('TOTMEMBERS', 'sum'), TOTHIRED_COUNT=('TOTHIRED', 'sum'),
             TOTMEMBERS_MEAN=('TOTMEMBERS', 'mean'), TOTHIRED_MEAN=('TOTHIRED', 'mean'),
             SMTMEMBERS_COUNT=('SMTMEMBERS', 'sum'), SMTHIRED_COUNT=('SMTHIRED', 'sum'),
+            SMTMEMBERS_MEAN=('SMTMEMBERS', 'mean'), SMTHIRED_MEAN=('SMTHIRED', 'mean'),
             SUMMIT_DAYS_COUNT=('SMTDAYS', 'sum'), TOTAL_DAYS_COUNT=('TOTDAYS', 'sum'),
             SUMMIT_DAYS_MEAN=('SMTDAYS', 'mean'), TOTAL_DAYS_MEAN=('TOTDAYS', 'mean'),
             NUM_CAMPS_COUNT=('NUM_CAMPS', 'sum'), NUM_CAMPS_MEAN=('NUM_CAMPS', 'mean'),
@@ -390,11 +391,14 @@ class PeakExpedition():
             exped_count_df['HIRED_DEATHS_COUNT'] / exped_count_df['TOTHIRED_COUNT'] * 100, 2)
         exped_count_df['OXYGEN_USED_PERC'] = np.round(
             exped_count_df['OXYGEN_USED_COUNT'] / exped_count_df['EXPEDITIONS_COUNT'] * 100, 2)
+        exped_count_df['COMMERCIAL_ROUTES_PERC'] = np.round(
+            exped_count_df['COMMERCIAL_ROUTES_COUNT'] / exped_count_df['EXPEDITIONS_COUNT'] * 100, 2)
 
-        exped_count_df['MEMBER_DEATHS_PERC'].fillna(0, inplace=True)
-        exped_count_df['HIRED_DEATHS_PERC'].fillna(0, inplace=True)
-        exped_count_df['OXYGEN_USED_PERC'].fillna(0, inplace=True)
+        for col_name in ['MEMBER_DEATHS_PERC', 'HIRED_DEATHS_PERC', 'OXYGEN_USED_PERC', 'COMMERCIAL_ROUTES_PERC']:
+            exped_count_df[col_name].fillna(0, inplace=True)
 
+        for col_name in ['NUM_CAMPS_MEAN', 'SUMMIT_DAYS_MEAN']:
+            exped_count_df[col_name] = np.round(exped_count_df[col_name], 2)
         # If saving in class we need two : one for season and one for year
         # Find distinct peaks with any commercial expedition
         peak_commerce_df = exped_count_df.groupby(['PEAKID', 'PKNAME']).agg(
