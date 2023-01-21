@@ -69,6 +69,6 @@ app.layout = dbc.Container(
 
 if __name__ == "__main__":
     #To run in Docker, set host
-    #app.run_server(host="0.0.0.0", debug=True)
+    app.run_server(host="0.0.0.0", debug=True)
     #To run on local host
-    app.run_server(host="127.0.0.1", debug=True)
+    #app.run_server(host="127.0.0.1", debug=True)
