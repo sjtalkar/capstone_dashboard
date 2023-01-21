@@ -9,7 +9,7 @@ import plotly.express as px
 from color_theme.color_dicts import COLOR_CHOICE_DICT
 import dash_bootstrap_components as dbc
 from dash import dcc, html, Output, callback, Input
-from lib.data_preparation.peaks_data import PeakExpedition
+from lib.data_preparation.peaks_data import PeakExpedition, TERM_REASON_DICT
 # Place this in the home page
 import plotly.graph_objects as go
 
@@ -45,45 +45,77 @@ layout = html.Div(
         dbc.Row([dbc.Col([html.Label("Average Base Camps By Year"),
                           dcc.Graph(id="base_camps_chart", className="rounded shadow"),
                           ],
-                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start pb-2"),
+                         width=4,
+                         className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start pb-2"),
                  dbc.Col([html.Label("Percentage Commercial Expeditions By Year"),
                           dcc.Graph(id="commerce_expeds_chart", className="rounded shadow")
                           ],
-                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
+                         width=4,
+                         className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
                  dbc.Col([html.Label("Average Days To Summit By Year"),
                           dcc.Graph(id="summit_days_chart", className="rounded shadow")
                           ],
-                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
+                         width=4,
+                         className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
                  ]),
         dbc.Row([html.Div(className='m-4')]),
         dbc.Row([dbc.Col([html.Label("Total Base Camps By Year"),
                           dcc.Graph(id="total_base_camps_chart", className="rounded shadow")
                           ],
-                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
+                         width=4,
+                         className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
                  dbc.Col([html.Label("Total Commercial Expeditions By Year"),
                           dcc.Graph(id="total_commerce_expeds_chart", className="rounded shadow")
                           ],
-                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
+                         width=4,
+                         className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
                  dbc.Col([html.Label("Total Days Taken By All Expeditions To Summit By Year"),
                           dcc.Graph(id="total_summit_days_chart", className="rounded shadow")
                           ],
-                         width=4, className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
+                         width=4,
+                         className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
                  ]),
         dbc.Row([html.Div(className='m-4')]),
+        dbc.Row([dbc.Col([html.Label("Termination Reasons"),
+                          dcc.Graph(id="termination_reason_chart", className="rounded shadow")
+                          ],
+                        width=12,
+                        className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2")
+                    ]),
+        dbc.Row([dbc.Col([html.P(["0: Unknown", html.Br(), "1: Success (main peak)",html.Br(),
+                                  "3: Success (claimed)", html.Br(),
+                                  "4: Bad weather (storms, high winds)", html.Br(),
+                                  "5: Bad conditions (deep snow, avalanching, falling ice, or rock)", html.Br(),
+                                  "6: Accident (death or serious injury)", html.Br(),
+                                  "7: Illness, AMS, exhaustion, or frostbite"
+                                  ], className="fst-italic fs-6 pt-1 pb-1")]),
+                 dbc.Col([html.P(["8: Lack (or loss) of supplies, support or equipment", html.Br(), "9: Lack of time", html.Br(),
+                                  "10: Route technically too difficult, lack of experience, strength, or motivation", html.Br(),
+                                  "11: Did not reach base", html.Br(),
+                                  "12: Did not attempt climb", html.Br(),
+                                  "13: Attempt rumored", html.Br(),
+                                  "14: Other"
+                                  ], className="fst-italic fs-6 pt-1 pb-1")])
+                 ]),
+        dbc.Row([html.Div(className='m-4')]),
+
     ])
 
-
-def common_df_setup(date_range):
-    selected_years_df = commerce_noncommerce_by_year_df[
-        (commerce_noncommerce_by_year_df[
-             'YEAR'] >= date_range[0])
-        & (commerce_noncommerce_by_year_df[
-               'YEAR'] <= date_range[1])
-        & (commerce_noncommerce_by_year_df['PKNAME'].isin(
-            commerce_peaks_list))].copy()
+def common_df_setup(df, date_range):
+    """
+    Role of this function:
+    For all the bar graphs, the filter includes a date range and a set of peaks that are commercial peaks
+    Filter the dataframe by the filter and create a dictionary to uniformly color the peaks with the same set of colors
+    :param df: dataframe with data for the chart
+    :param date_range: Date range slider tuple 
+    :return: filtered dataframe and a color dictionary for the commercial peaks  
+    """
+    selected_years_df = df[(df['YEAR'] >= date_range[0])
+                           & (df['YEAR'] <= date_range[1])
+                           & (df['PKNAME'].isin(commerce_peaks_list))].copy()
     selected_years_df['YEAR'] = selected_years_df['YEAR'].astype('str')
 
-    final_colors_dict = {key: COLOR_CHOICE_DICT[value] for key, value in zip(list(selected_years_df['PKNAME'].unique()),
+    final_colors_dict = {key: COLOR_CHOICE_DICT[value] for key, value in zip(commerce_peaks_list,
                                                                              ["mountain_cloud_blue",
                                                                               "parallel_theme_blue",
                                                                               "mountain_side_blue_green",
@@ -93,7 +125,15 @@ def common_df_setup(date_range):
     return selected_years_df, final_colors_dict
 
 
-def create_average_figure(selected_years_df, final_colors_dict,y_col:str, y_col_title:str):
+def create_bar_chart_figure(selected_years_df, final_colors_dict, y_col: str, y_col_title: str):
+    """
+    This function 
+    :param selected_years_df: filtered dataframe
+    :param final_colors_dict: dictionary of colors for commercial peaks
+    :param y_col: column value to be plotted in bar graph
+    :param y_col_title: 
+    :return: 
+    """
     fig = px.bar(selected_years_df,
                  x='YEAR',
                  y=y_col,
@@ -102,20 +142,24 @@ def create_average_figure(selected_years_df, final_colors_dict,y_col:str, y_col_
                  text_auto=True,
                  labels={
                      "PKNAME": "Peak Name",
-                     y_col:y_col_title,
+                     y_col: y_col_title,
                      "YEAR": "Year",
                      "HEIGHTM": "Height in meters",
                      "EXPEDITIONS_COUNT": "Number of Expeditions"
                  },
-                 hover_data=["YEAR", "PKNAME", "HEIGHTM", "EXPEDITIONS_COUNT", y_col ]
+                 hover_data=["YEAR", "PKNAME", "HEIGHTM", "EXPEDITIONS_COUNT", y_col]
 
                  )
     fig = common_layout_elements(fig)
     return fig
 
 
-
 def common_layout_elements(fig):
+    """
+    Set background and legend elements for chart
+    :param fig: Plotly Dash figure
+    :return:
+    """
     fig.update_layout({'plot_bgcolor': "black",
                        "paper_bgcolor": "black",
                        "font": dict(color=COLOR_CHOICE_DICT["mountain_cloud_light_blue"])})
@@ -134,13 +178,12 @@ def common_layout_elements(fig):
     return fig
 
 
-
 @callback(Output("commerce_expeds_chart", "figure"),
           [Input('year_slider', 'value')],
           )
-def update_line_chart(date_range):
-    selected_years_df, final_colors_dict = common_df_setup(date_range)
-    fig = create_average_figure(selected_years_df, final_colors_dict, y_col="COMMERCIAL_ROUTES_PERC",
+def update_chart(date_range):
+    selected_years_df, final_colors_dict = common_df_setup(commerce_noncommerce_by_year_df, date_range)
+    fig = create_bar_chart_figure(selected_years_df, final_colors_dict, y_col="COMMERCIAL_ROUTES_PERC",
                                 y_col_title="Percentage of Commercial Expeditions")
     fig = common_layout_elements(fig)
 
@@ -150,9 +193,9 @@ def update_line_chart(date_range):
 @callback(Output("summit_days_chart", "figure"),
           [Input('year_slider', 'value')],
           )
-def update_line_chart(date_range):
-    selected_years_df, final_colors_dict = common_df_setup(date_range)
-    fig = create_average_figure(selected_years_df, final_colors_dict, y_col="SUMMIT_DAYS_MEAN",
+def update_chart(date_range):
+    selected_years_df, final_colors_dict = common_df_setup(commerce_noncommerce_by_year_df, date_range)
+    fig = create_bar_chart_figure(selected_years_df, final_colors_dict, y_col="SUMMIT_DAYS_MEAN",
                                 y_col_title="Average number of days to Summit")
     fig = common_layout_elements(fig)
     return fig
@@ -161,21 +204,20 @@ def update_line_chart(date_range):
 @callback(Output("base_camps_chart", "figure"),
           [Input('year_slider', 'value')],
           )
-def update_line_chart(date_range):
-    selected_years_df, final_colors_dict = common_df_setup(date_range)
-    fig = create_average_figure(selected_years_df, final_colors_dict, y_col="NUM_CAMPS_MEAN",
+def update_chart(date_range):
+    selected_years_df, final_colors_dict = common_df_setup(commerce_noncommerce_by_year_df, date_range)
+    fig = create_bar_chart_figure(selected_years_df, final_colors_dict, y_col="NUM_CAMPS_MEAN",
                                 y_col_title="Average Number of Camps")
     fig = common_layout_elements(fig)
     return fig
 
 
-
 @callback(Output("total_summit_days_chart", "figure"),
           [Input('year_slider', 'value')],
           )
-def update_line_chart(date_range):
-    selected_years_df, final_colors_dict= common_df_setup(date_range)
-    fig = create_average_figure(selected_years_df, final_colors_dict, y_col="SUMMIT_DAYS_COUNT",
+def update_chart(date_range):
+    selected_years_df, final_colors_dict = common_df_setup(commerce_noncommerce_by_year_df, date_range)
+    fig = create_bar_chart_figure(selected_years_df, final_colors_dict, y_col="SUMMIT_DAYS_COUNT",
                                 y_col_title="Total number of days to Summit")
     fig = common_layout_elements(fig)
     return fig
@@ -184,9 +226,9 @@ def update_line_chart(date_range):
 @callback(Output("total_commerce_expeds_chart", "figure"),
           [Input('year_slider', 'value')],
           )
-def update_line_chart(date_range):
-    selected_years_df, final_colors_dict= common_df_setup(date_range)
-    fig = create_average_figure(selected_years_df, final_colors_dict, y_col="COMMERCIAL_ROUTES_COUNT",
+def update_chart(date_range):
+    selected_years_df, final_colors_dict = common_df_setup(commerce_noncommerce_by_year_df, date_range)
+    fig = create_bar_chart_figure(selected_years_df, final_colors_dict, y_col="COMMERCIAL_ROUTES_COUNT",
                                 y_col_title="Total number of commercial routes")
     fig = common_layout_elements(fig)
 
@@ -196,12 +238,63 @@ def update_line_chart(date_range):
 @callback(Output("total_base_camps_chart", "figure"),
           [Input('year_slider', 'value')],
           )
-def update_line_chart(date_range):
-    selected_years_df, final_colors_dict = common_df_setup(date_range)
-    fig = create_average_figure(selected_years_df, final_colors_dict, y_col="NUM_CAMPS_COUNT",
+def update_chart(date_range):
+    selected_years_df, final_colors_dict = common_df_setup(commerce_noncommerce_by_year_df, date_range)
+    fig = create_bar_chart_figure(selected_years_df, final_colors_dict, y_col="NUM_CAMPS_COUNT",
                                 y_col_title="Total Number of Camps")
     fig = common_layout_elements(fig)
     return fig
 
 
+@callback(Output("termination_reason_chart", "figure"),
+          [Input('year_slider', 'value')],
+          )
+def update_chart(date_range):
+    selected_years_df, final_colors_dict = common_df_setup(peak_expedition.exped_commercial_type_df, date_range)
+    reason_count_df = selected_years_df.groupby(
+        ['PEAKID', 'PKNAME', 'HEIGHTM', 'COMRTE', 'TERMREASON']).agg(
+        TERMINATION_REASON_COUNT=('TERMREASON', 'count')
+    ).reset_index()
+    reason_count_df['TERMREASON_STRING'] = reason_count_df['TERMREASON'].map(TERM_REASON_DICT)
+    reason_count_df['TERMREASON'] = reason_count_df['TERMREASON'].astype('str')
 
+    reason_count_df['COMRTE_STRING'] = reason_count_df['COMRTE'].map({0:"Non-Commercial", 1:"Commercial"})
+
+    fig = px.bar(reason_count_df,
+                 x='TERMREASON',
+                 y='TERMINATION_REASON_COUNT',
+                 barmode='group',
+                 labels = {
+                                "PKNAME": "Peak Name",
+                                 "YEAR": "Year",
+                                 "HEIGHTM": "Height in meters",
+                                 "COMRTE_STRING": "Route Type",
+                                 "TERMREASON_STRING" : "Termination reason for expedition",
+                                 'TERMINATION_REASON_COUNT': 'Count of expeditions',
+                                 "TERMREASON" : ''
+                            },
+                 hover_data = [ "PKNAME", "HEIGHTM", "TERMREASON_STRING"],
+                 facet_col='COMRTE_STRING',
+                 facet_col_wrap=4, facet_row_spacing=0.15, facet_col_spacing=0.1,
+                 color='PKNAME',
+                 color_discrete_map=final_colors_dict,
+                 category_orders = dict(TERMREASON=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12',
+                                                    '13', '14']),
+                 )
+
+    fig.update_layout({'plot_bgcolor': "black",
+                       "paper_bgcolor": "black",
+                       "font": dict(color=COLOR_CHOICE_DICT["mountain_cloud_light_blue"])})
+
+    fig.update_layout(xaxis=dict(title=''), yaxis=dict(title=''))
+    fig.update_layout(showlegend=True, legend=dict(
+        title_font_family='Courier New',
+        font=dict(
+            size=8
+        )
+    ))
+
+    fig.update_yaxes(showgrid=False, visible=False, showticklabels=False)
+    fig.update_xaxes(showgrid=False)
+    fig.update_traces(opacity=0.8)
+    return fig
