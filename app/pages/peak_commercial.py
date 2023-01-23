@@ -76,6 +76,27 @@ layout = html.Div(
                          className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
                  ]),
         dbc.Row([html.Div(className='m-4')]),
+
+        dbc.Row([dbc.Col([html.Label("Oxygen usage (as percent of expeditions)"),
+                          dcc.Graph(id="oxygen_usage_perc_chart", className="rounded shadow")
+                          ],
+                         width=4,
+                         className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
+                 dbc.Col([html.Label("Member deaths (as percent of total members)"),
+                          dcc.Graph(id="member_deaths_perc_chart", className="rounded shadow")
+                          ],
+                         width=4,
+                         className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
+                 dbc.Col([html.Label("Hired deaths (as percent of total hired)"),
+                          dcc.Graph(id="hired_deaths_perc_chart", className="rounded shadow")
+                          ],
+                         width=4,
+                         className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
+                 ]),
+        dbc.Row([html.Div(className='m-4')]),
+
+
+
         dbc.Row([dbc.Col([html.Label("Termination Reasons"),
                           dcc.Graph(id="termination_reason_chart", className="rounded shadow")
                           ],
@@ -246,6 +267,42 @@ def update_chart(date_range):
     return fig
 
 
+@callback(Output("oxygen_usage_perc_chart", "figure"),
+          [Input('year_slider', 'value')],
+          )
+def update_chart(date_range):
+    selected_years_df, final_colors_dict = common_df_setup(commerce_noncommerce_by_year_df, date_range)
+    fig = create_bar_chart_figure(selected_years_df, final_colors_dict, y_col="OXYGEN_USED_PERC",
+                                  y_col_title="Percentage of expeditions using oxygen")
+    fig = common_layout_elements(fig)
+
+    return fig
+
+
+@callback(Output("member_deaths_perc_chart", "figure"),
+          [Input('year_slider', 'value')],
+          )
+def update_chart(date_range):
+    selected_years_df, final_colors_dict = common_df_setup(commerce_noncommerce_by_year_df, date_range)
+    fig = create_bar_chart_figure(selected_years_df, final_colors_dict, y_col="MEMBER_DEATHS_PERC",
+                                  y_col_title="Percentage of member deaths")
+    fig = common_layout_elements(fig)
+
+    return fig
+
+
+@callback(Output("hired_deaths_perc_chart", "figure"),
+          [Input('year_slider', 'value')],
+          )
+def update_chart(date_range):
+    selected_years_df, final_colors_dict = common_df_setup(commerce_noncommerce_by_year_df, date_range)
+    fig = create_bar_chart_figure(selected_years_df, final_colors_dict, y_col="HIRED_DEATHS_PERC",
+                                  y_col_title="Percentage of hired deaths")
+    fig = common_layout_elements(fig)
+
+    return fig
+
+
 @callback(Output("termination_reason_chart", "figure"),
           [Input('year_slider', 'value')],
           )
@@ -294,7 +351,7 @@ def update_chart(date_range):
         )
     ))
 
-    fig.update_yaxes(showgrid=False, visible=False, showticklabels=False)
+    fig.update_yaxes(showgrid=False)
     fig.update_xaxes(showgrid=False)
     fig.update_traces(opacity=0.8)
     return fig
