@@ -193,7 +193,9 @@ def common_layout_elements(fig):
         )
     ))
 
-    fig.update_yaxes(showgrid=False, visible=False, showticklabels=False)
+    fig.update_yaxes(showgrid=False,
+                     #visible=False, showticklabels=False
+                     )
     fig.update_xaxes(showgrid=False)
     fig.update_traces(opacity=0.8)
     return fig
