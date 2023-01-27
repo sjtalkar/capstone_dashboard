@@ -157,7 +157,7 @@ def common_layout_elements(fig):
 
     fig.update_layout(xaxis=dict(title=''), yaxis=dict(title=''))
     fig.update_layout(showlegend=True, legend=dict(
-        title_font_family='Courier New',
+        title_font_family='Arial',
         font=dict(
             size=8
         )

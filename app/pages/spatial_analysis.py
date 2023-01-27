@@ -104,7 +104,7 @@ layout = html.Div(
 
         ]),
         dbc.Row([dbc.Col([html.P(
-            ["Column Heights are Expedition Heights", html.Br(), "Color is based on Height of Mountain"],
+            ["Column Heights are Expedition Counts", html.Br(), "Color is based on Height of Mountain"],
             className="border rounded-pill"),],
             )]),
         dbc.Row([dbc.Col([html.Div([

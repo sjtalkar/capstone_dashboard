@@ -1,13 +1,16 @@
 import sys
+
 sys.path.append("..")
 
 import dash
 import dash_bootstrap_components as dbc
-from dash import Dash, html, dcc
+from dash import html, dcc, Output, Input, callback
 from color_theme.color_dicts import COLOR_CHOICE_DICT
 
 app = dash.Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.MORPH])
-#Either morph or slate template
+
+
+# Either morph or slate template
 
 def make_empty_row(example_class_name):
     return dbc.Row(
@@ -17,8 +20,9 @@ def make_empty_row(example_class_name):
         className=example_class_name + " my-2 border",
     )
 
+
 asset_url = dash.get_asset_url('pexels-ashok-sharma-11595461-cropped.jpg')
-#print(f"Location of icon  image {asset_url}")
+# print(f"Location of icon  image {asset_url}")
 
 navbar = dbc.NavbarSimple(
 
@@ -29,9 +33,10 @@ navbar = dbc.NavbarSimple(
                 [
                     dbc.Row([html.Img(src=asset_url, height="80px")],
                             ),
-                    dbc.Row([html.H5("Himalayan Dataset Spring 2022", style={'color': '#c26a2d'})],
+                    dbc.Row([html.H5(children=["Himalayan Dataset Spring 2022"], id="page_title",
+                                     style={'color': '#c26a2d'})],
                             class_name='fst-italic'),
-                  ],
+                ],
                 align="left",
                 className="rounded shadow"
             ),
@@ -48,27 +53,54 @@ navbar = dbc.NavbarSimple(
             ],
             nav=True,
             label="More Pages",
-        )],width=2)
-       ]),
+        )], width=2)
+    ]),
 
-    #brand="Himalayan Dataset Spring 2022",
+    # brand="Himalayan Dataset Spring 2022",
     color=COLOR_CHOICE_DICT["dasboard_title_green"],
     dark=True,
     className="mb-2 shadow rounded",
 )
 
-
-#This layout must be in the main app.py file. Each page has either a function or a variable called layout as well
+# This layout must be in the main app.py file. Each page has either a function or a variable called layout as well
 app.layout = dbc.Container(
-    [make_empty_row("gx-2")
-      ,navbar
-     ,dash.page_container
-     ,make_empty_row("gx-2")],
-     fluid=True,
+
+    [
+        # represents the browser address bar and doesn't render anything
+        dcc.Location(id="url", refresh=False),
+        make_empty_row("gx-2")
+        , navbar
+        , dash.page_container
+        , make_empty_row("gx-2")
+    ],
+    fluid=True,
 )
 
+
+@callback(Output('page_title', 'children'),
+           [Input('url', 'pathname')])
+def display_page(pathname):
+    title_string =  "Himalayan Dataset Spring 2022"
+    sub_title_string = "  (" + title_string + ")"
+    if pathname == "/commerce-peak-distributions":
+        page_name =  "Distributions for Commercial versus Non-commercial Peaks" + sub_title_string
+    elif pathname == "/parallel-coords" or pathname == "":
+        page_name =  " Members Analysis" + sub_title_string
+    elif pathname == "/peak-commercial":
+        page_name = " Commercial Peak Analysis" + sub_title_string
+    elif pathname == "/topic-visualization":
+        page_name = "Unsupervised Learning Topic Modeling" + sub_title_string
+    elif pathname == "/peak-expeditions":
+        page_name = "Peak Expedition Analysis" + sub_title_string
+    elif pathname == "/spatial-analysis":
+        page_name = "Geo-spatial Peak Analysis" + sub_title_string
+    else:
+        page_name = title_string
+
+    return  page_name
+
 if __name__ == "__main__":
-    #To run in Docker, set host
-    app.run_server(host="0.0.0.0", debug=True)
-    #To run on local host
-    #app.run_server(host="127.0.0.1", debug=True)
+    # To run in Docker, set host
+    # app.run_server(host="0.0.0.0", debug=True)
+    # To run on local host
+    app.run_server(host="127.0.0.1", debug=True)

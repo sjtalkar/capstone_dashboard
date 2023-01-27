@@ -1,15 +1,18 @@
 COLOR_CHOICE_DICT = {
-    "ebony_clay": "#1f2933",
+    "jacket_pink":"#f96271",
     "spruce_brown": "#9c6c2a",
     "spruce_orange": "#d6892c",
-    "spruce_green": "#444606",
     "spruce_green_light": "#79740d",
-    "parallel_theme_magenta": "#4f2937",
-    "parallel_theme_purple": "#3e1a33",
+    "soft_pink_beige": "#dbb4aa",
+    "soft_beige":"#ffede3",
     "parallel_theme_pink": "#f04e9e",
-    "parallel_theme_blue": "#547cac",
     "parallel_theme_green": "#5e6862",
     "parallel_theme_soft_green": "#7fb519",
+    "color_ochre_1": "#c26a2d",
+    "color_yellow_1": "#fcba03",
+    "color_yellow_2": "#2104d5",
+    "parallel_theme_magenta": "#4f2937",
+    "parallel_theme_purple": "#3e1a33",
     "parallel_theme_brown": "#2e241a",
     "parallel_theme_pantone_1685": "#852a21",
     "parallel_theme_pantone_716": "#ec7e06",
@@ -25,7 +28,10 @@ COLOR_CHOICE_DICT = {
     "mountain_cloud_light_blue": "#ddeef5",
     "mountain_cloud_blue": "#b6d5e7",
     "mountain_line_dark_grey" : "#252526",
-    "dasboard_title_green":"#0a3f3f"
+    "dasboard_title_green":"#0a3f3f",
+    "ebony_clay": "#1f2933",
+    "parallel_theme_blue": "#547cac",
+    "spruce_green": "#444606",
 }
 
 TIME_SERIES_COLOR_DICT = {

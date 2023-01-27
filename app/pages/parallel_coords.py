@@ -141,6 +141,7 @@ def update_parallel_coord_chart(num_countries, show_normalized, chosen_cols, cho
              tickvals=df['country_id'], ticktext=df['CITIZEN'],
              label='Country', values=df['country_id'])])
 
+
     for col_name in choose_cols:
         if col_name != 'CITIZEN' and col_name != 'country_id':
             dim_list.append(
@@ -156,7 +157,6 @@ def update_parallel_coord_chart(num_countries, show_normalized, chosen_cols, cho
                           )
 
     )
-
     fig.update_layout({'plot_bgcolor': "black",
                        "paper_bgcolor": "black",
                        "font": dict(color=COLOR_CHOICE_DICT["mountain_cloud_light_blue"])})

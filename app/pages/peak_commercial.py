@@ -104,6 +104,7 @@ layout = html.Div(
                         className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2")
                     ]),
         dbc.Row([dbc.Col([html.P(["0: Unknown", html.Br(), "1: Success (main peak)",html.Br(),
+                                  "2: Success(subpeak, foresummit)", html.Br(),
                                   "3: Success (claimed)", html.Br(),
                                   "4: Bad weather (storms, high winds)", html.Br(),
                                   "5: Bad conditions (deep snow, avalanching, falling ice, or rock)", html.Br(),
@@ -187,7 +188,7 @@ def common_layout_elements(fig):
 
     fig.update_layout(xaxis=dict(title=''), yaxis=dict(title=''))
     fig.update_layout(showlegend=True, legend=dict(
-        title_font_family='Courier New',
+        title_font_family='Arial',
         font=dict(
             size=8
         )
