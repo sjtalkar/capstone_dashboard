@@ -84,7 +84,7 @@ def display_page(pathname):
     sub_title_string = "  (" + title_string + ")"
     if pathname == "/commerce-peak-distributions":
         page_name =  "Distributions for Commercial versus Non-commercial Peaks" + sub_title_string
-    elif pathname == "/parallel-coords" or pathname == "":
+    elif pathname == "/parallel-coords" or pathname == "" or pathname == "/":
         page_name =  " Members Analysis" + sub_title_string
     elif pathname == "/peak-commercial":
         page_name = " Commercial Peak Analysis" + sub_title_string
