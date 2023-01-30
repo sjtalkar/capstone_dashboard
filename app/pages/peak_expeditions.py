@@ -139,6 +139,16 @@ layout = html.Div(
                          ], className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start"), ),
         dbc.Row([html.Div(className='m-4')]),
         dbc.Row([
+            dbc.Col([html.Label("Total members on peaks by year"),
+                     dcc.Graph(id="peak_member_count_chart", className="rounded shadow")], width=6,
+                    className="rounded shadow  rounded-top  rounded-end rounded-bottom rounded-start pb-1"),
+            dbc.Col([html.Label("Total hired on peaks by year"),
+                     dcc.Graph(id="peak_hired_count_chart", className="rounded shadow")], width=6,
+                    className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start pb-1"),
+
+        ]),
+        dbc.Row([html.Div(className='m-4')]),
+        dbc.Row([
             dbc.Col([html.Label("Member deaths (out of total members) on peaks by year"),
                      dcc.Graph(id="peak_member_deaths_chart", className="rounded shadow")], width=6,
                     className="rounded shadow  rounded-top  rounded-end rounded-bottom rounded-start pb-1"),
@@ -162,6 +172,57 @@ layout = html.Div(
     ])
 
 
+def common_line_elements(y_col:str, selected_peaks_df, final_colors_dict, log_scale, highlight_countries_list, hover_data):
+    """
+    This function encapsulates the common chart elements of the line graphs on the peak expeditions page
+    :param y_col: Column to be displayed on Y axis
+    :param selected_peaks_df: datafrae with columns to chart
+    :param final_colors_dict: Dictionary of colors to use for peaks
+    :param log_scale: User selection on whether to display log scale
+    :param highlight_countries_list: Countries to hilight dictionary
+    :param hover_data:
+
+    :return: plotly dash chart
+    """
+    fig = px.line(selected_peaks_df, x='YEAR_SEASON_DATE', y=y_col, color='PEAKID',
+                  color_discrete_map=final_colors_dict,
+                  labels={
+                      "OXYGEN_USED_PERC":"Percentage of expeditions with oxygen usage",
+                      "EXPEDITIONS_COUNT": "Expeditions",
+                      "YEAR_SEASON_DATE": "Year Season Date",
+                      "MEMBER_DEATHS_PERC": "Member Deaths Percentage",
+                      "TOTMEMBERS_COUNT": "Total number of members",
+                      "MEMBER_DEATHS_COUNT": "Total number of member deaths",
+                      "HIRED_DEATHS_PERC": "Hired Deaths Percentage",
+                      "TOTHIRED_COUNT": "Number of Hired",
+                      "HIRED_DEATHS_COUNT": "Total number of hired deaths",
+                      "PEAKID": "Peak Id",
+                      "PKNAME":"Peak Name"
+                  },
+                  hover_data=hover_data,
+                  markers=True
+                  )
+
+    # set thickness
+    for num, peakid in enumerate(fig["data"]):
+        if peakid["legendgroup"] in highlight_countries_list:
+            fig["data"][num]["line"]["width"] = 2
+
+    fig.update_layout({'plot_bgcolor': "black",
+                       "paper_bgcolor": "black",
+                       "font": dict(color=COLOR_CHOICE_DICT["mountain_cloud_light_blue"])})
+    # Suppress the y-axis title
+    fig.update_layout(xaxis_title=None)
+
+
+    fig.update_yaxes(showgrid=False)
+    fig.update_xaxes(showgrid=False)
+    if log_scale:
+        fig.update_yaxes(type="log", range=[0, 2])  # log range: 10^0=1, 10^5=100000
+    fig.update_traces(opacity=0.6)
+    return fig
+
+
 @callback(Output("peak_expeds_chart", "figure"),
           [
               Input("num_expeditions_dropdown", "value"),
@@ -173,30 +234,47 @@ def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
     selected_peaks_df, final_colors_dict, highlight_countries_list = get_selected_peaks(min_num_expeditions, date_range,
                                                                                         peakid_list)
 
-    fig = px.line(selected_peaks_df, x='YEAR_SEASON_DATE', y='EXPEDITIONS_COUNT', color='PEAKID',
-                  color_discrete_map=final_colors_dict,
-                  labels={
-                      "EXPEDITIONS_COUNT": "Expeditions",
-                      "YEAR_SEASON_DATE": "",
-                  },
-                  markers=True
-                  )
+    hover_data = ["EXPEDITIONS_COUNT", "YEAR_SEASON_DATE", "PEAKID", "PKNAME"]
+    y_col = 'EXPEDITIONS_COUNT'
+    fig = common_line_elements(y_col, selected_peaks_df, final_colors_dict, log_scale, highlight_countries_list, hover_data)
 
-    # print(fig['data'])
-    # set thickness
-    for num, peakid in enumerate(fig["data"]):
-        if peakid["legendgroup"] in highlight_countries_list:
-            fig["data"][num]["line"]["width"] = 2
+    return fig
 
-    fig.update_layout({'plot_bgcolor': "black",
-                       "paper_bgcolor": "black",
-                       "font": dict(color=COLOR_CHOICE_DICT["mountain_cloud_light_blue"])})
 
-    fig.update_yaxes(showgrid=False)
-    fig.update_xaxes(showgrid=False)
-    if log_scale:
-        fig.update_yaxes(type="log", range=[0, 2])  # log range: 10^0=1, 10^5=100000
-    fig.update_traces(opacity=0.6)
+@callback(Output("peak_member_count_chart", "figure"),
+          [
+              Input("num_expeditions_dropdown", "value"),
+              Input("peak_selection_dropdown", "value"),
+              Input('year_slider', 'value'),
+              Input('toggle_log_linear', 'value')
+          ])
+def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
+    selected_peaks_df, final_colors_dict, highlight_countries_list = get_selected_peaks(min_num_expeditions, date_range,
+                                                                                        peakid_list)
+
+    hover_data = ['TOTMEMBERS_COUNT', 'YEAR_SEASON_DATE', "PEAKID", "PKNAME"]
+    y_col = 'TOTMEMBERS_COUNT'
+    fig = common_line_elements(y_col, selected_peaks_df, final_colors_dict, log_scale, highlight_countries_list,
+                               hover_data)
+
+    return fig
+
+
+@callback(Output("peak_hired_count_chart", "figure"),
+          [
+              Input("num_expeditions_dropdown", "value"),
+              Input("peak_selection_dropdown", "value"),
+              Input('year_slider', 'value'),
+              Input('toggle_log_linear', 'value')
+          ])
+def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
+    selected_peaks_df, final_colors_dict, highlight_countries_list = get_selected_peaks(min_num_expeditions, date_range,
+                                                                                        peakid_list)
+
+    hover_data = ['TOTHIRED_COUNT', 'YEAR_SEASON_DATE', "PEAKID", "PKNAME"]
+    y_col = 'TOTHIRED_COUNT'
+    fig = common_line_elements(y_col, selected_peaks_df, final_colors_dict, log_scale, highlight_countries_list,
+                               hover_data)
 
     return fig
 
@@ -212,29 +290,9 @@ def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
     selected_peaks_df, final_colors_dict, highlight_countries_list = get_selected_peaks(min_num_expeditions, date_range,
                                                                                         peakid_list)
 
-    fig = px.line(selected_peaks_df, x='YEAR_SEASON_DATE', y='MEMBER_DEATHS_PERC', color='PEAKID',
-                  color_discrete_map=final_colors_dict,
-                  labels={
-                      "MEMBER_DEATHS_PERC": "Member Deaths Percentage",
-                      "YEAR_SEASON_DATE": "",
-                  },
-                  markers=True
-                  )
-
-    # set thickness
-    for num, peakid in enumerate(fig["data"]):
-        if peakid["legendgroup"] in highlight_countries_list:
-            fig["data"][num]["line"]["width"] = 1
-
-    fig.update_layout({'plot_bgcolor': "black",
-                       "paper_bgcolor": "black",
-                       "font": dict(color=COLOR_CHOICE_DICT["mountain_cloud_light_blue"])})
-
-    fig.update_yaxes(showgrid=False)
-    fig.update_xaxes(showgrid=False)
-    if log_scale:
-        fig.update_yaxes(type="log", range=[0, 2])  # log range: 10^0=1, 10^5=100000
-    fig.update_traces(opacity=0.6)
+    hover_data = ['TOTMEMBERS_COUNT', 'MEMBER_DEATHS_COUNT', "MEMBER_DEATHS_PERC", 'YEAR_SEASON_DATE', "PEAKID", "PKNAME"]
+    y_col = 'MEMBER_DEATHS_PERC'
+    fig = common_line_elements(y_col, selected_peaks_df, final_colors_dict, log_scale, highlight_countries_list, hover_data)
 
     return fig
 
@@ -250,29 +308,9 @@ def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
     selected_peaks_df, final_colors_dict, highlight_countries_list = get_selected_peaks(min_num_expeditions, date_range,
                                                                                         peakid_list)
 
-    fig = px.line(selected_peaks_df, x='YEAR_SEASON_DATE', y='HIRED_DEATHS_PERC', color='PEAKID',
-                  color_discrete_map=final_colors_dict,
-                  labels={
-                      "HIRED_DEATHS_PERC": "Hired Deaths Percentage",
-                      "YEAR_SEASON_DATE": "",
-                  },
-                  markers=True
-                  )
-
-    # set thickness
-    for num, peakid in enumerate(fig["data"]):
-        if peakid["legendgroup"] in highlight_countries_list:
-            fig["data"][num]["line"]["width"] = 1
-
-    fig.update_layout({'plot_bgcolor': "black",
-                       "paper_bgcolor": "black",
-                       "font": dict(color=COLOR_CHOICE_DICT["mountain_cloud_light_blue"])})
-
-    fig.update_yaxes(showgrid=False)
-    fig.update_xaxes(showgrid=False)
-    if log_scale:
-        fig.update_yaxes(type="log", range=[0, 2])  # log range: 10^0=1, 10^5=100000
-    fig.update_traces(opacity=0.6)
+    hover_data = ['TOTHIRED_COUNT', 'HIRED_DEATHS_COUNT', "HIRED_DEATHS_PERC", 'YEAR_SEASON_DATE', "PEAKID", "PKNAME"]
+    y_col = 'HIRED_DEATHS_PERC'
+    fig = common_line_elements(y_col, selected_peaks_df, final_colors_dict, log_scale, highlight_countries_list, hover_data)
 
     return fig
 
@@ -292,31 +330,9 @@ def update_oxygen_line_chart(min_num_expeditions, peakid_list, date_range, log_s
     random.shuffle(final_colors_dict_list)
     final_colors_dict = dict(final_colors_dict_list)
 
-    # print(
-    #     f"Selected peaks {selected_peaks_df[(selected_peaks_df['PEAKID'] == 'EVER')][['PEAKID', 'EXPEDITIONS_COUNT', 'OXYGEN_USED_PERC']]}")
-
-    fig = px.line(selected_peaks_df, x='YEAR_SEASON_DATE', y='OXYGEN_USED_PERC', color='PEAKID',
-                  color_discrete_map=final_colors_dict,
-                  labels={
-                      "OXYGEN_USED_PERC": "Oxygen Usage Percentage",
-                      "YEAR_SEASON_DATE": "",
-                  },
-                  markers=True
-                  )
-
-    # set thickness
-    for num, peakid in enumerate(fig["data"]):
-        if peakid["legendgroup"] in highlight_countries_list:
-            fig["data"][num]["line"]["width"] = 1
-
-    fig.update_layout({'plot_bgcolor': "black",
-                       "paper_bgcolor": "black",
-                       "font": dict(color=COLOR_CHOICE_DICT["mountain_cloud_light_blue"])})
-
-    fig.update_yaxes(showgrid=False)
-    fig.update_xaxes(showgrid=False)
-    if log_scale:
-        fig.update_yaxes(type="log", range=[0, 2])  # log range: 10^0=1, 10^5=100000
-    fig.update_traces(opacity=0.6)
+    hover_data = ["OXYGEN_USED_PERC", "YEAR_SEASON_DATE", "PEAKID", "PKNAME"]
+    y_col = "OXYGEN_USED_PERC"
+    fig = common_line_elements(y_col, selected_peaks_df, final_colors_dict, log_scale, highlight_countries_list,
+                               hover_data)
 
     return fig
