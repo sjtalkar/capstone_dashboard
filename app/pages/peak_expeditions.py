@@ -197,7 +197,8 @@ def common_line_elements(y_col:str, selected_peaks_df, final_colors_dict, log_sc
                       "TOTHIRED_COUNT": "Number of Hired",
                       "HIRED_DEATHS_COUNT": "Total number of hired deaths",
                       "PEAKID": "Peak Id",
-                      "PKNAME":"Peak Name"
+                      "PKNAME":"Peak Name",
+                      "HEIGHTM": "Height in meters"
                   },
                   hover_data=hover_data,
                   markers=True
@@ -234,7 +235,7 @@ def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
     selected_peaks_df, final_colors_dict, highlight_countries_list = get_selected_peaks(min_num_expeditions, date_range,
                                                                                         peakid_list)
 
-    hover_data = ["EXPEDITIONS_COUNT", "YEAR_SEASON_DATE", "PEAKID", "PKNAME"]
+    hover_data = ["EXPEDITIONS_COUNT", "YEAR_SEASON_DATE", "PEAKID", "PKNAME", "HEIGHTM"]
     y_col = 'EXPEDITIONS_COUNT'
     fig = common_line_elements(y_col, selected_peaks_df, final_colors_dict, log_scale, highlight_countries_list, hover_data)
 
@@ -271,7 +272,7 @@ def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
     selected_peaks_df, final_colors_dict, highlight_countries_list = get_selected_peaks(min_num_expeditions, date_range,
                                                                                         peakid_list)
 
-    hover_data = ['TOTHIRED_COUNT', 'YEAR_SEASON_DATE', "PEAKID", "PKNAME"]
+    hover_data = ['TOTHIRED_COUNT', 'YEAR_SEASON_DATE', "PEAKID", "PKNAME", "HEIGHTM"]
     y_col = 'TOTHIRED_COUNT'
     fig = common_line_elements(y_col, selected_peaks_df, final_colors_dict, log_scale, highlight_countries_list,
                                hover_data)
@@ -290,7 +291,8 @@ def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
     selected_peaks_df, final_colors_dict, highlight_countries_list = get_selected_peaks(min_num_expeditions, date_range,
                                                                                         peakid_list)
 
-    hover_data = ['TOTMEMBERS_COUNT', 'MEMBER_DEATHS_COUNT', "MEMBER_DEATHS_PERC", 'YEAR_SEASON_DATE', "PEAKID", "PKNAME"]
+    hover_data = ['TOTMEMBERS_COUNT', 'MEMBER_DEATHS_COUNT', "MEMBER_DEATHS_PERC", 'YEAR_SEASON_DATE', "PEAKID", "PKNAME",
+                  "HEIGHTM"]
     y_col = 'MEMBER_DEATHS_PERC'
     fig = common_line_elements(y_col, selected_peaks_df, final_colors_dict, log_scale, highlight_countries_list, hover_data)
 
@@ -308,7 +310,8 @@ def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
     selected_peaks_df, final_colors_dict, highlight_countries_list = get_selected_peaks(min_num_expeditions, date_range,
                                                                                         peakid_list)
 
-    hover_data = ['TOTHIRED_COUNT', 'HIRED_DEATHS_COUNT', "HIRED_DEATHS_PERC", 'YEAR_SEASON_DATE', "PEAKID", "PKNAME"]
+    hover_data = ['TOTHIRED_COUNT', 'HIRED_DEATHS_COUNT', "HIRED_DEATHS_PERC", 'YEAR_SEASON_DATE', "PEAKID", "PKNAME",
+                  "HEIGHTM"]
     y_col = 'HIRED_DEATHS_PERC'
     fig = common_line_elements(y_col, selected_peaks_df, final_colors_dict, log_scale, highlight_countries_list, hover_data)
 
@@ -330,7 +333,7 @@ def update_oxygen_line_chart(min_num_expeditions, peakid_list, date_range, log_s
     random.shuffle(final_colors_dict_list)
     final_colors_dict = dict(final_colors_dict_list)
 
-    hover_data = ["OXYGEN_USED_PERC", "YEAR_SEASON_DATE", "PEAKID", "PKNAME"]
+    hover_data = ["OXYGEN_USED_PERC", "YEAR_SEASON_DATE", "PEAKID", "PKNAME", "HEIGHTM"]
     y_col = "OXYGEN_USED_PERC"
     fig = common_line_elements(y_col, selected_peaks_df, final_colors_dict, log_scale, highlight_countries_list,
                                hover_data)
