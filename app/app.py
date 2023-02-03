@@ -94,6 +94,8 @@ def display_page(pathname):
         page_name = "Peak Expedition Analysis" + sub_title_string
     elif pathname == "/spatial-analysis":
         page_name = "Geo-spatial Peak Analysis" + sub_title_string
+    elif pathname == "/peak-routes":
+        page_name = "Peak Route Analysis" + sub_title_string
     else:
         page_name = title_string
 
@@ -101,6 +103,6 @@ def display_page(pathname):
 
 if __name__ == "__main__":
     # To run in Docker, set host
-    # app.run_server(host="0.0.0.0", debug=True)
+    app.run_server(host="0.0.0.0", debug=True)
     # To run on local host
-    app.run_server(host="127.0.0.1", debug=True)
+    #app.run_server(host="127.0.0.1", debug=True)
