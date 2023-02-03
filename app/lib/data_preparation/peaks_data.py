@@ -91,8 +91,12 @@ class PeakExpedition():
         exped_df = pd.read_csv(os.path.join(data_dir, 'exped.csv'),
                                usecols=['EXPID', 'PEAKID', 'YEAR', 'SEASON', 'HOST', 'SMTDAYS', 'TOTDAYS',
                                         'TERMDATE', 'TERMREASON', 'CAMPSITES', 'TOTMEMBERS', 'SMTMEMBERS', 'TOTHIRED',
-                                        'SMTHIRED', 'O2USED', 'NATION', 'MDEATHS', 'HDEATHS', 'COMRTE'],
-                               dtype={'O2USED': int, 'COMRTE': object}
+                                        'SMTHIRED', 'O2USED', 'NATION', 'MDEATHS', 'HDEATHS', 'COMRTE',
+                                        'ROUTE1', 'ROUTE2', 'ROUTE3', 'ROUTE4', 'SKI', 'PARAPENTE', 'STDRTE', 'PRIMRTE'
+                                        ],
+                               dtype={'O2USED': int, 'COMRTE': object, 'STDRTE': object, 'ROUTE1': object,
+                                      'ROUTE2': object, 'ROUTE3': object, 'ROUTE4': object, 'SKI': int, 'PARAPENTE': int
+                                      }
                                )
 
         self.camp_height_pattern = re.compile(r"\d{2}/\d{2},(\d{4})m")
@@ -117,6 +121,59 @@ class PeakExpedition():
         self.exped_commercial_type_df = self.peak_exped_df[~self.peak_exped_df['COMRTE'].isna()].copy()
         self.exped_commercial_type_df.replace({'True': True, "False": False}, regex=False, inplace=True)
         self.exped_commercial_type_df['COMRTE'] = self.exped_commercial_type_df['COMRTE'].astype('int')
+
+        self.get_routes_data()
+    def get_routes_data(self):
+        """
+            This function creates a routes dataframe
+        :return:
+        """
+
+        self.route_df = self.peak_exped_df[[
+            'EXPID', 'PEAKID', 'PKNAME', 'YEAR', 'YEAR_SEASON_DATE', 'HOST', 'LAT', 'LON', 'HEIGHTM', 'ROUTE1', 'ROUTE2', 'ROUTE3', 'ROUTE4',
+            'TERMREASON_STRING', 'SKI', 'PARAPENTE', 'COMRTE', 'STDRTE', 'PRIMRTE', 'NUM_CAMPS']].copy()
+
+        for col in [column for column in self.route_df.columns if column.startswith('ROUTE')]:
+            self.route_df[col] = self.route_df[col].fillna("")
+            self.route_df[col] = self.route_df[col].str.strip()
+
+        for col in [column for column in self.route_df.columns if column.startswith('ROUTE')]:
+            self.route_df[f'{col}_HIGHPOINT'] = self.route_df[col].apply(self.extract_values)
+            self.route_df[col] = self.route_df[col].apply(self.replace_values)
+        self.route_df['COMRTE'] = self.route_df['COMRTE'].fillna("Not Known")
+        self.route_df['STDRTE'] = self.route_df['STDRTE'].fillna("Not Known")
+        self.route_df['FULL_ROUTE'] = self.route_df['ROUTE1'] + "|" + self.route_df['ROUTE2'] + "|" + self.route_df['ROUTE3'] + "|" + \
+                                      self.route_df['ROUTE4']
+        self.route_df['FULL_ROUTE'] = self.route_df['FULL_ROUTE'].str.strip("||")
+        self.route_df['NUM_ROUTE'] = self.route_df['FULL_ROUTE'].apply(lambda text: text.count("|")) + 1
+
+    def extract_values(self,text):
+        """
+        This function extracts values in parenthesis (to 6000m) for instance
+        :param text: text string
+        :return: (to 6000m) as an example if present
+        """
+        if pd.isna(text):
+            return ""
+
+        match = re.search(r'\(to \d+m\)', text)
+        text = re.sub(r'\([^)]*\)', '', text)
+        if match:
+            return match.group()
+
+        return ''
+
+    def replace_values(self,text):
+        """
+             This function deletes values in parenthesis (to 6000m) for instance
+             :param text: text string
+             :return: deletes (to 6000m) or (as ascension)  as  examples if present
+             """
+        if pd.isna(text):
+            return ""
+
+        # print(text)
+        return re.sub(r'\([^)]*\)', '', text.strip())
 
     def extract_camps(self, text):
         """
@@ -205,6 +262,17 @@ class PeakExpedition():
         self.peak_exped_df = peak_expedition_nhpp.dropna(subset=['LAT'])
         return
 
+    def create_peak_route_aggregation(self):
+        """
+        This function creates aggregations for routes based on peaks.
+        :param peakid: PEAK_ID
+        :return:
+        """
+
+        # Find routes for a peak independent of year of expedition
+        peak_routes_df = self.route_df.groupby(['PEAKID', 'PKNAME', 'HEIGHTM', "LAT", "LON"])['FULL_ROUTE'].unique().reset_index()
+        peak_routes_df['NUM_FULL_ROUTES'] = peak_routes_df['FULL_ROUTE'].apply(lambda route_list: len(route_list))
+        return peak_routes_df
     def expand_timeframe_year_season(self, df):
         """
         This function expands the provided dataset with all years and seasons for every peak, between the maximum
