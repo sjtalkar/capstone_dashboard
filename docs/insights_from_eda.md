@@ -240,8 +240,7 @@ For the peak Ama Dablam, the route along SW Ridge is favored, though
 looking into log counts we see other routes are also pursued
 occasionally.
 
-<img src=".\/media/image15.png" style="width:6.5in;height:2.84722in"
-alt="Chart Description automatically generated with low confidence" />
+<img src=".\/media/image15.png" style="width:6.5in;height:2.84722in">
 
 <img src=".\/media/image16.png" style="width:6.5in;height:2.89583in">
 
