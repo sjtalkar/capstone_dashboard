@@ -145,6 +145,8 @@ class PeakExpedition():
         self.route_df['FULL_ROUTE'] = self.route_df['ROUTE1'] + "|" + self.route_df['ROUTE2'] + "|" + self.route_df['ROUTE3'] + "|" + \
                                       self.route_df['ROUTE4']
         self.route_df['FULL_ROUTE'] = self.route_df['FULL_ROUTE'].str.strip("||")
+        self.route_df = self.route_df[self.route_df['FULL_ROUTE'] != ""]
+
         self.route_df['NUM_ROUTE'] = self.route_df['FULL_ROUTE'].apply(lambda text: text.count("|")) + 1
 
     def extract_values(self,text):

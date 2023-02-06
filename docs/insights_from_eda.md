@@ -76,28 +76,47 @@ scaling these peaks. This page supports the analysis in distribution of
 features by year for commercial versus non-commercial expeditions.
 
 As per the dataset, we have information for five peaks with commercial
-expeditions: Ama Dablam, Cho You, Everest, Lhotse and Manaslu.
+expeditions: Ama Dablam, Cho You, Everest, Lhotse and Manaslu. On this
+page we can isolate the averages and counts for successful expeditions
+versus others. When applying average over all expeditions, average of
+number of days to summit and total days are averaged over expeditions
+that might have terminated prior to reaching a high point or even a base
+camp.
 
-For the year range from 1950 to 1980 for Everest, it is interesting to
-note that for the non-commercial routes the oxugen usage, member and
-hired deaths as well as number of base camps was higher in the earlier
-decade than later decade.
+For Everest, we see that for non-commercial routes there was a peak in
+oxygen usage in the 90’s followed by a dip until 2022. Member deaths
+interestingly fell during these years as well and drastically reduced in
+the 2020s. Similarly for commercial routes, the oxygen usage steadily
+rose while member deaths crept lower.
 
-<img src=".\/media/image2.png" style="width:6.5in;height:3.17083in" />
+<img src=".\/media/image2.png" style="width:6.5in;height:1.85972in" />
 
-But as number of commercial expeditions increased (1980 – 2020), we see
-a shift in distribution in the violin plots above the histograms. In the
-commercial expeditions, the oxygen usage, member deaths, hired deaths as
-well as number of base camps set up increased.
+But it is also interesting to note that the number of expeditions that
+are non-commercial dwindle to nearly zero in the past few years. We also
+see the pandemic having a effect on expeditions since borders were
+closed.
 
-<img src=".\/media/image3.png" style="width:6.5in;height:3.22917in"
-alt="Graphical user interface Description automatically generated" />
+<img src=".\/media/image3.png"
+style="width:3.67974in;height:2.16499in" />
 
-Lhotse stands out as a peak with very few commercial expeditions in the
-same period of 1980-2020.
+For both a 8000er like Everest and a 6000er like Ama Dablam, we see the
+average number of days to summit from base for successful expeditions
+decline since 2000 for commercial expeditions.
 
-<img src=".\/media/image4.png" style="width:6.5in;height:2.48125in"
-alt="Graphical user interface Description automatically generated" />
+Everest:
+
+<img src=".\/media/image4.png" style="width:2.76054in;height:1.52419in"
+alt="Chart Description automatically generated" />
+
+Ama Dablam:
+
+<img src=".\/media/image5.png" style="width:2.73375in;height:1.5649in"
+alt="Graphical user interface, chart Description automatically generated" />
+
+Lhotse stands out as a peak with very few commercial expeditions through
+the decades..
+
+<img src=".\/media/image6.png" style="width:6.5in;height:2.57431in" />
 
 **Commercial Peaks Analysis**
 
@@ -112,7 +131,7 @@ peaks. While most expeditions are successful, bad weather followed by
 illness, including Acute mountain sickness(AMS) and frost bite often
 result in early termination of expeditions.
 
-<img src=".\/media/image5.png" style="width:6.5in;height:2.86111in" />
+<img src=".\/media/image7.png" style="width:6.5in;height:2.86111in" />
 
 Selecting range of years from 1990 to present, clearly shows a dip in
 expeditions, number of base camps set up and total days of expeditions
@@ -124,7 +143,7 @@ slowly diving underneath the Eurasian Plate, carrying much of Europe and
 Asia.”\]. The pandemic (coronavirus. COVID-19) year also shows a
 plummeting of number of expeditions.
 
-<img src=".\/media/image6.png" style="width:6.5in;height:2.17708in" />
+<img src=".\/media/image8.png" style="width:6.5in;height:2.17708in" />
 
 The trend shows that the average days to summit for all peaks is
 decreasing. For Everest, for instance it went down from an average of 33
@@ -135,10 +154,8 @@ in the year 2000, 95% of the expeditions were commercial. The peaks
 Lhotse bucks this trend though with very few commercial expeditions as
 per the Himalayan dataset.
 
-| <img src=".\/media/image7.png"              
- style="width:3.19697in;height:3.09643in" />  | <img src=".\/media/image8.png"              
-                                               style="width:3.16506in;height:3.10944in" />  |
-|---------------------------------------------|---------------------------------------------|
+<img src=".\/media/image9.png" style="width:3.19697in;height:3.09643in" />  
+<img src=".\/media/image10.png" style="width:3.16506in;height:3.10944in" />  
 
 Oxygen usage in commercial expeditions has also been rising. Again for
 Everest while in the recent years (2018 and onwards) oxygen usage is
@@ -151,8 +168,7 @@ expeditioner deaths. As per
 an ice avalance caused immense loss in Sherpa (Hired expeditioners)
 lives.
 
-<img src=".\/media/image9.png"
-style="width:3.36749in;height:3.24857in" />
+<img src=".\/media/image11.png" style="width:3.36749in;height:3.24857in" />
 
 **Peak Popularity Analysis**
 
@@ -190,7 +206,7 @@ oxygen in the past five years. In general in 8000ers such as
 Kanchenjunga and Lhotse, there is 100% chance of an expedition using
 oxygen.
 
-<img src=".\/media/image10.png" style="width:6.5in;height:1.21181in" />
+<img src=".\/media/image12.png" style="width:6.5in;height:1.21181in" />
 
 There is little uncertainty in the most popular peaks in terms of number
 of expeditions and number of people interested in climbing them. Everest
@@ -203,6 +219,32 @@ in the past couple of decades in expeditions that continued on to be
 successful has been quite low. It has to be recognized that member
 deaths might terminate many to most expeditions.
 
+**Peak Route Analysis**
+
+This page provides a look into various routes on each peak and their
+popularity as in number of times the routes was taken. The count is
+independent of whether the expedition was successful or not. This page
+is also useful for lesser popular peaks in investigating into the routes
+taken on them. For instance for Dhualagiri I, all the routes are unknown
+category or non-commercial:
+
+<img src=".\/media/image13.png" style="width:6.5in;height:3.20139in">
+
+Whereas for a popular peak like Everest, we can clearly pick out the
+fully commercial routes in ochre, such as S Col, SE Col-SE Ridge. N
+Col-N Ridge-N Face.
+
+<img src=".\/media/image14.png" style="width:6.5in;height:0.96667in">
+
+For the peak Ama Dablam, the route along SW Ridge is favored, though
+looking into log counts we see other routes are also pursued
+occasionally.
+
+<img src=".\/media/image15.png" style="width:6.5in;height:2.84722in"
+alt="Chart Description automatically generated with low confidence" />
+
+<img src=".\/media/image16.png" style="width:6.5in;height:2.89583in">
+
 **Spatial Analysis**
 
 This page is especially useful to track the history of exploration of
@@ -212,14 +254,14 @@ indicates the number of expeditions on the peak. The earliest
 expeditions (1920-1940) were to peaks that were 6000ers and 7000ers such
 as Jongsang, Nepal Peak and Ramtang.
 
-<img src=".\/media/image11.png" style="width:6.5in;height:2.72639in" />
+<img src=".\/media/image17.png" style="width:6.5in;height:2.72639in" />
 
 1.  By the 1950s, 8000ers such as Everest, Cho Oyu and Makalu (all in
     the Khumbu-Makalu-Rolwaling region) started to see more expeditions
     but there were a number of other peaks being climbed in the region
     as well.
 
-<img src=".\/media/image12.png" style="width:6.5in;height:3.4in" />
+<img src=".\/media/image18.png" style="width:6.5in;height:3.4in" />
 
 The peak popularity can easily be distinguished in the years past 1950
 with Cho Oyu leading the pack, followed by Everest and the shorter Ama
@@ -228,14 +270,12 @@ Dablam which is also in the close vicinity. In the first decade of the
 expeditioners more so than Kanchenjunga (8586 m, Kanchenjunga Janak
 region), perhaps because it is closer to Everest.
 
-<img src=".\/media/image13.png" style="width:6.5in;height:3.37917in"
-alt="Graphical user interface Description automatically generated" />
+<img src=".\/media/image19.png" style="width:6.5in;height:3.37917in">
 
 For other 8000ers, climbers chose Dhaulagiri and Manaslu in the
 Dahulagiti Mukut region and Manaslu-Ganesh region respectively.
 
-<img src=".\/media/image14.png" style="width:6.5in;height:3.44792in"
-alt="Map Description automatically generated with low confidence" />
+<img src=".\/media/image20.png" style="width:6.5in;height:3.44792in">
 
 **Topic Visualization**
 
@@ -363,7 +403,7 @@ not want to stem the words, but instead lemmatixe them using SpaCy.
 (2010) dataset)  
 - remove CUSTOM_STOP_WORDS, defined above
 
-**GSDM**
+**GSDMM**
 
 The Gibbs Sampling Dirichlet Mixture Model (GSDMM) is an “altered” LDA
 algorithm, showing great results on Short Text Topic Modeling tasks,
@@ -533,7 +573,7 @@ Topic 2 and Topic 4 Disney and entertainment related with words such as
 
 **Insights gained**
 
-<img src=".\/media/image15.jpeg" style="width:6.5in;height:3.05208in" />
+<img src=".\/media/image21.jpeg" style="width:6.5in;height:3.05208in" />
 
 **\##** \[Details about scattertext from Jason
 Kessler\](*https://github.com/JasonKessler/Scattertext-PyData/blob/master/PyData-Scattertext-Part-1.ipynb*)  
@@ -688,4 +728,3 @@ organization
 **\>** mark mcgwire record set home run season_travel total_foot fly
 mount everest
 
-**How these insights can lend to features for an ML Project**

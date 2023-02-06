@@ -30,39 +30,39 @@ commerce_noncommerce_by_year_df, commerce_peaks_list = peak_expedition.create_co
 
 min_year = peak_expedition_by_year_season_df['YEAR'].min()
 max_year = peak_expedition_by_year_season_df['YEAR'].max()
-all_peaks_list = list(peak_expedition_by_year_season_df['PEAKID'].unique())
+all_peaks_list = list(peak_expedition_by_year_season_df['PKNAME'].unique())
 
 
-def get_selected_peaks(min_num_expeditions, date_range, peakid_list):
+def get_selected_peaks(min_num_expeditions, date_range, peakname_list):
     popular_peaks_list = list(
         peak_expedition_by_year_season_df[
-            peak_expedition_by_year_season_df['EXPEDITIONS_COUNT'] >= min_num_expeditions]['PEAKID'].unique())
+            peak_expedition_by_year_season_df['EXPEDITIONS_COUNT'] >= min_num_expeditions]['PKNAME'].unique())
 
     add_peaks_df = peak_expedition_by_year_season_df[(peak_expedition_by_year_season_df['YEAR'] >= date_range[0])
                                                      & (peak_expedition_by_year_season_df['YEAR'] <= date_range[
         1])].copy()
     # We show peaks with highest count of expeditions by default
     selected_peaks_df = peak_expedition_by_year_season_df[
-        (peak_expedition_by_year_season_df['PEAKID'].isin(popular_peaks_list)) &
+        (peak_expedition_by_year_season_df['PKNAME'].isin(popular_peaks_list)) &
         (peak_expedition_by_year_season_df['YEAR'] >= date_range[0])
         & (peak_expedition_by_year_season_df['YEAR'] <= date_range[1])].copy()
 
-    if peakid_list is None:
+    if peakname_list is None:
         highlight_countries_list = []
-    elif isinstance(peakid_list, str):
-        highlight_countries_list = [peakid_list]
+    elif isinstance(peakname_list, str):
+        highlight_countries_list = [peakname_list]
     else:
-        highlight_countries_list = peakid_list
+        highlight_countries_list = peakname_list
 
     # print(f"Highlight countries list = {highlight_countries_list}")
     highlight_countries_dict = {country: order for order, country in enumerate(highlight_countries_list)}
 
-    if peakid_list is None:
+    if peakname_list is None:
         add_peaks_df.drop(add_peaks_df.index, inplace=True)
     else:
-        new_peaks = list(set(peakid_list).difference(set(selected_peaks_df['PEAKID'].unique())))
+        new_peaks = list(set(peakname_list).difference(set(selected_peaks_df['PKNAME'].unique())))
         if len(new_peaks) > 0:
-            add_peaks_df = add_peaks_df[add_peaks_df['PEAKID'].isin(new_peaks)]
+            add_peaks_df = add_peaks_df[add_peaks_df['PKNAME'].isin(new_peaks)]
             selected_peaks_df = pd.concat([selected_peaks_df, add_peaks_df], axis="rows")
 
     num_peaks = len(highlight_countries_list)
@@ -70,14 +70,14 @@ def get_selected_peaks(min_num_expeditions, date_range, peakid_list):
     colors = colors[0:num_peaks]
 
     selection_colors_dict = dict(zip(highlight_countries_list, colors))
-    final_colors_dict = {peakid: selection_colors_dict[peakid] if peakid in highlight_countries_list else "#252526" for
-                         peakid in list(selected_peaks_df['PEAKID'].unique())}
+    final_colors_dict = {pkname: selection_colors_dict[pkname] if pkname in highlight_countries_list else "#252526" for
+                         pkname in list(selected_peaks_df['PKNAME'].unique())}
 
     # https://towardsdatascience.com/highlighted-line-chart-with-plotly-express-e69e2a27fea8\
     # Line order matters
-    selected_peaks_df['PEAK_ORDER'] = selected_peaks_df['PEAKID'].map(highlight_countries_dict).fillna(
+    selected_peaks_df['PEAK_ORDER'] = selected_peaks_df['PKNAME'].map(highlight_countries_dict).fillna(
         len(highlight_countries_list) + 1)
-    selected_peaks_df.sort_values(['PEAK_ORDER', 'PEAKID', 'YEAR_SEASON_DATE'], ascending=False, inplace=True)
+    selected_peaks_df.sort_values(['PEAK_ORDER', 'PKNAME', 'YEAR_SEASON_DATE'], ascending=False, inplace=True)
     return selected_peaks_df, final_colors_dict, highlight_countries_list
 
 
@@ -103,8 +103,8 @@ layout = html.Div(
                         dbc.Row([
                             dcc.Dropdown(
                                 id="peak_selection_dropdown",
-                                options=[{"label": peakid, "value": peakid} for peakid in all_peaks_list],
-                                value=['EVER'],
+                                options=[{"label": peakname, "value": peakname} for peakname in all_peaks_list],
+                                value=['Everest'],
                                 clearable=False,
                                 multi=True,
                                 className="rounded shadow"
@@ -184,7 +184,7 @@ def common_line_elements(y_col:str, selected_peaks_df, final_colors_dict, log_sc
 
     :return: plotly dash chart
     """
-    fig = px.line(selected_peaks_df, x='YEAR_SEASON_DATE', y=y_col, color='PEAKID',
+    fig = px.line(selected_peaks_df, x='YEAR_SEASON_DATE', y=y_col, color='PKNAME',
                   color_discrete_map=final_colors_dict,
                   labels={
                       "OXYGEN_USED_PERC":"Percentage of expeditions with oxygen usage",
@@ -205,8 +205,8 @@ def common_line_elements(y_col:str, selected_peaks_df, final_colors_dict, log_sc
                   )
 
     # set thickness
-    for num, peakid in enumerate(fig["data"]):
-        if peakid["legendgroup"] in highlight_countries_list:
+    for num, peakname in enumerate(fig["data"]):
+        if peakname["legendgroup"] in highlight_countries_list:
             fig["data"][num]["line"]["width"] = 2
 
     fig.update_layout({'plot_bgcolor': "black",
@@ -231,9 +231,9 @@ def common_line_elements(y_col:str, selected_peaks_df, final_colors_dict, log_sc
               Input('year_slider', 'value'),
               Input('toggle_log_linear', 'value')
           ])
-def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
+def update_line_chart(min_num_expeditions, peakname_list, date_range, log_scale):
     selected_peaks_df, final_colors_dict, highlight_countries_list = get_selected_peaks(min_num_expeditions, date_range,
-                                                                                        peakid_list)
+                                                                                        peakname_list)
 
     hover_data = ["EXPEDITIONS_COUNT", "YEAR_SEASON_DATE", "PEAKID", "PKNAME", "HEIGHTM"]
     y_col = 'EXPEDITIONS_COUNT'
@@ -249,9 +249,9 @@ def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
               Input('year_slider', 'value'),
               Input('toggle_log_linear', 'value')
           ])
-def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
+def update_line_chart(min_num_expeditions, peakname_list, date_range, log_scale):
     selected_peaks_df, final_colors_dict, highlight_countries_list = get_selected_peaks(min_num_expeditions, date_range,
-                                                                                        peakid_list)
+                                                                                        peakname_list)
 
     hover_data = ['TOTMEMBERS_COUNT', 'YEAR_SEASON_DATE', "PEAKID", "PKNAME"]
     y_col = 'TOTMEMBERS_COUNT'
@@ -268,9 +268,9 @@ def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
               Input('year_slider', 'value'),
               Input('toggle_log_linear', 'value')
           ])
-def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
+def update_line_chart(min_num_expeditions, peakname_list, date_range, log_scale):
     selected_peaks_df, final_colors_dict, highlight_countries_list = get_selected_peaks(min_num_expeditions, date_range,
-                                                                                        peakid_list)
+                                                                                        peakname_list)
 
     hover_data = ['TOTHIRED_COUNT', 'YEAR_SEASON_DATE', "PEAKID", "PKNAME", "HEIGHTM"]
     y_col = 'TOTHIRED_COUNT'
@@ -287,9 +287,9 @@ def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
               Input('year_slider', 'value'),
               Input('toggle_log_linear', 'value')
           ])
-def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
+def update_line_chart(min_num_expeditions, peakname_list, date_range, log_scale):
     selected_peaks_df, final_colors_dict, highlight_countries_list = get_selected_peaks(min_num_expeditions, date_range,
-                                                                                        peakid_list)
+                                                                                        peakname_list)
 
     hover_data = ['TOTMEMBERS_COUNT', 'MEMBER_DEATHS_COUNT', "MEMBER_DEATHS_PERC", 'YEAR_SEASON_DATE', "PEAKID", "PKNAME",
                   "HEIGHTM"]
@@ -306,9 +306,9 @@ def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
               Input('year_slider', 'value'),
               Input('toggle_log_linear', 'value')
           ])
-def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
+def update_line_chart(min_num_expeditions, peakname_list, date_range, log_scale):
     selected_peaks_df, final_colors_dict, highlight_countries_list = get_selected_peaks(min_num_expeditions, date_range,
-                                                                                        peakid_list)
+                                                                                        peakname_list)
 
     hover_data = ['TOTHIRED_COUNT', 'HIRED_DEATHS_COUNT', "HIRED_DEATHS_PERC", 'YEAR_SEASON_DATE', "PEAKID", "PKNAME",
                   "HEIGHTM"]
@@ -325,9 +325,9 @@ def update_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
               Input('year_slider', 'value'),
               Input('toggle_log_linear', 'value')
           ])
-def update_oxygen_line_chart(min_num_expeditions, peakid_list, date_range, log_scale):
+def update_oxygen_line_chart(min_num_expeditions, peakname_list, date_range, log_scale):
     selected_peaks_df, final_colors_dict, highlight_countries_list = get_selected_peaks(min_num_expeditions, date_range,
-                                                                                        peakid_list)
+                                                                                        peakname_list)
 
     final_colors_dict_list = list(final_colors_dict.items())
     random.shuffle(final_colors_dict_list)
