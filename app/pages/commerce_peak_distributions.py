@@ -183,7 +183,7 @@ def common_layout_elements(fig):
                           )
                       ))
 
-    "https://towardsdatascience.com/histograms-with-plotly-express-complete-guide-d483656c5ad7"
+    #"https://towardsdatascience.com/histograms-with-plotly-express-complete-guide-d483656c5ad7"
     fig.update_yaxes(showgrid=False)
     fig.update_xaxes(showgrid=False, )
     fig.update_traces(opacity=0.8)

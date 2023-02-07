@@ -21,9 +21,7 @@ dash.register_page(__name__, title='Peak Routes Analysis', name='Peak Routes Ana
 
 # print(f"This is the current directory : {os.path.abspath(os.getcwd())}")
 peak_expedition = PeakExpedition(os.path.join('app', 'data', 'raw_data'), os.path.join('app', 'data', 'nhpp'))
-peak_routes_df = peak_expedition.create_peak_route_aggregation()
-
-all_peaks_list = list(peak_routes_df['PKNAME'].unique())
+all_peaks_list = list(peak_expedition.peak_routes_df['PKNAME'].unique())
 
 layout = html.Div(
     [
@@ -31,22 +29,28 @@ layout = html.Div(
             dbc.Col([
                 dbc.Row([
                     dbc.Col([
-
-                        html.P("Select Peak", className="m-0"),
-                        dcc.Dropdown(id="peak_dropdown",
-                                     options=[
-                                         {"label": pkname, "value": pkname} for
-                                         pkname in all_peaks_list],
-                                     value='Everest',
-                                     clearable=False,
-                                     multi=False,
-                                     className="rounded shadow mb-2")
-
+                        dbc.Row([html.P("Select Peak", className="m-0"),
+                                 dcc.Dropdown(id="peak_dropdown",
+                                              options=[
+                                                  {"label": pkname, "value": pkname} for
+                                                  pkname in all_peaks_list],
+                                              value='Everest',
+                                              clearable=False,
+                                              multi=False,
+                                              className="rounded shadow mb-2")]),
+                        dbc.Row([dbc.Col([daq.ToggleSwitch(
+                            id='toggle_success_route',
+                            value=False,
+                            label="Select for successful routes",
+                            labelPosition='top',
+                            color=COLOR_CHOICE_DICT["mountain_side_blue_green"],
+                            className="rounded shadow mt-2 mb-5 pb-2 w-30"
+                        )]), ]),
                     ], width=4),
                     dbc.Col([daq.ToggleSwitch(
                         id='toggle_log_linear',
                         value=False,
-                        label="Select for log count.",
+                        label="Select for log count",
                         labelPosition='top',
                         color=COLOR_CHOICE_DICT["mountain_side_blue_green"],
                         className="rounded shadow mt-2 mb-5 pb-2 w-30"
@@ -54,22 +58,22 @@ layout = html.Div(
                 ]),
             ], width=8),
         ]),
-        dbc.Row(dbc.Col([html.Label("Number of routes by peak"),
+        dbc.Row(dbc.Col([html.Label("Number Of Unique Routes By Peak"),
                          dcc.Graph(id="all_peaks_routes_chart", className="rounded shadow")
                          ], className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start"), ),
         dbc.Row([html.Div(className='m-4')]),
         dbc.Row([
-            dbc.Col([html.Label("Top routes on peaks by year"),
+            dbc.Col([html.Label("Number Of Unique Routes On Selected Peak By Year"),
                      dcc.Graph(id="peak_routes_by_year_chart", className="rounded shadow")], width=6,
                     className="rounded shadow  rounded-top  rounded-end rounded-bottom rounded-start pb-1"),
-            dbc.Col([html.Label("Total routes on peak"),
+            dbc.Col([html.Label("Routes Expedition Count On Selected Peak"),
                      dcc.Graph(id="peak_routes_chart", className="rounded shadow")], width=6,
                     className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start pb-1"),
 
         ]),
         dbc.Row([html.Div(className='m-4')]),
         dbc.Row([
-            dbc.Col([html.Label("Top routes on peaks by year"),
+            dbc.Col([html.Label("Routes Commercial and Non-Commercial "),
                      dcc.Graph(id="peak_comm_routes_chart", className="rounded shadow")], width=12,
                     className="rounded shadow  rounded-top  rounded-end rounded-bottom rounded-start pb-1"),
         ]),
@@ -79,7 +83,7 @@ layout = html.Div(
 
 
 def common_bar_elements(x_col: str, y_col: str, color_col: str, selected_peaks_df, log_scale, pkname,
-                        showlegend: bool = False, color_hex:str="crimson"):
+                        showlegend: bool = False, color_hex: str = "crimson"):
     """
     This function encapsulates the common chart elements of the line graphs on the peak expeditions page
     :param y_col: Column to be displayed on Y axis
@@ -101,11 +105,11 @@ def common_bar_elements(x_col: str, y_col: str, color_col: str, selected_peaks_d
                          "PEAKID": "Peak Id",
                          "PKNAME": "Peak Name",
                          "HEIGHTM": "Height in meters",
-                         "FULL_ROUTE": "Full Route Description",
-                         "FULL_ROUTE_COUNT": "Count of distinct routes",
-                         "NUM_FULL_ROUTES": "Number of distinct full routes",
+                         "ROUTE": "Full Route Description",
                          "COMM_ROUTE_COUNT": "Number of routes",
-                         "COMRTE":"Is commercial route?"
+                         "COMRTE": "Is commercial route?",
+                         "FULL_ROUTE_COUNT": "Count of expeditions on route",
+                         "PEAK_ROUTE_COUNT": "Count of routes on peak"
                      },
                      hover_data=["PEAKID", "PKNAME", "HEIGHTM", y_col, color_col],
                      )
@@ -120,10 +124,8 @@ def common_bar_elements(x_col: str, y_col: str, color_col: str, selected_peaks_d
                          "PEAKID": "Peak Id",
                          "PKNAME": "Peak Name",
                          "HEIGHTM": "Height in meters",
-                         "FULL_ROUTE": "Full Route Description",
-                         "FULL_ROUTE_COUNT": "Count of distinct routes",
-                         "NUM_FULL_ROUTES": "Number of distinct full routes",
-                         "COMM_ROUTE_COUNT": "Number of commercial/non-commercial routes"
+                         "FULL_ROUTE_COUNT": "Count of expeditions on route",
+                         "PEAK_ROUTE_COUNT": "Count of routes on peak"
                      },
                      hover_data=["PEAKID", "PKNAME", "HEIGHTM", y_col],
                      )
@@ -146,14 +148,23 @@ def common_bar_elements(x_col: str, y_col: str, color_col: str, selected_peaks_d
 @callback(Output("all_peaks_routes_chart", "figure"),
           [
               Input("peak_dropdown", "value"),
-              Input('toggle_log_linear', 'value')
+              Input('toggle_log_linear', 'value'),
+              Input('toggle_success_route', 'value')
           ]
           )
-def update_line_chart(pkname, log_scale):
-    y_col = 'NUM_FULL_ROUTES'
+def update_line_chart(pkname, log_scale, route_success):
+    y_col = 'PEAK_ROUTE_COUNT'
     color_col = x_col = 'PEAKID'
 
-    fig = common_bar_elements(x_col, y_col, color_col, peak_routes_df, log_scale, pkname)
+    if route_success:
+        peak_routes_agg_df = peak_expedition.peak_routes_df[peak_expedition.peak_routes_df['ROUTE_SUCCESS'] == 1]
+    else:
+        peak_routes_agg_df = peak_expedition.peak_routes_df
+
+    # Find the number of unique routes on  a peak  (nunique)
+    peak_routes_agg_df = peak_routes_agg_df.groupby(['PEAKID', 'PKNAME', 'HEIGHTM'])[
+        'ROUTE'].nunique().reset_index().rename(columns={'ROUTE': 'PEAK_ROUTE_COUNT'})
+    fig = common_bar_elements(x_col, y_col, color_col, peak_routes_agg_df, log_scale, pkname)
 
     return fig
 
@@ -161,12 +172,20 @@ def update_line_chart(pkname, log_scale):
 @callback(Output("peak_routes_by_year_chart", "figure"),
           [
               Input("peak_dropdown", "value"),
-              Input('toggle_log_linear', 'value')
+              Input('toggle_log_linear', 'value'),
+              Input('toggle_success_route', 'value')
           ])
-def update_line_chart(pkname, log_scale):
-    one_peak_routes_by_year_df = peak_expedition.route_df[peak_expedition.route_df['PKNAME'] == pkname].groupby(
-        ['YEAR', 'FULL_ROUTE', 'PEAKID', 'PKNAME', 'HEIGHTM']).agg(
-        FULL_ROUTE_COUNT=('FULL_ROUTE', 'count')).reset_index().sort_values(['FULL_ROUTE_COUNT'], ascending=False)
+def update_line_chart(pkname, log_scale, route_success):
+    if route_success:
+        df = peak_expedition.peak_routes_df[peak_expedition.peak_routes_df['ROUTE_SUCCESS'] == 1]
+    else:
+        df = peak_expedition.peak_routes_df
+
+    #Unique routes in a peak by year
+    one_peak_routes_by_year_df = df[
+        df['PKNAME'] == pkname].groupby(
+        ['YEAR', 'PEAKID', 'PKNAME', 'HEIGHTM'])['ROUTE'].nunique().reset_index().rename(
+        columns={'ROUTE': 'FULL_ROUTE_COUNT'}).sort_values(['FULL_ROUTE_COUNT'], ascending=False)
     one_peak_routes_by_year_df['YEAR'] = one_peak_routes_by_year_df['YEAR'].astype('str')
     y_col = 'FULL_ROUTE_COUNT'
     x_col = 'YEAR'
@@ -174,13 +193,13 @@ def update_line_chart(pkname, log_scale):
     fig = px.bar(one_peak_routes_by_year_df, x=x_col, y=y_col,
                  color_discrete_sequence=["#556f7d"] * one_peak_routes_by_year_df.shape[0],
                  labels={
+                     "YEAR": "Year",
                      "PEAKID": "Peak Id",
                      "PKNAME": "Peak Name",
                      "HEIGHTM": "Height in meters",
-                     "FULL_ROUTE": "Full Route Description",
+                     "ROUTE": "Route Description",
                      "FULL_ROUTE_COUNT": "Count of distinct routes",
-                     "NUM_FULL_ROUTES": "Number of distinct full routes",
-                     "COMM_ROUTE_COUNT":"Number of commercial/non-commercial routes"
+                     "COMM_ROUTE_COUNT": "Number of commercial/non-commercial routes"
                  },
                  hover_data=["PEAKID", "PKNAME", "HEIGHTM", y_col],
                  # markers=True
@@ -208,17 +227,23 @@ def update_line_chart(pkname, log_scale):
 @callback(Output("peak_routes_chart", "figure"),
           [
               Input("peak_dropdown", "value"),
-              Input('toggle_log_linear', 'value')
-
+              Input('toggle_log_linear', 'value'),
+              Input('toggle_success_route', 'value')
           ])
-def update_line_chart(pkname, log_scale):
-    one_peak_routes_df = peak_expedition.route_df[peak_expedition.route_df['PKNAME'] == pkname].groupby(
-        ['PEAKID', 'PKNAME', 'HEIGHTM', 'FULL_ROUTE']).agg(
-        FULL_ROUTE_COUNT=('FULL_ROUTE', 'count')).reset_index().sort_values(['FULL_ROUTE_COUNT'], ascending=False)
+def update_line_chart(pkname, log_scale, route_success):
+    if route_success:
+        df = peak_expedition.peak_routes_df[peak_expedition.peak_routes_df['ROUTE_SUCCESS'] == 1]
+    else:
+        df = peak_expedition.peak_routes_df
+    #Number of expeditions on routes for a peak
+    one_peak_routes_df = df[df['PKNAME'] == pkname].groupby(
+        ['PEAKID', 'PKNAME', 'HEIGHTM', 'ROUTE']).agg(
+        FULL_ROUTE_COUNT=('ROUTE', 'count')).reset_index().sort_values(['FULL_ROUTE_COUNT'], ascending=False)
     y_col = 'FULL_ROUTE_COUNT'
-    x_col = 'FULL_ROUTE'
+    x_col = 'ROUTE'
     color_col = 'PEAKID'
-    fig = common_bar_elements(x_col, y_col, color_col, one_peak_routes_df, log_scale, pkname, color_hex=TIME_SERIES_COLOR_DICT["color_ochre_1"])
+    fig = common_bar_elements(x_col, y_col, color_col, one_peak_routes_df, log_scale, pkname,
+                              color_hex=TIME_SERIES_COLOR_DICT["color_ochre_1"])
 
     return fig
 
@@ -226,16 +251,20 @@ def update_line_chart(pkname, log_scale):
 @callback(Output("peak_comm_routes_chart", "figure"),
           [
               Input("peak_dropdown", "value"),
-              Input('toggle_log_linear', 'value')
-
+              Input('toggle_log_linear', 'value'),
+              Input('toggle_success_route', 'value')
           ])
-def update_line_chart(pkname, log_scale):
-    comm_route_df = peak_expedition.route_df[peak_expedition.route_df['PKNAME'] == pkname]
-    one_peak_routes_df = comm_route_df.groupby(['PEAKID', 'PKNAME', 'HEIGHTM', 'FULL_ROUTE', 'COMRTE']).agg(
+def update_line_chart(pkname, log_scale, route_success):
+    if route_success:
+        df = peak_expedition.peak_routes_df[peak_expedition.peak_routes_df['ROUTE_SUCCESS'] == 1]
+    else:
+        df = peak_expedition.peak_routes_df
+    comm_route_df = df[df['PKNAME'] == pkname]
+    one_peak_routes_df = comm_route_df.groupby(['PEAKID', 'PKNAME', 'HEIGHTM', 'ROUTE', 'COMRTE']).agg(
         COMM_ROUTE_COUNT=('COMRTE', 'count')).reset_index().sort_values(['PEAKID', 'COMM_ROUTE_COUNT'])
     y_col = 'COMM_ROUTE_COUNT'
-    x_col = 'FULL_ROUTE'
+    x_col = 'ROUTE'
     color_col = 'COMRTE'
-    fig = common_bar_elements(x_col, y_col, color_col, one_peak_routes_df, log_scale, pkname, showlegend= True)
+    fig = common_bar_elements(x_col, y_col, color_col, one_peak_routes_df, log_scale, pkname, showlegend=True)
 
     return fig

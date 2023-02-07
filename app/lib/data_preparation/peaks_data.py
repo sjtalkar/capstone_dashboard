@@ -92,10 +92,14 @@ class PeakExpedition():
                                usecols=['EXPID', 'PEAKID', 'YEAR', 'SEASON', 'HOST', 'SMTDAYS', 'TOTDAYS',
                                         'TERMDATE', 'TERMREASON', 'CAMPSITES', 'TOTMEMBERS', 'SMTMEMBERS', 'TOTHIRED',
                                         'SMTHIRED', 'O2USED', 'NATION', 'MDEATHS', 'HDEATHS', 'COMRTE',
-                                        'ROUTE1', 'ROUTE2', 'ROUTE3', 'ROUTE4', 'SKI', 'PARAPENTE', 'STDRTE', 'PRIMRTE'
+                                        'ROUTE1', 'ROUTE2', 'ROUTE3', 'ROUTE4',
+                                        'SUCCESS1', 'SUCCESS2', 'SUCCESS3', 'SUCCESS4',
+                                        'SKI', 'PARAPENTE', 'STDRTE', 'PRIMRTE'
                                         ],
                                dtype={'O2USED': int, 'COMRTE': object, 'STDRTE': object, 'ROUTE1': object,
-                                      'ROUTE2': object, 'ROUTE3': object, 'ROUTE4': object, 'SKI': int, 'PARAPENTE': int
+                                      'ROUTE2': object, 'ROUTE3': object, 'ROUTE4': object, 'SKI': int,
+                                      'PARAPENTE': int,
+                                      'SUCCESS1': int, 'SUCCESS2': int, 'SUCCESS3': int, 'SUCCESS4': int,
                                       }
                                )
 
@@ -123,33 +127,60 @@ class PeakExpedition():
         self.exped_commercial_type_df['COMRTE'] = self.exped_commercial_type_df['COMRTE'].astype('int')
 
         self.get_routes_data()
+
     def get_routes_data(self):
         """
             This function creates a routes dataframe
         :return:
         """
 
-        self.route_df = self.peak_exped_df[[
-            'EXPID', 'PEAKID', 'PKNAME', 'YEAR', 'YEAR_SEASON_DATE', 'HOST', 'LAT', 'LON', 'HEIGHTM', 'ROUTE1', 'ROUTE2', 'ROUTE3', 'ROUTE4',
-            'TERMREASON_STRING', 'SKI', 'PARAPENTE', 'COMRTE', 'STDRTE', 'PRIMRTE', 'NUM_CAMPS']].copy()
+        ##There are 6 expeditions where the termination is successful but none of the routes are successful
+        # MARD67001        POKA73301        CHOY06315        AMAD06307        DHA112108        EVER21110
 
-        for col in [column for column in self.route_df.columns if column.startswith('ROUTE')]:
-            self.route_df[col] = self.route_df[col].fillna("")
-            self.route_df[col] = self.route_df[col].str.strip()
+        route_df = self.peak_exped_df[[
+            'EXPID', 'PEAKID', 'PKNAME', 'YEAR', 'YEAR_SEASON_DATE', 'HOST', 'LAT', 'LON', 'HEIGHTM', 'ROUTE1',
+            'ROUTE2', 'ROUTE3', 'ROUTE4',
+            'SUCCESS1', 'SUCCESS2', 'SUCCESS3', 'SUCCESS4', 'TERMREASON_STRING', 'SKI', 'PARAPENTE', 'COMRTE', 'STDRTE',
+            'PRIMRTE', 'NUM_CAMPS']].copy()
 
-        for col in [column for column in self.route_df.columns if column.startswith('ROUTE')]:
-            self.route_df[f'{col}_HIGHPOINT'] = self.route_df[col].apply(self.extract_values)
-            self.route_df[col] = self.route_df[col].apply(self.replace_values)
-        self.route_df['COMRTE'] = self.route_df['COMRTE'].fillna("Not Known")
-        self.route_df['STDRTE'] = self.route_df['STDRTE'].fillna("Not Known")
-        self.route_df['FULL_ROUTE'] = self.route_df['ROUTE1'] + "|" + self.route_df['ROUTE2'] + "|" + self.route_df['ROUTE3'] + "|" + \
-                                      self.route_df['ROUTE4']
-        self.route_df['FULL_ROUTE'] = self.route_df['FULL_ROUTE'].str.strip("||")
-        self.route_df = self.route_df[self.route_df['FULL_ROUTE'] != ""]
+        for col in [column for column in route_df.columns if column.startswith('ROUTE')]:
+            route_df[col] = route_df[col].fillna("")
+            route_df[col] = route_df[col].str.strip()
 
-        self.route_df['NUM_ROUTE'] = self.route_df['FULL_ROUTE'].apply(lambda text: text.count("|")) + 1
+        for col in [column for column in route_df.columns if column.startswith('ROUTE')]:
+            route_df[f'{col}_HIGHPOINT'] = route_df[col].apply(self.extract_values)
+            route_df[col] = route_df[col].apply(self.replace_values)
+        route_df['COMRTE'] = route_df['COMRTE'].fillna("Not Known")
+        route_df['STDRTE'] = route_df['STDRTE'].fillna("Not Known")
 
-    def extract_values(self,text):
+        self.peak_routes_df = pd.concat([
+            route_df[['PEAKID', 'PKNAME', 'YEAR', 'HOST', 'LAT', 'LON', 'HEIGHTM', 'COMRTE', 'ROUTE1', 'SUCCESS1',
+                      'ROUTE1_HIGHPOINT']].rename(
+                columns={'ROUTE1': 'ROUTE', 'SUCCESS1': 'ROUTE_SUCCESS', 'ROUTE1_HIGHPOINT': 'ROUTE_HIGHPOINT'}),
+            route_df[['PEAKID', 'PKNAME', 'YEAR', 'HOST', 'LAT', 'LON', 'HEIGHTM', 'COMRTE', 'ROUTE2', 'SUCCESS2',
+                      'ROUTE2_HIGHPOINT']].rename(
+                columns={'ROUTE2': 'ROUTE', 'SUCCESS2': 'ROUTE_SUCCESS', 'ROUTE2_HIGHPOINT': 'ROUTE_HIGHPOINT'}),
+            route_df[['PEAKID', 'PKNAME', 'YEAR', 'HOST', 'LAT', 'LON', 'HEIGHTM', 'COMRTE', 'ROUTE3', 'SUCCESS3',
+                      'ROUTE3_HIGHPOINT']].rename(
+                columns={'ROUTE3': 'ROUTE', 'SUCCESS3': 'ROUTE_SUCCESS', 'ROUTE3_HIGHPOINT': 'ROUTE_HIGHPOINT'}),
+            route_df[['PEAKID', 'PKNAME', 'YEAR', 'HOST', 'LAT', 'LON', 'HEIGHTM', 'COMRTE', 'ROUTE4', 'SUCCESS4',
+                      'ROUTE4_HIGHPOINT']].rename(
+                columns={'ROUTE4': 'ROUTE', 'SUCCESS4': 'ROUTE_SUCCESS', 'ROUTE4_HIGHPOINT': 'ROUTE_HIGHPOINT'}),
+
+        ], axis='rows')
+
+        # Some cleaning
+        self.peak_routes_df['ROUTE'] = self.peak_routes_df['ROUTE'].str.replace('Rigde', 'Ridge').str.replace('Genava',
+                                                                                                              'Geneva').str.replace(
+            " -", "-").str.replace("- ", "-").str.replace("COl", "Col")
+        # Some routes are combinations of two (ascending and descending)
+        self.peak_routes_df = self.peak_routes_df.assign(
+            NEW_ROUTE=self.peak_routes_df['ROUTE'].str.split(',|;')).explode('NEW_ROUTE').drop(
+            columns=["ROUTE"]).rename(columns={'NEW_ROUTE': 'ROUTE'})
+        self.peak_routes_df['ROUTE'] = self.peak_routes_df['ROUTE'].str.strip()
+        self.peak_routes_df = self.peak_routes_df[self.peak_routes_df['ROUTE'] != ""]
+
+    def extract_values(self, text):
         """
         This function extracts values in parenthesis (to 6000m) for instance
         :param text: text string
@@ -165,7 +196,7 @@ class PeakExpedition():
 
         return ''
 
-    def replace_values(self,text):
+    def replace_values(self, text):
         """
              This function deletes values in parenthesis (to 6000m) for instance
              :param text: text string
@@ -264,17 +295,6 @@ class PeakExpedition():
         self.peak_exped_df = peak_expedition_nhpp.dropna(subset=['LAT'])
         return
 
-    def create_peak_route_aggregation(self):
-        """
-        This function creates aggregations for routes based on peaks.
-        :param peakid: PEAK_ID
-        :return:
-        """
-
-        # Find routes for a peak independent of year of expedition
-        peak_routes_df = self.route_df.groupby(['PEAKID', 'PKNAME', 'HEIGHTM', "LAT", "LON"])['FULL_ROUTE'].unique().reset_index()
-        peak_routes_df['NUM_FULL_ROUTES'] = peak_routes_df['FULL_ROUTE'].apply(lambda route_list: len(route_list))
-        return peak_routes_df
     def expand_timeframe_year_season(self, df):
         """
         This function expands the provided dataset with all years and seasons for every peak, between the maximum
@@ -376,7 +396,7 @@ class PeakExpedition():
 
         df = self.peak_exped_df
         # Aggregate expedition counts for peaks per year and season, limited to expeditions that are successful
-        #This should be performed before expand the dataframe to create rows for every season and year
+        # This should be performed before expand the dataframe to create rows for every season and year
         exped_count_df = df[df['TERMREASON_STRING'] == 'Success (main peak)'].groupby(
             ['YEAR', 'YEAR_SEASON_DATE', 'PEAKID', 'PKNAME', 'LAT', 'LON', 'HEIGHTM']
         ).agg(
@@ -407,7 +427,7 @@ class PeakExpedition():
         self.peak_expedition_by_year_season_df = primary_df
         return primary_df
 
-    def create_commerce_noncommerce_peak_aggregation(self, by_season: bool = True, commercial:bool = True):
+    def create_commerce_noncommerce_peak_aggregation(self, by_season: bool = True, commercial: bool = True):
         """
         To visualize the peak expedition count by year and season in a continuous fashion, we need to create a timeseries
         for each peak for every year and every season. This function is restricted to dataframe containing expeditions that have
@@ -422,14 +442,14 @@ class PeakExpedition():
         # Expand timeseries to all years and seasons for all peaks
         # Aggregate expedition counts for peaks per year and season, limited to expeditions that are successful
 
-        #Aggregate by year and season first
+        # Aggregate by year and season first
         if by_season:
             group_cols = ['YEAR', 'YEAR_SEASON_DATE', 'PEAKID', 'PKNAME', 'LAT', 'LON', 'HEIGHTM']
         else:
             group_cols = ['YEAR', 'PEAKID', 'PKNAME', 'LAT', 'LON', 'HEIGHTM']
 
-        #For the grouping of peak and year, get the total across all expeditions as _COUNT and the mean across
-        #all expeditions as _MEAN
+        # For the grouping of peak and year, get the total across all expeditions as _COUNT and the mean across
+        # all expeditions as _MEAN
         # This should be performed before expand the dataframe to create rows for every season and year
         exped_count_df = df.groupby(group_cols
                                     ).agg(
@@ -449,7 +469,6 @@ class PeakExpedition():
             exped_count_df = self.expand_timeframe_year_season(exped_count_df)
         else:
             exped_count_df = self.expand_timeframe_year(exped_count_df)
-
 
         for col_name in ['EXPEDITIONS_COUNT', 'MEMBER_DEATHS_COUNT', 'OXYGEN_USED_COUNT', 'TOTMEMBERS_COUNT',
                          'TOTHIRED_COUNT', 'HIRED_DEATHS_COUNT', 'COMMERCIAL_ROUTES_COUNT']:
