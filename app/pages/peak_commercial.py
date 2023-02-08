@@ -4,6 +4,8 @@ sys.path.append("..")
 
 import os
 import dash
+import pickle
+import pandas as pd
 import plotly.express as px
 
 from color_theme.color_dicts import COLOR_CHOICE_DICT
@@ -18,14 +20,14 @@ fig = go.Figure(layout=dict(template='plotly'))
 dash.register_page(__name__, title='Peak Commercial Expedition Analysis', name='Peak Commercial Expedition Analysis')
 
 # print(f"This is the current directory : {os.path.abspath(os.getcwd())}")
-peak_expedition = PeakExpedition(os.path.join('app', 'data', 'raw_data'), os.path.join('app', 'data', 'nhpp'))
-commerce_noncommerce_by_year_df, commerce_peaks_list = peak_expedition.create_commerce_noncommerce_peak_aggregation(
-    by_season=False)
+commerce_noncommerce_by_year_df = pd.read_csv(os.path.join("app", "data", "dash", "commerce_noncommerce_by_year_df.csv"))
+exped_commercial_type_df = pd.read_csv(os.path.join("app", "data", "dash", "exped_commercial_type_df.csv"))
 commerce_noncommerce_by_year_df = commerce_noncommerce_by_year_df.fillna(0)
 
-min_year = commerce_noncommerce_by_year_df['YEAR'].min()
-max_year = commerce_noncommerce_by_year_df['YEAR'].max()
-all_peaks_list = list(commerce_noncommerce_by_year_df['PEAKID'].unique())
+with open(os.path.join("app", "data", "dash", "store_data_lists.pickle"), 'rb') as handle:
+    lists_dict = pickle.load(handle)
+    all_peaks_list = lists_dict['all_peaks_list']
+    commerce_peaks_list = lists_dict['commerce_peaks_list']
 
 year_dict = {year: str(year) for year in range(1920, 2031, 10)}
 layout = html.Div(
@@ -310,7 +312,7 @@ def update_chart(date_range):
           [Input('year_slider', 'value')],
           )
 def update_chart(date_range):
-    selected_years_df, final_colors_dict = common_df_setup(peak_expedition.exped_commercial_type_df, date_range)
+    selected_years_df, final_colors_dict = common_df_setup(exped_commercial_type_df, date_range)
     reason_count_df = selected_years_df.groupby(
         ['PEAKID', 'PKNAME', 'HEIGHTM', 'COMRTE', 'TERMREASON']).agg(
         TERMINATION_REASON_COUNT=('TERMREASON', 'count')

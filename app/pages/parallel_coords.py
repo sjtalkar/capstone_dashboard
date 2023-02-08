@@ -3,6 +3,7 @@ sys.path.append("..")
 
 import os
 import dash
+import pickle
 import pandas as pd
 import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
@@ -11,8 +12,9 @@ from color_theme.color_dicts import COLOR_CHOICE_DICT
 from lib.data_preparation.member_data import MemberInfo
 
 dash.register_page(__name__, title='Member Analysis', name='Member Analysis',path = '/')
-member_data = MemberInfo(data_path=os.path.join("app", "data", "raw_data", "members.csv"))
 
+member_data = MemberInfo(data_path=os.path.join("app", "data", "raw_data", "members.csv"))
+members_counts_df, members_norm_df = member_data.get_members_parallel_coord_data()
 
 items = [dbc.DropdownMenuItem(x) for x in range(10, 50, 10)]
 display_col_names = ['CITIZEN', 'CALCAGE_median', 'CALCAGE_min', 'CALCAGE_max', 'MEMBER_COUNT', 'LEADER', 'HIRED', 'WEATHER',
@@ -22,7 +24,11 @@ display_col_names_labels = ['Nationality', 'Median Analysis Age*', 'Lowest Analy
                             'High point reached', 'Base Camp Only', 'Solo Attempt', 'Women']
 
 parallel_axis_display_dict = dict(zip(display_col_names, display_col_names_labels))
-countries_list = member_data.get_members_nationalities()
+
+with open(os.path.join("app", "data", "dash", "store_data_lists.pickle"), 'rb') as handle:
+    lists_dict = pickle.load(handle)
+    all_peaks_list = lists_dict['all_peaks_list']
+    countries_list = lists_dict['countries_list']
 
 layout = html.Div([
     dbc.Row([
@@ -94,7 +100,6 @@ layout = html.Div([
            Input("add_countries_dropdown", "value")
            ])
 def update_parallel_coord_chart(num_countries, show_normalized, chosen_cols, chosen_additional_countries):
-    members_counts_df, members_norm_df = member_data.get_members_parallel_coord_data()
 
     if show_normalized:
         df = members_norm_df

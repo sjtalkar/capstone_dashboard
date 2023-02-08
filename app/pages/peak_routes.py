@@ -4,6 +4,8 @@ sys.path.append("..")
 
 import os
 import dash
+import pandas as pd
+import pickle
 import numpy as np
 import dash_daq as daq
 import plotly.express as px
@@ -20,8 +22,12 @@ fig = go.Figure(layout=dict(template='plotly'))
 dash.register_page(__name__, title='Peak Routes Analysis', name='Peak Routes Analysis')
 
 # print(f"This is the current directory : {os.path.abspath(os.getcwd())}")
-peak_expedition = PeakExpedition(os.path.join('app', 'data', 'raw_data'), os.path.join('app', 'data', 'nhpp'))
-all_peaks_list = list(peak_expedition.peak_routes_df['PKNAME'].unique())
+peak_routes_df =  pd.read_csv( os.path.join('app', 'data', 'dash', 'peak_routes_df.csv' ))
+# Store the list of countries in a small pickle file
+with open(os.path.join("app", "data", "dash", "store_data_lists.pickle"), 'rb') as handle:
+    lists_dict = pickle.load(handle)
+    all_peaks_list = lists_dict['all_peaks_list']
+
 
 layout = html.Div(
     [
@@ -157,9 +163,9 @@ def update_line_chart(pkname, log_scale, route_success):
     color_col = x_col = 'PEAKID'
 
     if route_success:
-        peak_routes_agg_df = peak_expedition.peak_routes_df[peak_expedition.peak_routes_df['ROUTE_SUCCESS'] == 1]
+        peak_routes_agg_df = peak_routes_df[peak_routes_df['ROUTE_SUCCESS'] == 1]
     else:
-        peak_routes_agg_df = peak_expedition.peak_routes_df
+        peak_routes_agg_df = peak_routes_df
 
     # Find the number of unique routes on  a peak  (nunique)
     peak_routes_agg_df = peak_routes_agg_df.groupby(['PEAKID', 'PKNAME', 'HEIGHTM'])[
@@ -177,9 +183,9 @@ def update_line_chart(pkname, log_scale, route_success):
           ])
 def update_line_chart(pkname, log_scale, route_success):
     if route_success:
-        df = peak_expedition.peak_routes_df[peak_expedition.peak_routes_df['ROUTE_SUCCESS'] == 1]
+        df = peak_routes_df[peak_routes_df['ROUTE_SUCCESS'] == 1]
     else:
-        df = peak_expedition.peak_routes_df
+        df = peak_routes_df
 
     #Unique routes in a peak by year
     one_peak_routes_by_year_df = df[
@@ -232,9 +238,9 @@ def update_line_chart(pkname, log_scale, route_success):
           ])
 def update_line_chart(pkname, log_scale, route_success):
     if route_success:
-        df = peak_expedition.peak_routes_df[peak_expedition.peak_routes_df['ROUTE_SUCCESS'] == 1]
+        df = peak_routes_df[peak_routes_df['ROUTE_SUCCESS'] == 1]
     else:
-        df = peak_expedition.peak_routes_df
+        df = peak_routes_df
     #Number of expeditions on routes for a peak
     one_peak_routes_df = df[df['PKNAME'] == pkname].groupby(
         ['PEAKID', 'PKNAME', 'HEIGHTM', 'ROUTE']).agg(
@@ -256,9 +262,9 @@ def update_line_chart(pkname, log_scale, route_success):
           ])
 def update_line_chart(pkname, log_scale, route_success):
     if route_success:
-        df = peak_expedition.peak_routes_df[peak_expedition.peak_routes_df['ROUTE_SUCCESS'] == 1]
+        df = peak_routes_df[peak_routes_df['ROUTE_SUCCESS'] == 1]
     else:
-        df = peak_expedition.peak_routes_df
+        df = peak_routes_df
     comm_route_df = df[df['PKNAME'] == pkname]
     one_peak_routes_df = comm_route_df.groupby(['PEAKID', 'PKNAME', 'HEIGHTM', 'ROUTE', 'COMRTE']).agg(
         COMM_ROUTE_COUNT=('COMRTE', 'count')).reset_index().sort_values(['PEAKID', 'COMM_ROUTE_COUNT'])

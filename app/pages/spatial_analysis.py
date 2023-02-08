@@ -4,6 +4,7 @@ sys.path.append("..")
 import os
 import dash
 import pickle
+import pandas as pd
 import pydeck as pdk
 
 
@@ -20,19 +21,16 @@ from lib.data_preparation.peaks_data import PeakExpedition
 dash.register_page(__name__, title='Spatial Peak Analysis', name='Spatial Peak Analysis')
 
 
-peak_expedition = PeakExpedition(os.path.join('app','data','raw_data'), os.path.join('app', 'data', 'nhpp'))
-peak_expedition_by_year_season_df = peak_expedition.create_peak_aggregation()
+peak_expedition_by_year_season_df = pd.read_csv(os.path.join("app", "data", "dash", "peak_expedition_by_year_season_df.csv"))
 primary_df = peak_expedition_by_year_season_df[['YEAR', 'LAT', 'LON', 'HEIGHTM', 'PEAKID', 'PKNAME', 'EXPEDITIONS_COUNT']].drop_duplicates()
 
 
 lat_avg = primary_df['LAT'].unique().mean()
 lon_avg = primary_df['LON'].unique().mean()
-min_year = peak_expedition_by_year_season_df['YEAR'].min()
-max_year = peak_expedition_by_year_season_df['YEAR'].max()
-all_peaks_list = list(peak_expedition_by_year_season_df['PEAKID'].unique())
-#print(f"Mean Latitude: {lat_avg} and mean longitude : {lon_avg}")
 
-
+with open(os.path.join("app", "data", "dash", "store_data_lists.pickle"), 'rb') as handle:
+    lists_dict = pickle.load(handle)
+    all_peaks_list = lists_dict['all_peaks_list']
 
 load_dotenv()
 mapbox_token = os.environ.get("MAPBOX_ACCESS_TOKEN")

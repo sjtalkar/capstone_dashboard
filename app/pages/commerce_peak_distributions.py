@@ -4,6 +4,8 @@ sys.path.append("..")
 
 import os
 import dash
+import pickle
+import pandas as pd
 import dash_daq as daq
 import plotly.express as px
 
@@ -20,10 +22,15 @@ dash.register_page(__name__, title='Commercial and Non-commercial Expedition Dis
                    name='Commercial and Non-commercial Expedition Distributions')
 
 # print(f"This is the current directory : {os.path.abspath(os.getcwd())}")
-peak_expedition = PeakExpedition(os.path.join('app', 'data', 'raw_data'), os.path.join('app', 'data', 'nhpp'))
-peak_exped_df = peak_expedition.peak_exped_df
+peak_exped_df = pd.read_csv(os.path.join("app", "data", "dash", "peak_exped_df.csv"), dtype={'COMRTE':object})
+#These are generated every time page is loaded
 exped_commercial_type_df = peak_exped_df[~peak_exped_df['COMRTE'].isna()].copy()
-commerce_peaks_list = exped_commercial_type_df[exped_commercial_type_df['COMRTE'] == 'True']['PKNAME'].unique()
+
+with open(os.path.join("app", "data", "dash", "store_data_lists.pickle"), 'rb') as handle:
+    lists_dict = pickle.load(handle)
+    all_peaks_list = lists_dict['all_peaks_list']
+    commerce_peaks_list = lists_dict['commerce_peaks_list']
+
 success_exped_commercial_type_df = exped_commercial_type_df[exped_commercial_type_df['TERMREASON'] == 1]
 all_exped_commercial_type_df = exped_commercial_type_df
 

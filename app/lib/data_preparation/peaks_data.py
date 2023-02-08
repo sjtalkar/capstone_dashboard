@@ -483,9 +483,7 @@ class PeakExpedition():
         exped_count_df['COMMERCIAL_ROUTES_PERC'] = np.round(
             exped_count_df['COMMERCIAL_ROUTES_COUNT'] / exped_count_df['EXPEDITIONS_COUNT'] * 100, 2)
 
-        for col_name in ['MEMBER_DEATHS_PERC', 'HIRED_DEATHS_PERC', 'OXYGEN_USED_PERC', 'COMMERCIAL_ROUTES_PERC']:
-            exped_count_df[col_name].fillna(0, inplace=True)
-
+        exped_count_df.fillna(0, inplace=True)
         for col_name in ['NUM_CAMPS_MEAN', 'SUMMIT_DAYS_MEAN']:
             exped_count_df[col_name] = np.round(exped_count_df[col_name], 2)
         # If saving in class we need two : one for season and one for year

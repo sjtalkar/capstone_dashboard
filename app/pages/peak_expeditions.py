@@ -4,6 +4,7 @@ sys.path.append("..")
 
 import os
 import dash
+import pickle
 import pandas as pd
 import dash_daq as daq
 import plotly.express as px
@@ -21,16 +22,13 @@ fig = go.Figure(layout=dict(template='plotly'))
 dash.register_page(__name__, title='Peak Popularity Analysis', name='Peak Popularity Analysis')
 
 # print(f"This is the current directory : {os.path.abspath(os.getcwd())}")
-peak_expedition = PeakExpedition(os.path.join('app', 'data', 'raw_data'), os.path.join('app', 'data', 'nhpp'))
-peak_expedition_by_year_season_df = peak_expedition.create_peak_aggregation()
-commerce_noncommerce_by_season_df, commerce_peaks_list = peak_expedition.create_commerce_noncommerce_peak_aggregation(by_season=True)
-commerce_noncommerce_by_year_df, commerce_peaks_list = peak_expedition.create_commerce_noncommerce_peak_aggregation(by_season=False)
+peak_expedition_by_year_season_df = pd.read_csv(os.path.join("app", "data", "dash", "peak_expedition_by_year_season_df.csv"))
+commerce_noncommerce_by_year_df  = pd.read_csv(os.path.join("app", "data", "dash", "peak_exped_df.csv"))
 
-#print(f"commerce_peaks_list = {commerce_peaks_list}")
-
-min_year = peak_expedition_by_year_season_df['YEAR'].min()
-max_year = peak_expedition_by_year_season_df['YEAR'].max()
-all_peaks_list = list(peak_expedition_by_year_season_df['PKNAME'].unique())
+# Store the list of countries in a small pickle file
+with open(os.path.join("app", "data", "dash", "store_data_lists.pickle"), 'rb') as handle:
+    lists_dict = pickle.load(handle)
+    all_peaks_list = lists_dict['all_peaks_list']
 
 
 def get_selected_peaks(min_num_expeditions, date_range, peakname_list):
