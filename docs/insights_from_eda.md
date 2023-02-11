@@ -24,9 +24,9 @@ presented for analysis and insights. In order to facilitate ease in
 choice of nationality from over 100 countries, groups of countries are
 created based on number of unique members from the country. In addition
 to viewing from a range choice of top 10 countries to top 40 countries
-with most members, the user can choose to any one or more of other
-countries, in addition to the groups, for comparison with the selected
-group.
+with most members, the user can choose to select any one or more of
+other countries, in addition to the groups, for comparison with the
+selected group.
 
 Parallel axes with continuous values that the user can choose from range
 from number of members, hired, leaders, injured, deaths, deaths due to
@@ -93,13 +93,13 @@ rose while member deaths crept lower.
 
 But it is also interesting to note that the number of expeditions that
 are non-commercial dwindle to nearly zero in the past few years. We also
-see the pandemic having a effect on expeditions since borders were
+see the pandemic having an effect on expeditions since borders were
 closed.
 
 <img src=".\/media/image3.png"
 style="width:3.67974in;height:2.16499in" />
 
-For both a 8000er like Everest and a 6000er like Ama Dablam, we see the
+For both an 8000er like Everest and a 6000er like Ama Dablam, we see the
 average number of days to summit from base for successful expeditions
 decline since 2000 for commercial expeditions.
 
@@ -154,8 +154,10 @@ in the year 2000, 95% of the expeditions were commercial. The peaks
 Lhotse bucks this trend though with very few commercial expeditions as
 per the Himalayan dataset.
 
-<img src=".\/media/image9.png" style="width:3.19697in;height:3.09643in" />  
-<img src=".\/media/image10.png" style="width:3.16506in;height:3.10944in" />  
+| <img src=".\/media/image9.png"              
+ style="width:3.19697in;height:3.09643in" />  | <img src=".\/media/image10.png"             
+                                               style="width:3.16506in;height:3.10944in" />  |
+|---------------------------------------------|---------------------------------------------|
 
 Oxygen usage in commercial expeditions has also been rising. Again for
 Everest while in the recent years (2018 and onwards) oxygen usage is
@@ -168,7 +170,8 @@ expeditioner deaths. As per
 an ice avalance caused immense loss in Sherpa (Hired expeditioners)
 lives.
 
-<img src=".\/media/image11.png" style="width:3.36749in;height:3.24857in" />
+<img src=".\/media/image11.png"
+style="width:3.36749in;height:3.24857in" />
 
 **Peak Popularity Analysis**
 
@@ -222,27 +225,31 @@ deaths might terminate many to most expeditions.
 **Peak Route Analysis**
 
 This page provides a look into various routes on each peak and their
-popularity as in number of times the routes was taken. The count is
-independent of whether the expedition was successful or not. This page
-is also useful for lesser popular peaks in investigating into the routes
-taken on them. For instance for Dhualagiri I, all the routes are unknown
-category or non-commercial:
+popularity as in number of times the routes was taken. This page is also
+useful for lesser popular peaks in investigating into the routes taken
+on them where there are predominantly non-commerical routes. For
+instance for Lhotse, once again we observe that a very small number of
+commercial routes:
 
-<img src=".\/media/image13.png" style="width:6.5in;height:3.20139in">
+<img src=".\/media/image13.png" style="width:6.5in;height:1.15417in" />
 
 Whereas for a popular peak like Everest, we can clearly pick out the
-fully commercial routes in ochre, such as S Col, SE Col-SE Ridge. N
+fully commercial routes in green, such as S Col, SE Col-SE Ridge. N
 Col-N Ridge-N Face.
 
-<img src=".\/media/image14.png" style="width:6.5in;height:0.96667in">
+<img src=".\/media/image14.png" style="width:6.5in;height:1.23819in" />
 
 For the peak Ama Dablam, the route along SW Ridge is favored, though
 looking into log counts we see other routes are also pursued
 occasionally.
 
-<img src=".\/media/image15.png" style="width:6.5in;height:2.84722in">
+<img src=".\/media/image15.png" style="width:6.5in;height:1.23472in"
+alt="A picture containing text, computer, computer, screenshot Description automatically generated" />
 
-<img src=".\/media/image16.png" style="width:6.5in;height:2.89583in">
+With log counts:
+
+<img src=".\/media/image16.png" style="width:6.5in;height:1.23333in"
+alt="A picture containing text, music, electric organ Description automatically generated" />
 
 **Spatial Analysis**
 
@@ -269,12 +276,14 @@ Dablam which is also in the close vicinity. In the first decade of the
 expeditioners more so than Kanchenjunga (8586 m, Kanchenjunga Janak
 region), perhaps because it is closer to Everest.
 
-<img src=".\/media/image19.png" style="width:6.5in;height:3.37917in">
+<img src=".\/media/image19.png" style="width:6.5in;height:3.37917in"
+alt="Graphical user interface Description automatically generated" />
 
 For other 8000ers, climbers chose Dhaulagiri and Manaslu in the
 Dahulagiti Mukut region and Manaslu-Ganesh region respectively.
 
-<img src=".\/media/image20.png" style="width:6.5in;height:3.44792in">
+<img src=".\/media/image20.png" style="width:6.5in;height:3.44792in"
+alt="Map Description automatically generated with low confidence" />
 
 **Topic Visualization**
 
@@ -727,3 +736,4 @@ organization
 **\>** mark mcgwire record set home run season_travel total_foot fly
 mount everest
 
+**How these insights can lend to features for an ML Project**
