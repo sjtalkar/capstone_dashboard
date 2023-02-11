@@ -13,7 +13,6 @@ from numpy import random
 from color_theme.color_dicts import COLOR_CHOICE_DICT, TIME_SERIES_COLOR_DICT
 import dash_bootstrap_components as dbc
 from dash import dcc, html, Input, Output, callback
-from lib.data_preparation.peaks_data import PeakExpedition
 # Place this in the home page
 import plotly.graph_objects as go
 
@@ -166,7 +165,30 @@ layout = html.Div(
             "* This peak expedition data shows values filtered for expeditions that were successful.",
             html.Br()],
             className="rounded shadow g-5 small fst-italic")
-        ])
+        ]),
+        dbc.Row([html.Div(className='m-1')]),
+        dbc.Row([html.P(["The visualizations on this page were created to answer questions such as :"
+                        , html.Br()
+                        , "1.	What is the trend in oxygen usage?"
+                        , html.Br()
+                        ,
+                        "2.	What is the trend in members and number of expeditions in each season of years since expeditions became popular in the Himalayas?"
+                        , html.Br()
+                        , "3.	Does number of hired personnel follow the same trend as members?"
+                        , html.Br()
+                        , "4.	What is the percentage of members and hired personnel that have died over the years?"
+                        , html.Br()
+                        , "5.	Is there a trend that can be detected in oxygen usage on various peaks?"
+                        , html.Br()
+                        ,
+                        "To facilitate analysis and comparison among peaks, the user can select to group peaks with the most expeditions and "
+                        , "then in addition, highlight and compare other peaks to this group. "
+                          "Peaks with number of expeditions ranging from 1 to 100 in increments of 10 can be compared with individual peaks not in the group selected."
+                        , "Individual peaks within the group can also be highlighted against others in the group. "
+                 ],
+                        className="rounded shadow small fst-italic")
+                 ]),
+
     ])
 
 

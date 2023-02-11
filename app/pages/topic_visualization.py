@@ -3,7 +3,6 @@ sys.path.append("..")
 
 import os
 import dash
-from color_theme.color_dicts import COLOR_CHOICE_DICT
 from dash import dcc, html, callback, Output, Input, State
 
 dash.register_page(__name__)

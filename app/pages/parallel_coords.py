@@ -78,18 +78,26 @@ layout = html.Div([
                               multi=True,
                               options=[{"label": parallel_axis_display_dict[col_name],
                                         "value": col_name} for col_name in
-                                       parallel_axis_display_dict.keys()], value='CITIZEN',
+                                       parallel_axis_display_dict.keys()], value=['CITIZEN', 'MHIGHPT'],
                               clearable=False,
                               className="rounded shadow")
                  ])
     ]),
+
     dbc.Row(
         dcc.Graph(
             id="parallel_coords_axis",
             className="rounded shadow" )),
     dbc.Row([html.P(["* The calculated (analysis) age is used for all reports and analyses in the Himalayas dataset in which the climber’s age is a factor.",
                      html.Br(),
-                     "It is calculated as of the date of Summit, Death, Base Camp Arrival Date or Season Start Date, whichever is best applicable"])],className="rounded shadow g-5 small fst-italic")
+                     "It is calculated as of the date of Summit, Death, Base Camp Arrival Date or Season Start Date, whichever is best applicable"])],className="rounded shadow g-5 small fst-italic"),
+    dbc.Row([html.Div(className='m-4')]),
+    dbc.Row([html.P(["PAGE USAGE: In the parallel co-ordinates plot, a range of feature values for members segmented by nationality is presented for analysis and insights.",
+                     "In order to facilitate ease in choice of nationality from over 100 countries, groups of countries are created based on number of unique members from the country.",
+                     "In addition to viewing from a range choice of top 10 countries to top 40 countries with most members, the user can choose to select any one or more of other countries, in addition to the groups, for comparison with the selected group.",
+                     "Parallel axes with continuous values that the user can choose from range from number of members, hired, leaders, injured, deaths, deaths due to weather, oxygen usage, solo attempts, high camp reached, women, base camp only expeditions (as opposed to summitting), and high point reached."])
+             ], className = "rounded shadow g-5 small fst-italic" ),
+
 ])
 
 

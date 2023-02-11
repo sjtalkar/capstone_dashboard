@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import dash_bootstrap_components as dbc
 from dash import dcc, html, Input, callback
-from lib.data_preparation.peaks_data import PeakExpedition
+
 
 dash.register_page(__name__, title='Spatial Peak Analysis', name='Spatial Peak Analysis')
 

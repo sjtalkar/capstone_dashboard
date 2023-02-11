@@ -11,7 +11,7 @@ import plotly.express as px
 from color_theme.color_dicts import COLOR_CHOICE_DICT
 import dash_bootstrap_components as dbc
 from dash import dcc, html, Output, callback, Input
-from lib.data_preparation.peaks_data import PeakExpedition, TERM_REASON_DICT
+from lib.data_preparation.peaks_data import  TERM_REASON_DICT
 # Place this in the home page
 import plotly.graph_objects as go
 
