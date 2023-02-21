@@ -274,14 +274,14 @@ class PeakExpedition():
     def set_latitude_longitude_with_peak_mapppings(self, nhpp_data_dir: str = '../data/nhpp/'):
         """
         This function combines peaks data from the himalayan dataset with the Nepal Himalaya Peak Profile organization dataset. The cleaned version of this dataset can be
-         found in merged_nepal_peaks.csv
+         found in preprocessed_nhpp_peaks.csv
         :return:
         """
 
         def get_first_name(peak_name):
             return peak_name.split(" ")[0]
 
-        nhpp_peaks = pd.read_csv(os.path.join(nhpp_data_dir, "merged_nepal_peaks.csv"),
+        nhpp_peaks = pd.read_csv(os.path.join(nhpp_data_dir, "preprocessed_nhpp_peaks.csv"),
                                  usecols=['ID', 'PEAKID', 'NAME', 'ALTERNATE_NAMES', 'LAT', 'LON',
                                           'ELEVATION_M']).rename(
             columns={'ID': 'NHPP_PEAKID', 'PEAKID': 'HIMDATA_PEAKID'})

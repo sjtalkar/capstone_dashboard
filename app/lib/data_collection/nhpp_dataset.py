@@ -675,7 +675,7 @@ def merge_nepal_peaks_datasets(nhpp_peaks_df: pd.DataFrame, peakvisor_peaks_df: 
     # Sort the peaks by ID
     nhpp_peaks_df.sort_values('ID', inplace=True)
     # Save the dataset into a CSV file
-    nhpp_peaks_df.to_csv(os.path.join(NHPP_DATA_DIR, 'merged_nepal_peaks.csv'), index=False)
+    nhpp_peaks_df.to_csv(os.path.join(NHPP_DATA_DIR, 'preprocessed_nhpp_peaks.csv'), index=False)
 
 
 if __name__ == "__main__":
