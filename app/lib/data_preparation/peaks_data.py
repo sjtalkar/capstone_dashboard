@@ -83,7 +83,7 @@ TERM_REASON_DICT = {
 
 
 class PeakExpedition():
-    def __init__(self, data_dir: str = '../data/raw_data/', nhpp_data_dir: str = '../data/nhpp/'):
+    def __init__(self, data_dir: str = '../data/raw_data/', nhpp_data_dir: str = os.path.join('..', 'data', 'nhpp')):
         peak_df = pd.read_csv(os.path.join(data_dir, 'peaks.csv'),
                               usecols=['PEAKID', 'PKNAME', 'PKNAME2', 'LOCATION', 'HEIGHTM', 'REGION', 'OPEN',
                                        'PSTATUS', ])
@@ -271,7 +271,7 @@ class PeakExpedition():
         else:
             return dt + timedelta(333)
 
-    def set_latitude_longitude_with_peak_mapppings(self, nhpp_data_dir: str = '../data/nhpp/'):
+    def set_latitude_longitude_with_peak_mapppings(self, nhpp_data_dir: str = os.path.join('..', 'data', 'nhpp')):
         """
         This function combines peaks data from the himalayan dataset with the Nepal Himalaya Peak Profile organization dataset. The cleaned version of this dataset can be
          found in preprocessed_nhpp_peaks.csv
