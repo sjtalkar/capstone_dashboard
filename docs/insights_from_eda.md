@@ -320,8 +320,8 @@ instance. A summary look into their Twitter posts carry the love they
 have for this ‘sport’ and their dedication to this passion which they
 share in their talks and through their coaching.
 
-\[Note: Alan Arnette has also been mentioned in the Himalayan Dataset
-documents\]
+> Note: Alan Arnette has also been mentioned in the Himalayan Dataset
+documents
 
 To this end, we approach the social media harvesting of data so that we
 can perform Natural Language Processing (unsupervised learning) on the
@@ -343,14 +343,14 @@ Keywords included that are unmistakably linked to Everest expeditions:
 (Bachendri Pal) OR (Edmund Hillary) OR (Himalayan mountains) OR (everest
 expedition) OR (everest base camp) OR (everest trekking) OR (himalaya
 base camp) OR \#climbeverest OR “Mount Everest” OR \#EverestBaseCamp  
-\[Note: Bachendri Pal is the first Indian woman to climb the summit of
+> Note: Bachendri Pal is the first Indian woman to climb the summit of
 world’s highest mountain, Mount Everest, what she did in 1984.  
 Edmund Hillary: On 29 May 1953, Hillary and Sherpa mountaineer Tenzing
 Norgay became the first climbers confirmed to have reached the summit of
-Mount Everest. \]
+Mount Everest.
 
 Keywords we try to filter out: -Disney -Disneyland -Disneyworld -WDW  
-\[Note: Disney has a ride called Expedition Everest that elicits several
+> Note: Disney has a ride called Expedition Everest that elicits several
 tweets from social media users
 
 For example: All the Lightning Lane passes for Expedition Everest -
@@ -361,7 +361,6 @@ The distribution of (new) Lightning Lane passes for Expedition Everest -
 Legend of the Forbidden Mountain has started. \#AnimalKingdom \#WDW
 \#WaltDisneyWorld \#DisneyWorld
 
-\]
 
 Despite this, there were other elements found in the tweets by looking
 into the data that suggested we remove text such as WDW which stands for
@@ -401,7 +400,7 @@ The tweets are cleaned by using Gensim’s partial preprocess because
 although we want to do the below as a part of the preprocessing, we do
 not want to stem the words, but instead lemmatixe them using SpaCy.
 
-\- remove tags  
+- remove tags  
 - strip punctuation  
 - remove multiple whitespace  
 - remove numeric characters  
@@ -503,11 +502,12 @@ off by labeling the entire dataset based on five topics alone.
 Looking at 5 topic model, which appears to have a cleaner separation of
 topic words:  
   
-Cluster document counts for topic cluster 5 :**\[440, 397, 307, 2912,
-944\]**  
+Cluster document counts for topic cluster 5 :[440, 397, 307, 2912,
+944]
+
 For number of topics = 5 the top 10 words in the topics are  
-**  
-**- Topic 0 (440) - \['everest', 'expedition', 'adventure', 'base_camp',
+ 
+- Topic 0 (440) - \['everest', 'expedition', 'adventure', 'base_camp',
 'mount', 'nepal', 'trek', 'summit', 'info_aspire', 'amp', 'travel',
 'world', 'adventure_dreamexplorediscover', 'everestbasecamp', 'snowdon',
 'climber', 'mountain', 'team', 'high', 'explore', 'love',
@@ -583,10 +583,11 @@ Topic 2 and Topic 4 Disney and entertainment related with words such as
 
 <img src=".\/media/image21.jpeg" style="width:6.5in;height:3.05208in" />
 
-**\##** \[Details about scattertext from Jason
-Kessler\](*https://github.com/JasonKessler/Scattertext-PyData/blob/master/PyData-Scattertext-Part-1.ipynb*)  
+[Details about scattertext from Jason
+Kessler](*https://github.com/JasonKessler/Scattertext-PyData/blob/master/PyData-Scattertext-Part-1.ipynb*)  
   
-**\***How is an association made between a word and a category?**\***  
+**How is an association made between a word and a category?**
+
 Associated terms have a relatively high category-specific precision and
 category-specific term frequency (i.e., % of terms in category are term)
 and so take the harmonic mean of precision and frequency (both have to
@@ -603,87 +604,89 @@ Clicking on each of these terms in the document reveals the tweets that
 fed the classifier with the frequency of these terms.  
   
 Words and their tweets that have been lemmatized using Spacy:  
-**\`**determination**\`  
--** epitomise average new zealander modest ability good deal
+
+`determination`
+- epitomise average new zealander modest ability good deal
 determination like succeed sir edmund hillary  
-**-** yunho know determination big mount everest push far  
+- yunho know determination big mount everest push far  
   
-**\`**challenge**\`  
--** enjoy beautiful everest region exciting challenging route
+`challenge`  
+- enjoy beautiful everest region exciting challenging route
 magnificent beauty wouldn like miss grab chance enjoy trek
 nepaltourspackag everest base camp gokyo lake trek day  
-**-** challenging thing world climb mount everest finish marathon hour
+- challenging thing world climb mount everest finish marathon hour
 play das haus use shotgun vanguard  
-**-** trek everest challenging rewarding  
-**-** pakistani mountaineer shehroze kashif fazal ali nanga parbat duo
+- trek everest challenging rewarding  
+- pakistani mountaineer shehroze kashif fazal ali nanga parbat duo
 safely rappel technically challenging kinshofer wall civilization
 congratulation  
-**\`**gokyo_lake**\`  
--** enjoy beautiful everest region exciting challenging route
+
+`gokyo_lake`  
+- enjoy beautiful everest region exciting challenging route
 magnificent beauty wouldn like miss grab chance enjoy trek
 nepaltourspackag everest base camp gokyo lake trek day  
-**-** gokyo lake frozen stir nepal travel adventure explore trek everest
+- gokyo lake frozen stir nepal travel adventure explore trek everest
 basecamp ebc everestbasecamp
 
-**\[Note: Lemmatized tweets have been placed here\]  
+> Note: Lemmatized tweets have been placed here
   
   
-**Top Everest words  
+**Top Everest words**  
   
-**-** nepal  
-**-** mountain_conquer  
-**-** quote_day  
-**-** trek  
-**-** summit  
-**-** quote  
-**-** climber  
-**-** leadership  
-**-** wander  
-**-** peak  
-**-** edmund_hillary  
-**-** sherpa  
-**-** heute  
-**-** high_speed  
-\`  
+- nepal  
+- mountain_conquer  
+- quote_day  
+- trek  
+- summit  
+- quote  
+- climber  
+- leadership  
+- wander  
+- peak  
+- edmund_hillary  
+- sherpa  
+- heute  
+- high_speed  
+
   
 Top Entertainment words  
   
-**-** home_run  
-**-** mark_mcgwire  
-**-** total_foot  
-**-** record_set  
-**-** season_travel  
-**-** ride_expedition  
-**-** animal_kingdom  
-**-** lightning_lane  
-**-** wdw_waltdisneyworld  
-**-** pass_expedition  
-**-** disneyworld  
-**-** equip  
-**-** ride  
-**-** submerge_mile  
+- home_run  
+- mark_mcgwire  
+- total_foot  
+- record_set  
+- season_travel  
+- ride_expedition  
+- animal_kingdom  
+- lightning_lane  
+- wdw_waltdisneyworld  
+- pass_expedition  
+- disneyworld  
+- equip  
+- ride  
+- submerge_mile  
   
   
 A quote by Edmund Hillary is one of the most repeated tweets:  
 In lemmatized form it reads:  
-**\>** mountain conquer sir edmund hillary quoteoftheday
+>  mountain conquer sir edmund hillary quoteoftheday
 mountainsdontfightback conqueryourfear overcome  
-**\>** The original quote : It is not the mountain we conquer but
+>  The original quote : It is not the mountain we conquer but
 ourselves  
   
 People tweet when concerned about a 'climber'  
-**\>** chhang dawa sherpa today army helicopter saijd search flight
+>  chhang dawa sherpa today army helicopter saijd search flight
 aerial reconnaissance hour maximum limit locate miss climber ali john
 snorri juan pablo mohr  
-**\>** corpse climber sherpas mount everest extreme weather prevent
+>  corpse climber sherpas mount everest extreme weather prevent
 removal preserve  
-**\>** breakingnew official climber fear miss avalanche sweeps mount
+>  breakingnew official climber fear miss avalanche sweeps mount
 everest  
   
   
 Words more closely and clearly aligned to the Everest Frequency axis
 (but are infrequent)  
-**\>** leadership, leadership_courage, tenzing_norgay (Tenzing Norgay),
+>  leadership, leadership_courage, tenzing_norgay (Tenzing Norgay),
 die_new, supplemental_oxygen. bucketlist, challenge_charity, cost  
   
 This set of words describes the characteristics people are looking for
@@ -694,14 +697,14 @@ more expensive with popularity.
   
 Also close to this axis are words such as single_deadly fed by tweets
 such as : (note that you can click on a word to reveal the tweets)  
-**\>** avalanche kill single deadly accident mount everest  
-**\>** avalanche kill single deadly accident mount everest cnn
+>  avalanche kill single deadly accident mount everest  
+>  avalanche kill single deadly accident mount everest cnn
 cnnavalanche kill single deadly accident mount  
   
   
 Words less tightly bound Everest Frequency axis but are more frequent to
 the Everest topic (top left quadrant):  
-**\>** ascent, training, nepal, china, trekking, sherpa,
+>  ascent, training, nepal, china, trekking, sherpa,
 mountain_conquer, guide, reach_summit, internet, tent, airport \`  
   
 Having functional internet for close communication and for weather
@@ -709,31 +712,30 @@ details appears to be on the mind of people who tweet. Route locations
 start from a country such as Nepal or China and political situation will
 be closely monitored by those interested in an expedition. Getting to
 mountain and to the closest airport is a point of discussion as well.  
-**\>** high speed internet mount everest  
-**\>** high point world cell service internet capability high peak mount
+>  high speed internet mount everest  
+>  high point world cell service internet capability high peak mount
 everest  
   
-**\>** mile airport city mount everest base camp week trip china  
-**\>** fly tenze hillary airport lukla nepal dangerous world gateway
+>  mile airport city mount everest base camp week trip china  
+>  fly tenze hillary airport lukla nepal dangerous world gateway
 everest base camp trek  
-**\>** everest summit expedition kick tomorrow march departure place
+>  everest summit expedition kick tomorrow march departure place
 henri coandă airport bucharest  
   
 The Disney related words are closer along the entertainment axis along
 with other entertainment associated words such as:  
 lion_king, ride_expedition  
   
-**\>** safari trip expedition everest rollercoaster watch festival lion
+>  safari trip expedition everest rollercoaster watch festival lion
 king eat rainforest cafe  
-**\>** expedition everest times hour wait lion king rain pretty hard
+>  expedition everest times hour wait lion king rain pretty hard
 outside  
-**\>** watch lion king expedition everest  
-**\>** ride expedition everest time row  
+>  watch lion king expedition everest  
+>  ride expedition everest time row  
   
 And for some reason the baseball legend MArk McGwire trends in these
 tweets along with Mount Everest, perhaps an advertisement by an
 organization  
-**\>** mark mcgwire record set home run season_travel total_foot fly
+>  mark mcgwire record set home run season_travel total_foot fly
 mount everest
 
-**How these insights can lend to features for an ML Project**
