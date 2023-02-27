@@ -13,3 +13,5 @@ regex==2022.10.31
 scattertext==0.1.10
 tqdm==4.64.1
 python-dotenv==0.21.0
+gunicorn
+dash-tools
