@@ -24,9 +24,7 @@ dash.register_page(__name__, title='Peak Commercial Expedition Analysis', name='
 # "commerce_noncommerce_by_year_df.csv"))
 
 commerce_noncommerce_by_year_df = pd.read_csv(
-    os.path.join(os.path.abspath(os.path.join("src", "data", "dash", "commerce_noncommerce_by_year_df.csv"))))
-
-print(f'File Path = {os.path.join(os.path.abspath(os.path.join("src", "data", "dash", "commerce_noncommerce_by_year_df.csv")), )}')
+    os.path.join("src", "data", "dash", "commerce_noncommerce_by_year_df.csv"))
 
 exped_commercial_type_df = pd.read_csv(os.path.join("src", "data", "dash", "exped_commercial_type_df.csv"))
 commerce_noncommerce_by_year_df = commerce_noncommerce_by_year_df.fillna(0)
