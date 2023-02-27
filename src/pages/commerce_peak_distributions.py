@@ -24,9 +24,12 @@ dash.register_page(__name__, title='Commercial and Non-commercial Expedition Dis
                    name='Commercial and Non-commercial Expedition Distributions')
 
 # print(f"This is the current directory : {os.path.abspath(os.getcwd())}")
-peak_exped_df = pd.read_csv(os.path.join( "src", "data", "dash", "peak_exped_df.csv"), dtype={'COMRTE':object})
+#peak_exped_df = pd.read_csv(os.path.join( "src", "data", "dash", "peak_exped_df.csv"), dtype={'COMRTE':object})
+peak_exped_df = pd.read_csv(os.path.join(os.path.abspath(os.path.join("src", "data", "dash", "peak_exped_df.csv"))),
+                            dtype={'COMRTE': object})
+
 print(
-    f'File Path = {os.path.join(os.path.abspath(os.path.join("src", "data", "dash", "peak_exped_df.csv")), )}')
+    f'File Path = {os.path.join(os.path.abspath(os.path.join("src", "data", "dash", "peak_exped_df.csv")) )}')
 
 #These are generated every time page is loaded
 exped_commercial_type_df = peak_exped_df[~peak_exped_df['COMRTE'].isna()].copy()

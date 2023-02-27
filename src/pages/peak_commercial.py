@@ -20,7 +20,12 @@ fig = go.Figure(layout=dict(template='plotly'))
 dash.register_page(__name__, title='Peak Commercial Expedition Analysis', name='Peak Commercial Expedition Analysis')
 
 # print(f"This is the current directory : {os.path.abspath(os.getcwd())}")
-commerce_noncommerce_by_year_df = pd.read_csv(os.path.join("src", "data", "dash", "commerce_noncommerce_by_year_df.csv"))
+#commerce_noncommerce_by_year_df = pd.read_csv(os.path.join("src", "data", "dash",
+# "commerce_noncommerce_by_year_df.csv"))
+
+commerce_noncommerce_by_year_df = pd.read_csv(
+    os.path.join(os.path.abspath(os.path.join("src", "data", "dash", "commerce_noncommerce_by_year_df.csv"))))
+
 print(f'File Path = {os.path.join(os.path.abspath(os.path.join("src", "data", "dash", "commerce_noncommerce_by_year_df.csv")), )}')
 
 exped_commercial_type_df = pd.read_csv(os.path.join("src", "data", "dash", "exped_commercial_type_df.csv"))
