@@ -45,15 +45,26 @@ navbar = dbc.NavbarSimple(
         ),
         ], width=10),
 
-        dbc.Col([dbc.DropdownMenu(
-            [
-                dbc.DropdownMenuItem(page["name"], href=page["path"])
-                for page in dash.page_registry.values()
-                if page["module"] != "pages.not_found_404"
-            ],
-            nav=True,
-            label="More Pages",
-        )], width=2)
+        dbc.Col([
+            dbc.Row([
+                dbc.DropdownMenu(
+                    [
+                        dbc.DropdownMenuItem(page["name"], href=page["path"])
+                        for page in dash.page_registry.values()
+                        if page["module"] != "pages.not_found_404"
+                    ],
+                    nav=True,
+                    label="More Pages",
+                ), ]),
+            #Empty row
+            dbc.Row([html.Div(className='m-3')]),
+            dbc.Row([html.A(dbc.Button("Link to Insights ", title="Ctrl + Click for Insights",
+                                       size='sm', color="info"),
+                            href="https://github.com/sjtalkar/capstone_dashboard/blob/main/docs/insights_from_eda.md"
+                            )
+                     ]),
+
+        ], width=2)
     ]),
 
     # brand="Himalayan Dataset Spring 2022",
@@ -62,7 +73,7 @@ navbar = dbc.NavbarSimple(
     className="mb-2 shadow rounded",
 )
 
-# This layout must be in the main app.py file. Each page has either a function or a variable called layout as well
+# This layout must be in the main src.py file. Each page has either a function or a variable called layout as well
 app.layout = dbc.Container(
 
     [
@@ -78,14 +89,14 @@ app.layout = dbc.Container(
 
 
 @callback(Output('page_title', 'children'),
-           [Input('url', 'pathname')])
+          [Input('url', 'pathname')])
 def display_page(pathname):
-    title_string =  "Himalayan Dataset Spring 2022"
+    title_string = "Himalayan Dataset Spring 2022"
     sub_title_string = "  (" + title_string + ")"
     if pathname == "/commerce-peak-distributions":
-        page_name =  "Distributions for Commercial versus Non-commercial Peaks" + sub_title_string
+        page_name = "Distributions for Commercial versus Non-commercial Peaks" + sub_title_string
     elif pathname == "/parallel-coords" or pathname == "" or pathname == "/":
-        page_name =  " Members Analysis" + sub_title_string
+        page_name = " Members Analysis" + sub_title_string
     elif pathname == "/peak-commercial":
         page_name = " Commercial Peak Analysis" + sub_title_string
     elif pathname == "/topic-visualization":
@@ -99,10 +110,11 @@ def display_page(pathname):
     else:
         page_name = title_string
 
-    return  page_name
+    return page_name
+
 
 if __name__ == "__main__":
     # To run in Docker, set host
-    app.run_server(host="0.0.0.0", debug=True)
+    #app.run_server(host="0.0.0.0", debug=True)
     # To run on local host
-    #app.run_server(host="127.0.0.1", debug=True)
+    app.run_server(host="127.0.0.1", debug=True)
