@@ -17,7 +17,7 @@ Drive:.
 ¦   requirements.txt
 ¦   Dockerfile
 ¦   
-+---app
++---src
     ¦   app.py
     ¦   
     +---data
@@ -70,7 +70,7 @@ Drive:.
 
 ```
 
-Whereas in the Dagshub, app.py is under the root, here an app folder is created to contain the app.py file that will create the dash server with the hostname as seen below:
+Whereas in the Dagshub, app.py is under the root, here an src folder is created to contain the app.py file that will create the dash server with the hostname as seen below:
 
 `
 app.run_server(host="0.0.0.0", debug=True)
@@ -118,8 +118,8 @@ The various layers of the building the Docker image are captured in the Dockerfi
 COPY requirements.txt ./requirements.txt
 RUN pip install -r requirements.txt
 # COPY . ./ Since we moved everthing to app folder, the image only needs everything from the app folder
-COPY app app
-CMD python app/app.py
+COPY src src
+CMD python src/app.py
 ```
 
 ### Create the .dockerignore file

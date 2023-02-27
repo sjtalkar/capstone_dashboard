@@ -22,9 +22,9 @@ fig = go.Figure(layout=dict(template='plotly'))
 dash.register_page(__name__, title='Peak Routes Analysis', name='Peak Routes Analysis')
 
 # print(f"This is the current directory : {os.path.abspath(os.getcwd())}")
-peak_routes_df =  pd.read_csv( os.path.join('app', 'data', 'dash', 'peak_routes_df.csv' ))
+peak_routes_df =  pd.read_csv( os.path.join('src', 'data', 'dash', 'peak_routes_df.csv' ))
 # Store the list of countries in a small pickle file
-with open(os.path.join("app", "data", "dash", "store_data_lists.pickle"), 'rb') as handle:
+with open(os.path.join("src", "data", "dash", "store_data_lists.pickle"), 'rb') as handle:
     lists_dict = pickle.load(handle)
     all_peaks_list = lists_dict['all_peaks_list']
 

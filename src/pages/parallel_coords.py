@@ -13,7 +13,7 @@ from lib.data_preparation.member_data import MemberInfo
 
 dash.register_page(__name__, title='Member Analysis', name='Member Analysis',path = '/')
 
-member_data = MemberInfo(data_path=os.path.join("app", "data", "raw_data", "members.csv"))
+member_data = MemberInfo(data_path=os.path.join("src", "data", "raw_data", "members.csv"))
 members_counts_df, members_norm_df = member_data.get_members_parallel_coord_data()
 
 items = [dbc.DropdownMenuItem(x) for x in range(10, 50, 10)]
@@ -25,7 +25,7 @@ display_col_names_labels = ['Nationality', 'Median Analysis Age*', 'Lowest Analy
 
 parallel_axis_display_dict = dict(zip(display_col_names, display_col_names_labels))
 
-with open(os.path.join("app", "data", "dash", "store_data_lists.pickle"), 'rb') as handle:
+with open(os.path.join("src", "data", "dash", "store_data_lists.pickle"), 'rb') as handle:
     lists_dict = pickle.load(handle)
     all_peaks_list = lists_dict['all_peaks_list']
     countries_list = lists_dict['countries_list']
@@ -92,7 +92,7 @@ layout = html.Div([
                      html.Br(),
                      "It is calculated as of the date of Summit, Death, Base Camp Arrival Date or Season Start Date, whichever is best applicable"])],className="rounded shadow g-5 small fst-italic"),
     dbc.Row([html.Div(className='m-4')]),
-    dbc.Row([html.P(["PAGE USAGE: In the parallel co-ordinates plot, a range of feature values for members segmented by nationality is presented for analysis and insights.",
+    dbc.Row([html.P(["In the parallel co-ordinates plot, a range of feature values for members segmented by nationality is presented for analysis and insights.",
                      "In order to facilitate ease in choice of nationality from over 100 countries, groups of countries are created based on number of unique members from the country.",
                      "In addition to viewing from a range choice of top 10 countries to top 40 countries with most members, the user can choose to select any one or more of other countries, in addition to the groups, for comparison with the selected group.",
                      "Parallel axes with continuous values that the user can choose from range from number of members, hired, leaders, injured, deaths, deaths due to weather, oxygen usage, solo attempts, high camp reached, women, base camp only expeditions (as opposed to summitting), and high point reached."])
