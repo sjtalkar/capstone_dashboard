@@ -9,6 +9,8 @@ from color_theme.color_dicts import COLOR_CHOICE_DICT
 
 app = dash.Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.MORPH])
 
+##For Render: https://github.com/Coding-with-Adam/myrender-charmingdata-app/blob/main/src/app.py
+server = app.server
 
 # Either morph or slate template
 
@@ -117,4 +119,6 @@ if __name__ == "__main__":
     # To run in Docker, set host
     #app.run_server(host="0.0.0.0", debug=True)
     # To run on local host
-    app.run_server(host="127.0.0.1", debug=True)
+    #app.run_server(host="127.0.0.1", debug=True)
+    #For Render
+    app.run_server(debug=True)

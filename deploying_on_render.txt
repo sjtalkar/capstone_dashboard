@@ -1,0 +1,15 @@
+1. Will the structure suitable for Docker be suitable for Render?\
+    - https://www.youtube.com/watch?v=XWJBJoV5yww&t=61s
+	- Here the app.py is inside src folder
+	- app.run_server(debug=True)
+2. Set the host in app to 127....
+3. pip install dash-tools
+4. dashtools gui
+5. It recognizes the elements it nedds
+6. Once you provide the Render App Name it will genmerate the render.yaml file
+
+3. Check the app works
+python 
+
+
+G:\My Drive\capstone_dashboard

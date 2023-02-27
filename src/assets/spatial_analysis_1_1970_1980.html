@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>pydeck</title>
+        <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <script src='https://cdn.jsdelivr.net/npm/@deck.gl/jupyter-widget@~8.8.*/dist/index.js'></script>
+    <style>
+    body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#deck-container {
+  width: 100vw;
+  height: 100vh;
+}
+
+#deck-container canvas {
+  z-index: 1;
+  background: none;
+}
+    </style>
+  </head>
+  <body>
+    <div id="deck-container">
+    </div>
+  </body>
+  <script>
+    const container = document.getElementById('deck-container');
+    const jsonInput = {
+  "initialViewState": {
+    "bearing": 0,
+    "latitude": 28.429368303470966,
+    "longitude": 85.30896013150938,
+    "pitch": 80,
+    "zoom": 6
+  },
+  "layers": [
+    {
+      "@@type": "ColumnLayer",
+      "autoHighlight": true,
+      "data": [
+        {
+          "EXPEDITIONS_COUNT": 2.0,
+          "HEIGHTM": 7711,
+          "LAT": 27.682222222222222,
+          "LON": 88.04638888888888,
+          "PEAKID": "JANU",
+          "PKNAME": "Jannu",
+          "color": [
+            0.6313725490196078,
+            0.3686274509803922,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 77.11
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 8476,
+          "LAT": 27.692222222222224,
+          "LON": 88.1563888888889,
+          "PEAKID": "KANS",
+          "PKNAME": "Kangchenjunga South",
+          "color": [
+            0.8784313725490196,
+            0.1215686274509804,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 84.76
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 8473,
+          "LAT": 27.69611111111111,
+          "LON": 88.15333333333334,
+          "PEAKID": "KANC",
+          "PKNAME": "Kangchenjunga Central",
+          "color": [
+            0.8784313725490196,
+            0.1215686274509804,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 84.73
+        },
+        {
+          "EXPEDITIONS_COUNT": 2.0,
+          "HEIGHTM": 8586,
+          "LAT": 27.702745,
+          "LON": 88.147392,
+          "PEAKID": "KANG",
+          "PKNAME": "Kangchenjunga",
+          "color": [
+            0.9176470588235294,
+            0.08235294117647063,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 85.86
+        },
+        {
+          "EXPEDITIONS_COUNT": 2.0,
+          "HEIGHTM": 8505,
+          "LAT": 27.705,
+          "LON": 88.13861111111112,
+          "PEAKID": "YALU",
+          "PKNAME": "Yalung Kang",
+          "color": [
+            0.8901960784313725,
+            0.1098039215686275,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 85.05
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6470,
+          "LAT": 27.70861111111111,
+          "LON": 86.87055555555555,
+          "PEAKID": "MERA",
+          "PKNAME": "Mera Peak",
+          "color": [
+            0.22352941176470587,
+            0.7764705882352941,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 64.7
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7902,
+          "LAT": 27.7164,
+          "LON": 88.1128,
+          "PEAKID": "KANB",
+          "PKNAME": "Kangbachen",
+          "color": [
+            0.6941176470588235,
+            0.3058823529411765,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 79.02
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6802,
+          "LAT": 27.76527777777778,
+          "LON": 88.08611111111111,
+          "PEAKID": "RAMC",
+          "PKNAME": "Ramtang Chang",
+          "color": [
+            0.3333333333333333,
+            0.6666666666666667,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 68.02
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6024,
+          "LAT": 27.77055555555556,
+          "LON": 88.05055555555555,
+          "PEAKID": "MOJC",
+          "PKNAME": "Mojca",
+          "color": [
+            0.0784313725490196,
+            0.9215686274509804,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 60.24
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6618,
+          "LAT": 27.789722222222224,
+          "LON": 86.78777777777778,
+          "PEAKID": "THAM",
+          "PKNAME": "Thamserku",
+          "color": [
+            0.27058823529411763,
+            0.7294117647058824,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 66.18
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6783,
+          "LAT": 27.7925,
+          "LON": 86.81944444444444,
+          "PEAKID": "KTEG",
+          "PKNAME": "Kangtega",
+          "color": [
+            0.3254901960784314,
+            0.6745098039215687,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 67.83
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6186,
+          "LAT": 27.8003,
+          "LON": 86.6344,
+          "PEAKID": "KWAN",
+          "PKNAME": "Kwangde",
+          "color": [
+            0.12941176470588234,
+            0.8705882352941177,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 61.86
+        },
+        {
+          "EXPEDITIONS_COUNT": 2.0,
+          "HEIGHTM": 6279,
+          "LAT": 27.836666666666662,
+          "LON": 86.54944444444445,
+          "PEAKID": "PARC",
+          "PKNAME": "Parchamo",
+          "color": [
+            0.16078431372549018,
+            0.8392156862745098,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 62.79
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6814,
+          "LAT": 27.861804,
+          "LON": 86.860078,
+          "PEAKID": "AMAD",
+          "PKNAME": "Ama Dablam",
+          "color": [
+            0.33725490196078434,
+            0.6627450980392157,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 68.14
+        },
+        {
+          "EXPEDITIONS_COUNT": 4.0,
+          "HEIGHTM": 8485,
+          "LAT": 27.890887,
+          "LON": 87.08841,
+          "PEAKID": "MAKA",
+          "PKNAME": "Makalu",
+          "color": [
+            0.8823529411764706,
+            0.11764705882352944,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 84.85
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6495,
+          "LAT": 27.897222222222226,
+          "LON": 86.78166666666667,
+          "PEAKID": "TAWO",
+          "PKNAME": "Tawoche",
+          "color": [
+            0.23137254901960785,
+            0.7686274509803921,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 64.95
+        },
+        {
+          "EXPEDITIONS_COUNT": 2.0,
+          "HEIGHTM": 7678,
+          "LAT": 27.91555555555556,
+          "LON": 87.08055555555555,
+          "PEAKID": "MAK2",
+          "PKNAME": "Makalu II",
+          "color": [
+            0.6196078431372549,
+            0.3803921568627451,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 76.78
+        },
+        {
+          "EXPEDITIONS_COUNT": 2.0,
+          "HEIGHTM": 5780,
+          "LAT": 27.924711,
+          "LON": 86.833132,
+          "PEAKID": "POKA",
+          "PKNAME": "Pokalde",
+          "color": [
+            0.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 57.8
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7010,
+          "LAT": 27.93722222222222,
+          "LON": 86.35027777777778,
+          "PEAKID": "GAUS",
+          "PKNAME": "Gaurishankar South",
+          "color": [
+            0.4,
+            0.6,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 70.1
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7457,
+          "LAT": 27.949166666666667,
+          "LON": 86.98527777777778,
+          "PEAKID": "SHA2",
+          "PKNAME": "Shartse II",
+          "color": [
+            0.5450980392156862,
+            0.4549019607843138,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 74.57
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6090,
+          "LAT": 27.95833333333333,
+          "LON": 86.79305555555555,
+          "PEAKID": "LOBE",
+          "PKNAME": "Lobuje East",
+          "color": [
+            0.09803921568627451,
+            0.9019607843137255,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 60.9
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 8382,
+          "LAT": 27.95833333333333,
+          "LON": 86.94555555555556,
+          "PEAKID": "LSHR",
+          "PKNAME": "Lhotse Shar",
+          "color": [
+            0.8509803921568627,
+            0.14901960784313728,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 83.82
+        },
+        {
+          "EXPEDITIONS_COUNT": 2.0,
+          "HEIGHTM": 8516,
+          "LAT": 27.961944444444445,
+          "LON": 86.93666666666667,
+          "PEAKID": "LHOT",
+          "PKNAME": "Lhotse",
+          "color": [
+            0.8941176470588235,
+            0.10588235294117654,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 85.16
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7135,
+          "LAT": 27.965,
+          "LON": 86.33777777777777,
+          "PEAKID": "GAUR",
+          "PKNAME": "Gaurishankar",
+          "color": [
+            0.44313725490196076,
+            0.5568627450980392,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 71.35
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7864,
+          "LAT": 27.966944444444444,
+          "LON": 86.88944444444445,
+          "PEAKID": "NUPT",
+          "PKNAME": "Nuptse",
+          "color": [
+            0.6784313725490196,
+            0.32156862745098036,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 78.64
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7732,
+          "LAT": 27.968322,
+          "LON": 86.883048,
+          "PEAKID": "NUPW",
+          "PKNAME": "Nuptse West II",
+          "color": [
+            0.6352941176470588,
+            0.3647058823529412,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 77.32
+        },
+        {
+          "EXPEDITIONS_COUNT": 11.0,
+          "HEIGHTM": 8849,
+          "LAT": 27.9881,
+          "LON": 86.9281,
+          "PEAKID": "EVER",
+          "PKNAME": "Everest",
+          "color": [
+            1.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 88.49
+        },
+        {
+          "EXPEDITIONS_COUNT": 5.0,
+          "HEIGHTM": 7138,
+          "LAT": 28.015,
+          "LON": 86.83055555555555,
+          "PEAKID": "PUMO",
+          "PKNAME": "Pumori",
+          "color": [
+            0.44313725490196076,
+            0.5568627450980392,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 71.38
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6639,
+          "LAT": 28.02055555555556,
+          "LON": 86.875,
+          "PEAKID": "KHUM",
+          "PKNAME": "Khumbutse",
+          "color": [
+            0.2784313725490196,
+            0.7215686274509804,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 66.39
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 8188,
+          "LAT": 28.096408,
+          "LON": 86.6595,
+          "PEAKID": "CHOY",
+          "PKNAME": "Cho Oyu",
+          "color": [
+            0.7843137254901961,
+            0.21568627450980393,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 81.88
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6378,
+          "LAT": 28.16888888888889,
+          "LON": 85.68111111111112,
+          "PEAKID": "GANC",
+          "PKNAME": "Ganchenpo",
+          "color": [
+            0.19215686274509802,
+            0.807843137254902,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 63.78
+        },
+        {
+          "EXPEDITIONS_COUNT": 3.0,
+          "HEIGHTM": 6143,
+          "LAT": 28.16916666666667,
+          "LON": 85.715,
+          "PEAKID": "URKM",
+          "PKNAME": "Urkinmang",
+          "color": [
+            0.11764705882352941,
+            0.8823529411764706,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 61.43
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6966,
+          "LAT": 28.17388888888889,
+          "LON": 85.78111111111112,
+          "PEAKID": "DORJ",
+          "PKNAME": "Dorje Lhakpa",
+          "color": [
+            0.38431372549019605,
+            0.615686274509804,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 69.66
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6612,
+          "LAT": 28.23222222222222,
+          "LON": 82.8761111111111,
+          "PEAKID": "KJER",
+          "PKNAME": "Kanjeralwa",
+          "color": [
+            0.27058823529411763,
+            0.7294117647058824,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 66.12
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7227,
+          "LAT": 28.25611111111111,
+          "LON": 85.51944444444445,
+          "PEAKID": "LANG",
+          "PKNAME": "Langtang Lirung",
+          "color": [
+            0.47058823529411764,
+            0.5294117647058824,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 72.27
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 5903,
+          "LAT": 28.27777777777778,
+          "LON": 85.18416666666667,
+          "PEAKID": "PALD",
+          "PKNAME": "Paldor",
+          "color": [
+            0.0392156862745098,
+            0.9607843137254902,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 59.03
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7043,
+          "LAT": 28.335277777777776,
+          "LON": 85.12472222222222,
+          "PEAKID": "GAN3",
+          "PKNAME": "Ganesh III",
+          "color": [
+            0.4117647058823529,
+            0.5882352941176471,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 70.43
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7104,
+          "LAT": 28.345024,
+          "LON": 85.079139,
+          "PEAKID": "GAN4",
+          "PKNAME": "Ganesh IV",
+          "color": [
+            0.43137254901960786,
+            0.5686274509803921,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 71.04
+        },
+        {
+          "EXPEDITIONS_COUNT": 2.0,
+          "HEIGHTM": 6672,
+          "LAT": 28.37555555555556,
+          "LON": 84.67888888888889,
+          "PEAKID": "BAUD",
+          "PKNAME": "Baudha",
+          "color": [
+            0.2901960784313725,
+            0.7098039215686275,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 66.72
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7540,
+          "LAT": 28.43555555555556,
+          "LON": 80.61888888888888,
+          "PEAKID": "HIMW",
+          "PKNAME": "Himalchuli West",
+          "color": [
+            0.5725490196078431,
+            0.4274509803921569,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 75.4
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7893,
+          "LAT": 28.43694444444445,
+          "LON": 84.6413888888889,
+          "PEAKID": "HIME",
+          "PKNAME": "Himalchuli East",
+          "color": [
+            0.6901960784313725,
+            0.30980392156862746,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 78.93
+        },
+        {
+          "EXPEDITIONS_COUNT": 2.0,
+          "HEIGHTM": 6693,
+          "LAT": 28.46624,
+          "LON": 84.6896,
+          "PEAKID": "RANI",
+          "PKNAME": "Rani Peak",
+          "color": [
+            0.2980392156862745,
+            0.7019607843137254,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 66.93
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6983,
+          "LAT": 28.489166666666662,
+          "LON": 84.19111111111111,
+          "PEAKID": "LAMJ",
+          "PKNAME": "Lamjung Himal",
+          "color": [
+            0.39215686274509803,
+            0.607843137254902,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 69.83
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7871,
+          "LAT": 28.50333333333333,
+          "LON": 84.56861111111111,
+          "PEAKID": "PK29",
+          "PKNAME": "Peak 29",
+          "color": [
+            0.6823529411764706,
+            0.3176470588235294,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 78.71
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6434,
+          "LAT": 28.510277777777777,
+          "LON": 83.85194444444444,
+          "PEAKID": "HIUP",
+          "PKNAME": "Hiunchuli",
+          "color": [
+            0.21176470588235294,
+            0.788235294117647,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 64.34
+        },
+        {
+          "EXPEDITIONS_COUNT": 3.0,
+          "HEIGHTM": 7219,
+          "LAT": 28.51833333333333,
+          "LON": 83.80805555555555,
+          "PEAKID": "ANNS",
+          "PKNAME": "Annapurna South",
+          "color": [
+            0.47058823529411764,
+            0.5294117647058824,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 72.19
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7937,
+          "LAT": 28.534722222222225,
+          "LON": 84.12416666666665,
+          "PEAKID": "ANN2",
+          "PKNAME": "Annapurna II",
+          "color": [
+            0.7019607843137254,
+            0.29803921568627456,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 79.37
+        },
+        {
+          "EXPEDITIONS_COUNT": 3.0,
+          "HEIGHTM": 7525,
+          "LAT": 28.53666666666667,
+          "LON": 84.085,
+          "PEAKID": "ANN4",
+          "PKNAME": "Annapurna IV",
+          "color": [
+            0.5686274509803921,
+            0.43137254901960786,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 75.25
+        },
+        {
+          "EXPEDITIONS_COUNT": 4.0,
+          "HEIGHTM": 8163,
+          "LAT": 28.55027777777778,
+          "LON": 84.56166666666667,
+          "PEAKID": "MANA",
+          "PKNAME": "Manaslu",
+          "color": [
+            0.7764705882352941,
+            0.22352941176470587,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 81.63
+        },
+        {
+          "EXPEDITIONS_COUNT": 3.0,
+          "HEIGHTM": 7555,
+          "LAT": 28.584444444444443,
+          "LON": 83.99166666666667,
+          "PEAKID": "ANN3",
+          "PKNAME": "Annapurna III",
+          "color": [
+            0.580392156862745,
+            0.41960784313725497,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 75.55
+        },
+        {
+          "EXPEDITIONS_COUNT": 6.0,
+          "HEIGHTM": 8091,
+          "LAT": 28.59555555555556,
+          "LON": 83.82249999999999,
+          "PEAKID": "ANN1",
+          "PKNAME": "Annapurna I",
+          "color": [
+            0.7529411764705882,
+            0.24705882352941178,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 80.91
+        },
+        {
+          "EXPEDITIONS_COUNT": 2.0,
+          "HEIGHTM": 7455,
+          "LAT": 28.60527777777778,
+          "LON": 83.96583333333334,
+          "PEAKID": "GANG",
+          "PKNAME": "Gangapurna",
+          "color": [
+            0.5450980392156862,
+            0.4549019607843138,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 74.55
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 8026,
+          "LAT": 28.61277778,
+          "LON": 83.83694444,
+          "PEAKID": "ANNE",
+          "PKNAME": "Annapurna I East",
+          "color": [
+            0.7333333333333333,
+            0.2666666666666667,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 80.26
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6384,
+          "LAT": 28.650945,
+          "LON": 83.467265,
+          "PEAKID": "MPNE",
+          "PKNAME": "Manapathi NE",
+          "color": [
+            0.19607843137254902,
+            0.803921568627451,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 63.84
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6839,
+          "LAT": 28.654722222222222,
+          "LON": 83.73222222222222,
+          "PEAKID": "NILS",
+          "PKNAME": "Nilgiri South",
+          "color": [
+            0.34509803921568627,
+            0.6549019607843137,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 68.39
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6940,
+          "LAT": 28.67833333333333,
+          "LON": 86.70861111111111,
+          "PEAKID": "NILC",
+          "PKNAME": "Nilgiri Central",
+          "color": [
+            0.3764705882352941,
+            0.6235294117647059,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 69.4
+        },
+        {
+          "EXPEDITIONS_COUNT": 3.0,
+          "HEIGHTM": 7134,
+          "LAT": 28.6825,
+          "LON": 83.81388888888888,
+          "PEAKID": "TILI",
+          "PKNAME": "Tilicho",
+          "color": [
+            0.4392156862745098,
+            0.5607843137254902,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 71.34
+        },
+        {
+          "EXPEDITIONS_COUNT": 3.0,
+          "HEIGHTM": 6395,
+          "LAT": 28.688658,
+          "LON": 83.379796,
+          "PEAKID": "TSUR",
+          "PKNAME": "Tsaurabong Peak",
+          "color": [
+            0.2,
+            0.8,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 63.95
+        },
+        {
+          "EXPEDITIONS_COUNT": 4.0,
+          "HEIGHTM": 8167,
+          "LAT": 28.696666666666665,
+          "LON": 83.495,
+          "PEAKID": "DHA1",
+          "PKNAME": "Dhaulagiri I",
+          "color": [
+            0.7803921568627451,
+            0.2196078431372549,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 81.67
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7268,
+          "LAT": 28.70833333333333,
+          "LON": 83.27583333333334,
+          "PEAKID": "DHA6",
+          "PKNAME": "Dhaulagiri VI",
+          "color": [
+            0.48627450980392156,
+            0.5137254901960784,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 72.68
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7187,
+          "LAT": 28.716846,
+          "LON": 83.276834,
+          "PEAKID": "GAMA",
+          "PKNAME": "Gama Peak",
+          "color": [
+            0.4588235294117647,
+            0.5411764705882354,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 71.87
+        },
+        {
+          "EXPEDITIONS_COUNT": 2.0,
+          "HEIGHTM": 7371,
+          "LAT": 28.7322,
+          "LON": 83.2122,
+          "PEAKID": "CHRW",
+          "PKNAME": "Churen Himal West",
+          "color": [
+            0.5176470588235293,
+            0.48235294117647065,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 73.71
+        },
+        {
+          "EXPEDITIONS_COUNT": 2.0,
+          "HEIGHTM": 7618,
+          "LAT": 28.733888888888888,
+          "LON": 83.36388888888888,
+          "PEAKID": "DHA5",
+          "PKNAME": "Dhaulagiri V",
+          "color": [
+            0.6,
+            0.4,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 76.18
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7661,
+          "LAT": 28.735833333333336,
+          "LON": 83.31694444444445,
+          "PEAKID": "DHA4",
+          "PKNAME": "Dhaulagiri IV",
+          "color": [
+            0.611764705882353,
+            0.388235294117647,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 76.61
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7371,
+          "LAT": 28.7427,
+          "LON": 83.22859,
+          "PEAKID": "CHRE",
+          "PKNAME": "Churen Himal East",
+          "color": [
+            0.5176470588235293,
+            0.48235294117647065,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 73.71
+        },
+        {
+          "EXPEDITIONS_COUNT": 2.0,
+          "HEIGHTM": 6920,
+          "LAT": 28.746111111111112,
+          "LON": 83.56083333333333,
+          "PEAKID": "TUKU",
+          "PKNAME": "Tukuche",
+          "color": [
+            0.37254901960784315,
+            0.6274509803921569,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 69.2
+        },
+        {
+          "EXPEDITIONS_COUNT": 2.0,
+          "HEIGHTM": 7246,
+          "LAT": 28.747777777777777,
+          "LON": 83.14805555555556,
+          "PEAKID": "PUTH",
+          "PKNAME": "Putha Hiunchuli",
+          "color": [
+            0.4784313725490196,
+            0.5215686274509804,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 72.46
+        },
+        {
+          "EXPEDITIONS_COUNT": 2.0,
+          "HEIGHTM": 7715,
+          "LAT": 28.753888888888888,
+          "LON": 83.37944444444443,
+          "PEAKID": "DHA3",
+          "PKNAME": "Dhaulagiri III",
+          "color": [
+            0.6313725490196078,
+            0.3686274509803922,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 77.15
+        },
+        {
+          "EXPEDITIONS_COUNT": 3.0,
+          "HEIGHTM": 7751,
+          "LAT": 28.76305555555556,
+          "LON": 83.39055555555557,
+          "PEAKID": "DHA2",
+          "PKNAME": "Dhaulagiri II",
+          "color": [
+            0.6431372549019607,
+            0.3568627450980393,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 77.51
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6611,
+          "LAT": 28.7825,
+          "LON": 83.48472222222222,
+          "PEAKID": "SITA",
+          "PKNAME": "Sita Chuchura",
+          "color": [
+            0.27058823529411763,
+            0.7294117647058824,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 66.11
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6012,
+          "LAT": 28.79805555555556,
+          "LON": 83.61194444444443,
+          "PEAKID": "DHAM",
+          "PKNAME": "Dhampus",
+          "color": [
+            0.07450980392156863,
+            0.9254901960784314,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 60.12
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6227,
+          "LAT": 29.338006,
+          "LON": 82.762538,
+          "PEAKID": "SRKU",
+          "PKNAME": "Serku Dolma",
+          "color": [
+            0.14509803921568626,
+            0.8549019607843138,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 62.27
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6556,
+          "LAT": 29.36805555555556,
+          "LON": 82.78083333333333,
+          "PEAKID": "TSOK",
+          "PKNAME": "Tso Karpo Kang",
+          "color": [
+            0.25098039215686274,
+            0.7490196078431373,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 65.56
+        },
+        {
+          "EXPEDITIONS_COUNT": 3.0,
+          "HEIGHTM": 6883,
+          "LAT": 29.37555555555556,
+          "LON": 82.64055555555557,
+          "PEAKID": "KJRS",
+          "PKNAME": "Kanjiroba South",
+          "color": [
+            0.3607843137254902,
+            0.6392156862745098,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 68.83
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6468,
+          "LAT": 29.84777777777777,
+          "LON": 81.04027777777777,
+          "PEAKID": "ROKA",
+          "PKNAME": "Rokapi",
+          "color": [
+            0.22352941176470587,
+            0.7764705882352941,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 64.68
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 6850,
+          "LAT": 29.881666666666668,
+          "LON": 81.0425,
+          "PEAKID": "JETH",
+          "PKNAME": "Jethi Bahurani",
+          "color": [
+            0.34901960784313724,
+            0.6509803921568628,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 68.5
+        },
+        {
+          "EXPEDITIONS_COUNT": 1.0,
+          "HEIGHTM": 7132,
+          "LAT": 30.005277777777778,
+          "LON": 80.93166666666667,
+          "PEAKID": "APIM",
+          "PKNAME": "Api Main",
+          "color": [
+            0.4392156862745098,
+            0.5607843137254902,
+            1.0,
+            1.0
+          ],
+          "scaled_elevation": 71.32
+        }
+      ],
+      "elevationScale": 500,
+      "getElevation": "@@=EXPEDITIONS_COUNT",
+      "getFillColor": "@@=[color[0] * 255, color[1] * 255, color[2] * 255, color[3] * 255]",
+      "getPosition": "@@=[LON, LAT]",
+      "id": "cfb31477-99b6-4b1b-b988-4fb574bbdd92",
+      "pickable": true,
+      "radius": 1000
+    }
+  ],
+  "mapProvider": "mapbox",
+  "mapStyle": "mapbox://styles/mapbox/satellite-v9",
+  "views": [
+    {
+      "@@type": "MapView",
+      "controller": true
+    }
+  ]
+};
+    const tooltip = {'html': '<b>Expeditions: {EXPEDITIONS_COUNT}</b><br><b>Peak: {PEAKID}</b><br><b>Peak Name: {PKNAME}</b><br><b>Elevation: {HEIGHTM}</b>', 'style': {'background': 'grey', 'color': 'white', 'font-family': '"Helvetica Neue", Arial', 'z-index': '10000'}};
+    const customLibraries = null;
+    const configuration = null;
+
+    const deckInstance = createDeck({
+            mapboxApiKey: 'pk.eyJ1Ijoic2p0YWxrYXIiLCJhIjoiY2xja2l1ajM4MGQycDNvcnkwanlyYXhyNyJ9.gVB4kiNFdBS8dB83X16tQQ',
+                  container,
+      jsonInput,
+      tooltip,
+      customLibraries,
+      configuration
+    });
+
+  </script>
+</html>
