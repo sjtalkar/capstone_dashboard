@@ -79,7 +79,7 @@ app.run_server(host="0.0.0.0", debug=True)
 A requirements file was created using pipreqs package. This captures all the Dash dependencies as well as Python data manipulation libraries.
 The pipreqs package was used instead of pip freeze of the environment to make sure that only the packages imported into the project are present in the requirements file. Since this repository is to be hosted on a free tier site, not all the machine learning code and data is set up here. 
 The unsupervised learning visual output in the form of an html is carted over from [the main capstone Dagshub repository](https://dagshub.com/sjtalkar/capstone_himalayas) and served up as a page.
-This is the file that can be found in the app/assets folder called Everest_Visualization_Two_topics.html.
+This is the file that can be found in the src/assets folder called Everest_Visualization_Two_topics.html.
 
 ### Environment variables to pass in the required mapbox access token
 
@@ -95,6 +95,8 @@ the docker run command, like so: docker run -e MAPBOX_ACCESS_TOKEN=<your_access_
 
 2. Use a .env file to store the token and mount it to the container at runtime. This can be done using the --env-file flag
 when running the docker run command, like so: docker run --env-file path/to/.env <image_name>
+Since I run this from the root:
+   docker run --env-file  .env <image_name>
 
 We will use the .env file method and this requires us to take care as to not committing this file to Github and not including it in the build of the image.
 
@@ -148,7 +150,11 @@ Check all available images built
 
 Run an image
  
-`docker run --env-file path/to/.env -p 8050:8050 caps_dashboard`
+`docker run --env-file <path/to/.env> -p 8050:8050 caps_dashboard`
+
+or if running from root:
+
+`docker run --env-file .env -p 8050:8050 caps_dashboard`
 
 Stop a running container in another command line window:
 
@@ -168,9 +174,5 @@ Prune non-running redundant images
 
 Note that the host is set to 0.0.0.0 in the app.py Dash file
 
-The application can be run as https://localhost:8050
+The application can be run as https://localhost:8050 in a browser tab.
 
-
-1. Create a .env file with
-   MAPBOX_ACCESS_TOKEN = <Your access token>
-2. To run the docker image with the u
