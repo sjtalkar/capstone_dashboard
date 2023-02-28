@@ -13,8 +13,7 @@ from lib.data_preparation.member_data import MemberInfo
 
 dash.register_page(__name__, title='Member Analysis', name='Member Analysis',path = '/')
 
-#member_data = MemberInfo(data_path=os.path.join("src",  "data", "raw_data", "members.csv"))
-member_data = MemberInfo(data_path=os.path.join( "data", "members.csv"))
+member_data = MemberInfo(data_path=os.path.join("data", "raw_data", "members.csv"))
 members_counts_df, members_norm_df = member_data.get_members_parallel_coord_data()
 
 items = [dbc.DropdownMenuItem(x) for x in range(10, 50, 10)]
@@ -26,9 +25,7 @@ display_col_names_labels = ['Nationality', 'Median Analysis Age*', 'Lowest Analy
 
 parallel_axis_display_dict = dict(zip(display_col_names, display_col_names_labels))
 
-#with open(os.path.join("src",  "data", "dash", "store_data_lists.pickle"), 'rb') as handle:
-with open(os.path.join("data", "store_data_lists.pickle"), 'rb') as handle:
-
+with open(os.path.join("data", "dash", "store_data_lists.pickle"), 'rb') as handle:
     lists_dict = pickle.load(handle)
     all_peaks_list = lists_dict['all_peaks_list']
     countries_list = lists_dict['countries_list']

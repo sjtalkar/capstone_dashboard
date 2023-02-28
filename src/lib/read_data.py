@@ -48,7 +48,7 @@ class RetrieveHimdata():
                                                                              'STDRTE': object})
             self.refer_df = pd.read_csv(os.path.join(raw_data_path, "refer.csv"))
 
-            self.members_df = pd.read_csv('../data/members.csv', dtype={'MSPEED': object,
+            self.members_df = pd.read_csv('../data/raw_data/members.csv', dtype={'MSPEED': object,
                                                                                  'MSMTDATE2': object,
                                                                                  'MSMTDATE3': object,
                                                                                  'MO2NOTE': object,
@@ -57,7 +57,7 @@ class RetrieveHimdata():
                                                                                  'DEATHNOTE': object,
                                                                                  'MEMBERMEMO': object,
                                                                                  'NECROLOGY': object
-                                                                        })
+                                                                                 })
 
     def save_data_csv(self, df: pd.DataFrame, file_name: str, raw_data_path: str = "../data/raw_data/"):
         """

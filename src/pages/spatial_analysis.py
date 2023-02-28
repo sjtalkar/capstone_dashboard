@@ -21,17 +21,14 @@ from dash import dcc, html, Input, callback
 dash.register_page(__name__, title='Spatial Peak Analysis', name='Spatial Peak Analysis')
 
 
-#peak_expedition_by_year_season_df = pd.read_csv(os.path.join("src", "data", "dash", "peak_expedition_by_year_season_df.csv"))
-peak_expedition_by_year_season_df = pd.read_csv(
-    os.path.join( "data",  "peak_expedition_by_year_season_df.csv"))
+peak_expedition_by_year_season_df = pd.read_csv(os.path.join("data", "dash", "peak_expedition_by_year_season_df.csv"))
 
 primary_df = peak_expedition_by_year_season_df[['YEAR', 'LAT', 'LON', 'HEIGHTM', 'PEAKID', 'PKNAME', 'EXPEDITIONS_COUNT']].drop_duplicates()
 
 lat_avg = primary_df['LAT'].unique().mean()
 lon_avg = primary_df['LON'].unique().mean()
 
-# with open(os.path.join("src", "data", "dash", "store_data_lists.pickle"), 'rb') as handle:
-with open(os.path.join("data",  "store_data_lists.pickle"), 'rb') as handle:
+with open(os.path.join("data", "dash",  "store_data_lists.pickle"), 'rb') as handle:
     lists_dict = pickle.load(handle)
     all_peaks_list = lists_dict['all_peaks_list']
 
@@ -133,7 +130,7 @@ layout = html.Div(
 )
 def show_iframe(num_expeditions, date_range):
     #print(f"This is the current directory : {os.path.abspath(os.getcwd())}")
-    full_file_path = f"src/assets/spatial_analysis_{num_expeditions}_{date_range[0]}_{date_range[1]}.html"
+    full_file_path = f"assets/spatial_analysis_{num_expeditions}_{date_range[0]}_{date_range[1]}.html"
     url_to_return = f"spatial_analysis_{num_expeditions}_{date_range[0]}_{date_range[1]}.html"
 
     if os.path.exists(full_file_path):
