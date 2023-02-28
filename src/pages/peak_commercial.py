@@ -25,16 +25,16 @@ dash.register_page(__name__, title='Peak Commercial Expedition Analysis', name='
 #     os.path.join("src", "data", "dash", "commerce_noncommerce_by_year_df.csv"))
 
 commerce_noncommerce_by_year_df = pd.read_csv(
-    os.path.join("src", "data",  "commerce_noncommerce_by_year_df.csv"))
+    os.path.join( "data",  "commerce_noncommerce_by_year_df.csv"))
 
 #exped_commercial_type_df = pd.read_csv(os.path.join("src", "data", "dash", "exped_commercial_type_df.csv"))
-exped_commercial_type_df = pd.read_csv(os.path.join("src", "data",  "exped_commercial_type_df.csv"))
+exped_commercial_type_df = pd.read_csv(os.path.join( "data",  "exped_commercial_type_df.csv"))
 
 commerce_noncommerce_by_year_df = commerce_noncommerce_by_year_df.fillna(0)
 
 
 #with open(os.path.join("src", "data", "dash", "store_data_lists.pickle"), 'rb') as handle:
-with open(os.path.join("src", "data",  "store_data_lists.pickle"), 'rb') as handle:
+with open(os.path.join( "data",  "store_data_lists.pickle"), 'rb') as handle:
     lists_dict = pickle.load(handle)
     all_peaks_list = lists_dict['all_peaks_list']
     commerce_peaks_list = lists_dict['commerce_peaks_list']
