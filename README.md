@@ -28,12 +28,20 @@ Drive:.
     ¦   ¦       peaks.csv
     ¦   ¦       
     ¦   +---nhpp
-    ¦           nhpp_peaks.csv
-    ¦           peakvisor_peaks.csv
-    ¦           manually_collected_peaks.csv
-    ¦           non_matching_peaks.csv
-    ¦           merged_nepal_peaks.csv
-    ¦           
+    ¦   ¦       nhpp_peaks.csv
+    ¦   ¦       peakvisor_peaks.csv
+    ¦   ¦       manually_collected_peaks.csv
+    ¦   ¦       non_matching_peaks.csv
+    ¦   ¦       preprocessed_nepal_peaks.csv
+    ¦   ¦ 
+    ¦   +---dash
+    ¦          commerce_noncommerce_by_year_df.csv
+    ¦          exped_commercial_type_df.csv
+    ¦          peak_exped_df.csv
+    ¦          peak_expedition_by_year_season_df.csv
+    ¦          peak_roures_df.csv
+    ¦          store_data_lists.pickle
+    ¦       
     +---lib
     ¦   ¦   data_network.py
     ¦   ¦   read_data.py
