@@ -7,9 +7,6 @@ import pickle
 import pandas as pd
 import pydeck as pdk
 
-
-mapbox_token = os.environ.get("MAPBOX_ACCESS_TOKEN")
-
 import matplotlib.cm as cmx
 from dotenv import load_dotenv
 import matplotlib.pyplot as plt
