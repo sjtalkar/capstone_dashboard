@@ -1,22 +1,23 @@
 ## Capstone Dashboard repository : capstone_dashboard
 This repository is the visual dashboard element of the full Himalaya Dataset project developed in Dagshub
-
+Our Capstone Repository is in Dagshub and you can reach it via this [link](https://dagshub.com/sjtalkar/capstone_himalayas).
+We created this Github repo in order to connect through the Github/Gitlab option on Render.com.
 
 ### Restructure the Dash application folder structure
 
 The series of articles on Medium starting out with [Structuring your Dash App](https://towardsdatascience.com/structuring-your-dash-app-e33d8e70133e) served as inspiration to create a Docker image and serve up the application
 in a Docker container. We started out by creating a isolated folder structure for the Dash app as suggested in the article
+This is also the structure required to host this app on Render.com. Note that in this path you will find a .env file
+which contains MAPBOX_ACCESS_TOKEN which is a private key. For Render.com a .env file can be created or environment variables can be provided within the account for the project.
+This structure was another reason for separating out the Dash dashboard visualization out to its own repository since this was particular to the dashbiard and not generic to the rest of the analysis and ML.
 
-Folder PATH listing for volume Google Drive
 
 ```
-Folder PATH listing for volume Google Drive
-Volume serial number is 1983-1116
 Drive:.
 ¦   README.md
 ¦   requirements.txt
 ¦   Dockerfile
-¦   
+¦   .env¦   
 +---src
     ¦   app.py
     ¦   
@@ -78,7 +79,7 @@ Drive:.
 
 ```
 
-Whereas in the Dagshub, app.py is under the root, here an src folder is created to contain the app.py file that will create the dash server with the hostname as seen below:
+Here an src folder is created to contain the app.py file that will create the dash server with the hostname as seen below:
 
 `
 app.run_server(host="0.0.0.0", debug=True)
@@ -184,3 +185,8 @@ Note that the host is set to 0.0.0.0 in the app.py Dash file
 
 The application can be run as https://localhost:8050 in a browser tab.
 
+`Addtional Info`
+Render.com also requires this code to appear in app.py
+
+`server = app.server
+`
