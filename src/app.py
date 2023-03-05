@@ -64,7 +64,7 @@ navbar = dbc.NavbarSimple(
             dbc.Row([html.A(dbc.Button("Link to Insights ", title="Ctrl + Click for Insights",
                                        size='sm', color="info"),
                            # href="https://github.com/sjtalkar/capstone_dashboard/blob/main/docs/insights_from_eda.md"
-                            hrefLang="https://dagshub.com/sjtalkar/capstone_himalayas/src/main/docs/insights_from_eda.md"
+                            href="https://dagshub.com/sjtalkar/capstone_himalayas/src/main/docs/insights_from_eda.md"
                             )
                      ]),
 
