@@ -60,9 +60,11 @@ navbar = dbc.NavbarSimple(
                 ), ]),
             #Empty row
             dbc.Row([html.Div(className='m-3')]),
+            #Check this after making repo public
             dbc.Row([html.A(dbc.Button("Link to Insights ", title="Ctrl + Click for Insights",
                                        size='sm', color="info"),
-                            href="https://github.com/sjtalkar/capstone_dashboard/blob/main/docs/insights_from_eda.md"
+                           # href="https://github.com/sjtalkar/capstone_dashboard/blob/main/docs/insights_from_eda.md"
+                            hrefLang="https://dagshub.com/sjtalkar/capstone_himalayas/src/main/docs/insights_from_eda.md"
                             )
                      ]),
 
@@ -117,8 +119,8 @@ def display_page(pathname):
 
 if __name__ == "__main__":
     # To run in Docker, set host
-    app.run_server(host="0.0.0.0", debug=True)
+    #app.run_server(host="0.0.0.0", debug=True)
     # To run on local host
     #app.run_server(host="127.0.0.1", debug=True)
     #For Render
-    #app.run_server(debug=True)
+    app.run_server(debug=True)
