@@ -82,7 +82,7 @@ layout = html.Div(
                  ]),
         dbc.Row([html.Div(className='m-4')]),
 
-        dbc.Row([dbc.Col([html.Label("Oxygen usage (as percent of expeditions)"),
+        dbc.Row([dbc.Col([html.Label("Oxygen usage percent of expedition(size of bubble is expedition count)"),
                           dcc.Graph(id="oxygen_usage_perc_chart", className="rounded shadow")
                           ],
                          width=4,
@@ -180,6 +180,34 @@ def create_bar_chart_figure(selected_years_df, final_colors_dict, y_col: str, y_
     fig = common_layout_elements(fig)
     return fig
 
+
+def create_sized_scatter_chart_figure(selected_years_df, final_colors_dict, y_col: str, y_col_title: str):
+    """
+    This function
+    :param selected_years_df: filtered dataframe
+    :param final_colors_dict: dictionary of colors for commercial peaks
+    :param y_col: column value to be plotted in bar graph
+    :param y_col_title:
+    :return:
+    """
+    fig = px.scatter(selected_years_df,
+                     x='YEAR',
+                     y=y_col,
+                     color='PKNAME',
+                     color_discrete_map=final_colors_dict,
+                     size='EXPEDITIONS_COUNT',
+                     labels={
+                         "PKNAME": "Peak Name",
+                         y_col: y_col_title,
+                         "YEAR": "Year",
+                         "HEIGHTM": "Height in meters",
+                         "EXPEDITIONS_COUNT": "Number of Expeditions"
+                     },
+                     hover_data=["YEAR", "PKNAME", "HEIGHTM", "EXPEDITIONS_COUNT", y_col]
+
+                     )
+    fig = common_layout_elements(fig)
+    return fig
 
 def common_layout_elements(fig):
     """
@@ -280,7 +308,7 @@ def update_chart(date_range):
           )
 def update_chart(date_range):
     selected_years_df, final_colors_dict = common_df_setup(commerce_noncommerce_by_year_df, date_range)
-    fig = create_bar_chart_figure(selected_years_df, final_colors_dict, y_col="OXYGEN_USED_PERC",
+    fig = create_sized_scatter_chart_figure(selected_years_df, final_colors_dict, y_col="OXYGEN_USED_PERC",
                                   y_col_title="Percentage of expeditions using oxygen")
     fig = common_layout_elements(fig)
 
