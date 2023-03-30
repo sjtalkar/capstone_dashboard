@@ -47,20 +47,23 @@ layout = html.Div(
             ], width=4
             )
         ]),
+        dbc.Row([html.Div(className='m-1')]),
+        dbc.Row([html.P(["Click on peaks in legend to the right of chart to select/deselect and focus on one peak."])]),
+        dbc.Row([html.Div(className='m-1')]),
         dbc.Row([dbc.Col([html.Label("Average Base Camps By Year"),
                           dcc.Graph(id="base_camps_chart", className="rounded shadow"),
                           ],
-                         width=4,
+                         width=6,
                          className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start pb-2"),
-                 dbc.Col([html.Label("Percentage Commercial Expeditions By Year"),
-                          dcc.Graph(id="commerce_expeds_chart", className="rounded shadow")
-                          ],
-                         width=4,
-                         className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
+                 # dbc.Col([html.Label("Percentage Commercial Expeditions By Year"),
+                 #          dcc.Graph(id="commerce_expeds_chart", className="rounded shadow")
+                 #          ],
+                 #         width=4,
+                 #         className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
                  dbc.Col([html.Label("Average Days To Summit By Year"),
                           dcc.Graph(id="summit_days_chart", className="rounded shadow")
                           ],
-                         width=4,
+                         width=6,
                          className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
                  ]),
         dbc.Row([html.Div(className='m-4')]),
@@ -82,7 +85,7 @@ layout = html.Div(
                  ]),
         dbc.Row([html.Div(className='m-4')]),
 
-        dbc.Row([dbc.Col([html.Label("Oxygen usage percent of expedition(size of bubble is expedition count)"),
+        dbc.Row([dbc.Col([html.Label("Oxygen usage percent of expedition(bubble size is proportional to expedition count)"),
                           dcc.Graph(id="oxygen_usage_perc_chart", className="rounded shadow")
                           ],
                          width=4,
@@ -99,9 +102,6 @@ layout = html.Div(
                          className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start  pb-2"),
                  ]),
         dbc.Row([html.Div(className='m-4')]),
-
-
-
         dbc.Row([dbc.Col([html.Label("Termination Reasons"),
                           dcc.Graph(id="termination_reason_chart", className="rounded shadow")
                           ],
@@ -235,16 +235,16 @@ def common_layout_elements(fig):
     return fig
 
 
-@callback(Output("commerce_expeds_chart", "figure"),
-          [Input('year_slider', 'value')],
-          )
-def update_chart(date_range):
-    selected_years_df, final_colors_dict = common_df_setup(commerce_noncommerce_by_year_df, date_range)
-    fig = create_bar_chart_figure(selected_years_df, final_colors_dict, y_col="COMMERCIAL_ROUTES_PERC",
-                                y_col_title="Percentage of Commercial Expeditions")
-    fig = common_layout_elements(fig)
-
-    return fig
+# @callback(Output("commerce_expeds_chart", "figure"),
+#           [Input('year_slider', 'value')],
+#           )
+# def update_chart(date_range):
+#     selected_years_df, final_colors_dict = common_df_setup(commerce_noncommerce_by_year_df, date_range)
+#     fig = create_bar_chart_figure(selected_years_df, final_colors_dict, y_col="COMMERCIAL_ROUTES_PERC",
+#                                 y_col_title="Percentage of Commercial Expeditions")
+#     fig = common_layout_elements(fig)
+#
+#     return fig
 
 
 @callback(Output("summit_days_chart", "figure"),

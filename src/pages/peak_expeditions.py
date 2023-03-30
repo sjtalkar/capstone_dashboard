@@ -131,6 +131,10 @@ layout = html.Div(
             ], width=4
             )
         ]),
+        dbc.Row([html.Div(className='m-1')]),
+        dbc.Row([html.P(["Click on peaks in legend to the right of chart to select/deselect and focus on one peak."])]),
+        dbc.Row([html.Div(className='m-1')]),
+
         dbc.Row(dbc.Col([html.Label("Number of expedition by year"),
                          dcc.Graph(id="peak_expeds_chart", className="rounded shadow")
                          ], className="rounded shadow rounded-top  rounded-end rounded-bottom rounded-start"), ),

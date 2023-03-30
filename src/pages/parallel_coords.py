@@ -20,8 +20,8 @@ items = [dbc.DropdownMenuItem(x) for x in range(10, 50, 10)]
 display_col_names = ['CITIZEN', 'CALCAGE_median', 'CALCAGE_min', 'CALCAGE_max', 'MEMBER_COUNT', 'LEADER', 'HIRED', 'WEATHER',
                      'INJURY', 'DEATH', 'MO2USED', 'MHIGHPT', 'BCONLY', 'MSOLO', 'FEMALE']
 display_col_names_labels = ['Nationality', 'Median Analysis Age*', 'Lowest Analysis Age*', 'Highest Analysis Age*',
-                            'Members', 'Leader', 'Hired', 'Deaths due to weather', 'Injured', 'Deaths', 'Oxygen used',
-                            'High point reached', 'Base Camp Only', 'Solo Attempt', 'Women']
+                            'Members Count', 'Expedition Leaders Count', 'Hired Count', 'Deaths Due to Weather Count', 'Injured Count', 'Deaths Count', 'Oxygen Used in Expedition Count',
+                            'High Point Reached Expedition Count', 'Reached Base Camp Only Expedition Count', 'Solo Attempts Count', 'Women Count']
 
 parallel_axis_display_dict = dict(zip(display_col_names, display_col_names_labels))
 
@@ -91,14 +91,35 @@ layout = html.Div([
     dbc.Row([html.P(["* The calculated (analysis) age is used for all reports and analyses in the Himalayas dataset in which the climber’s age is a factor.",
                      html.Br(),
                      "It is calculated as of the date of Summit, Death, Base Camp Arrival Date or Season Start Date, whichever is best applicable"])],className="rounded shadow g-5 small fst-italic"),
-    dbc.Row([html.Div(className='m-4')]),
-    dbc.Row([html.P(["In the parallel co-ordinates plot, a range of feature values for members segmented by nationality is presented for analysis and insights.",
+    dbc.Row([html.Div(className='m-2')]),
+    dbc.Row([html.P(["In the above parallel co-ordinates plot, a range of feature values for members segmented by nationality is presented for analysis and insights.",
                      "In order to facilitate ease in choice of nationality from over 100 countries, groups of countries are created based on number of unique members from the country.",
-                     "In addition to viewing from a range choice of top 10 countries to top 40 countries with most members, the user can choose to select any one or more of other countries, in addition to the groups, for comparison with the selected group.",
-                     "Parallel axes with continuous values that the user can choose from range from number of members, hired, leaders, injured, deaths, deaths due to weather, oxygen usage, solo attempts, high camp reached, women, base camp only expeditions (as opposed to summitting), and high point reached."])
+                     "'Countries with most members dropdown' provides choice of country groups from top 10 countries to top 40 countries with most members in them.",
+                     html.Br(),
+                     "Select a country of interest in 'Add Country' for comparison with the selected group.",
+                     html.Br(),
+                     "'View Values For' the selected countries such as: ",
+                     html.Br(),
+                     "Lowest, Highest, Median  Analysis age of the members.",
+                     html.Br(),
+                     "'Members Count', 'Expedition Leaders Count', 'Hired Count',",
+                     html.Br(),
+                     "'Deaths Due to Weather Count','Injured Count', 'Deaths Count',",
+                     html.Br(),
+                     "'Oxygen Used in Expedition Count', 'High Point Reached Expeditions Count',",
+                     html.Br(),
+                     "'Reached Base Camp Only Expeditions Count', 'Solo Attempts Count', 'Women Count'",
+                     html.Br(),
+                     "   ",
+                     html.Br(),
+                     "When 'Show Normalized Data' is selected, the counts are normalized by the total  number of members from  the country selected",
              ], className = "rounded shadow g-5 small fst-italic" ),
-
+    ]),
+    dbc.Row([html.Div(className='m-2')]),
+    dbc.Row([html.P(["Data is for all years of recorded expedition."], className="rounded shadow g-5 small fst-italic")
+             ])
 ])
+
 
 
 @callback(Output("parallel_coords_axis", "figure"),
