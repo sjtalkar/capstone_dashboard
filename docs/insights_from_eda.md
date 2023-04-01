@@ -120,6 +120,8 @@ the decades..
 
 **Commercial Peaks Analysis**
 
+`Note:` Dips in values in 2020 and 2021 are due to discontinuation in expeditions during Covid
+
 As mentioned above, as per the dataset, we have information for five
 peaks with commercial expeditions: Ama Dablam, Cho You, Everest, Lhotse
 and Manaslu. In this page we take a deeper dive into data to compare the
@@ -143,7 +145,7 @@ slowly diving underneath the Eurasian Plate, carrying much of Europe and
 Asia.”\]. The pandemic (coronavirus. COVID-19) year also shows a
 plummeting of number of expeditions.
 
-<img src=".\/media/image8.png" style="width:6.5in;height:2.17708in" />
+<img src=".\/media/image21.png" style="width:6.5in;height:2.17708in" />
 
 The trend shows that the average days to summit for all peaks is
 decreasing. For Everest, for instance it went down from an average of 33
@@ -154,10 +156,7 @@ in the year 2000, 95% of the expeditions were commercial. The peaks
 Lhotse bucks this trend though with very few commercial expeditions as
 per the Himalayan dataset.
 
-| <img src=".\/media/image9.png"              
- style="width:3.19697in;height:3.09643in" />  | <img src=".\/media/image10.png"             
-                                               style="width:3.16506in;height:3.10944in" />  |
-|---------------------------------------------|---------------------------------------------|
+<img src=".\/media/image22.png" style="width:3.19697in;height:3.09643in" />  
 
 Oxygen usage in commercial expeditions has also been rising. Again for
 Everest while in the recent years (2018 and onwards) oxygen usage is
@@ -170,8 +169,7 @@ expeditioner deaths. As per
 an ice avalance caused immense loss in Sherpa (Hired expeditioners)
 lives.
 
-<img src=".\/media/image11.png"
-style="width:3.36749in;height:3.24857in" />
+<img src=".\/media/image23.png" style="width:3.36749in;height:3.24857in" />
 
 **Peak Popularity Analysis**
 
