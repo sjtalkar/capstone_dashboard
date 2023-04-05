@@ -17,7 +17,7 @@ import plotly.graph_objects as go
 
 fig = go.Figure(layout=dict(template='plotly'))
 
-dash.register_page(__name__, title='Peak Commercial Expedition Analysis', name='Peak Commercial Expedition Analysis')
+dash.register_page(__name__, title='Commercial Expedition Analysis', name='Commercial Expedition Analysis')
 
 # print(f"This is the current directory : {os.path.abspath(os.getcwd())}")
 

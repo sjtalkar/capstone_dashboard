@@ -21,7 +21,7 @@ import plotly.graph_objects as go
 fig = go.Figure(layout=dict(template='plotly'))
 
 dash.register_page(__name__, title='Commercial and Non-commercial Expedition Distributions',
-                   name='Commercial and Non-commercial Expedition Distributions')
+                   name='Expedition Distributions')
 
 # print(f"This is the current directory : {os.path.abspath(os.getcwd())}")
 peak_exped_df = pd.read_csv(os.path.join( "data", "dash", "peak_exped_df.csv"),
