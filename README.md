@@ -190,3 +190,15 @@ Render.com also requires this code to appear in app.py
 
 `server = app.server
 `
+
+The image was pushed to a public repository on Docker.
+
+Login to Docker hub with command 
+`docker login`
+
+`docker pull sjtalkar/caps_dashboard:1.0`
+
+Run the image in a container
+
+`docker run --env-file <directory containing .env file>/.env -p 8050:8050 sjtalkar/caps_dashboard:1.0`
+
