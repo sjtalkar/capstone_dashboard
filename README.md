@@ -181,19 +181,16 @@ Prune non-running redundant images
 
 `docker sytem prune`
 
+```
 Note that the host is set to 0.0.0.0 in the app.py Dash file
 
 The application can be run as https://localhost:8050 in a browser tab.
+```
 
-`Addtional Info`
-Render.com also requires this code to appear in app.py
-
-`server = app.server
-`
-
-The image was pushed to a public repository on Docker.
-
-Login to Docker hub with command 
+```
+Docker Hub The image was pushed to a public repository on Docker.
+```
+Login to Docker hub with command
 `docker login`
 
 `docker pull sjtalkar/caps_dashboard:1.0`
@@ -201,4 +198,10 @@ Login to Docker hub with command
 Run the image in a container
 
 `docker run --env-file <directory containing .env file>/.env -p 8050:8050 sjtalkar/caps_dashboard:1.0`
+
+`Addtional Info`
+Render.com also requires this code to appear in app.py
+
+`server = app.server
+`
 
