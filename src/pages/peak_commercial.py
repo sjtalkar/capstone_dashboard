@@ -149,13 +149,16 @@ def common_df_setup(df, date_range):
                            & (df['PKNAME'].isin(commerce_peaks_list))].copy()
     selected_years_df['YEAR'] = selected_years_df['YEAR'].astype('str')
 
+
     final_colors_dict = {key: COLOR_CHOICE_DICT[value] for key, value in zip(commerce_peaks_list,
-                                                                             ["mountain_cloud_blue",
+                                                                             [
                                                                               "parallel_theme_blue",
                                                                               "mountain_side_blue_green",
+                                                                              "color_yellow_1",
                                                                               "spruce_green_light",
                                                                               "spruce_green",
                                                                               ])}
+
     return selected_years_df, final_colors_dict
 
 
